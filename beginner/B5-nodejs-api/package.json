@@ -1,0 +1,24 @@
+{
+  "name": "b5-nodejs-api",
+  "version": "1.0.0",
+  "description": "In-memory transaction management REST API",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "jest --runInBand"
+  },
+  "keywords": ["express", "transactions", "api"],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.1.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/tests/**/*.test.js"]
+  }
+}
