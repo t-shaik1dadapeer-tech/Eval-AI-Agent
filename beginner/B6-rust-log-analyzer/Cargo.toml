@@ -1,0 +1,17 @@
+[package]
+name = "b6-rust-log-analyzer"
+version = "0.1.0"
+edition = "2021"
+description = "CLI log analyzer that counts INFO, WARN, and ERROR entries"
+
+[lib]
+name = "b6_rust_log_analyzer"
+path = "src/lib.rs"
+
+[[bin]]
+name = "log-analyzer"
+path = "src/main.rs"
+
+[dependencies]
+
+[dev-dependencies]
