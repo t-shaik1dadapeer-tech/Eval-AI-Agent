@@ -60,7 +60,7 @@ source .venv/bin/activate
 pytest -v
 ```
 
-Expected: **5 passed**.
+Expected: **8 passed** (5 original + 3 lookup tests).
 
 ## API endpoints
 
@@ -68,6 +68,7 @@ Expected: **5 passed**.
 |--------|------|-------------|
 | `POST` | `/transactions` | Create a transaction |
 | `GET` | `/transactions` | List all transactions |
+| `GET` | `/transactions/{id}` | Get a single transaction by UUID |
 | `GET` | `/balance` | Current balance + transaction count |
 | `GET` | `/health` | Health check |
 
@@ -121,6 +122,16 @@ curl -X POST http://localhost:8000/transactions \
 ```bash
 curl http://localhost:8000/transactions
 ```
+
+### Get transaction by ID
+
+```bash
+curl http://localhost:8000/transactions/{transaction_id}
+```
+
+**Expected response (200):** single transaction object (same shape as create response).
+
+**Expected response (404):** `{"detail": "Transaction not found"}` when the ID does not exist.
 
 **Expected response (200):**
 
