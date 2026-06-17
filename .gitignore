@@ -47,8 +47,8 @@ target/
 .gradle/
 build/
 
-# Go
-bin/
+# Go (root-level only — do not match Rust src/bin/)
+/bin/
 vendor/
 
 # Rust

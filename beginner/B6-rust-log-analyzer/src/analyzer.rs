@@ -13,6 +13,22 @@ impl LogCounts {
     }
 }
 
+fn line_needs_trim(line: &str) -> bool {
+    let bytes = line.as_bytes();
+    if bytes.is_empty() {
+        return false;
+    }
+    bytes[0].is_ascii_whitespace() || bytes[bytes.len() - 1].is_ascii_whitespace()
+}
+
+fn normalize_line<'a>(line: &'a str) -> &'a str {
+    if line_needs_trim(line) {
+        line.trim()
+    } else {
+        line
+    }
+}
+
 fn matches_log_level(line: &str, level: &str) -> bool {
     match line.strip_prefix(level) {
         None => false,
@@ -22,21 +38,39 @@ fn matches_log_level(line: &str, level: &str) -> bool {
     }
 }
 
+fn classify_log_level(line: &str) -> Option<LogLevelKind> {
+    if line.is_empty() {
+        return None;
+    }
+
+    match line.as_bytes().first() {
+        Some(b'I') if matches_log_level(line, "INFO") => Some(LogLevelKind::Info),
+        Some(b'W') if matches_log_level(line, "WARN") => Some(LogLevelKind::Warn),
+        Some(b'E') if matches_log_level(line, "ERROR") => Some(LogLevelKind::Error),
+        _ => None,
+    }
+}
+
+enum LogLevelKind {
+    Info,
+    Warn,
+    Error,
+}
+
 pub fn count_log_levels(content: &str) -> LogCounts {
     let mut counts = LogCounts::default();
 
     for line in content.lines() {
-        let trimmed = line.trim();
-        if trimmed.is_empty() {
+        if line.is_empty() {
             continue;
         }
 
-        if matches_log_level(trimmed, "INFO") {
-            counts.info += 1;
-        } else if matches_log_level(trimmed, "WARN") {
-            counts.warn += 1;
-        } else if matches_log_level(trimmed, "ERROR") {
-            counts.error += 1;
+        let normalized = normalize_line(line);
+        match classify_log_level(normalized) {
+            Some(LogLevelKind::Info) => counts.info += 1,
+            Some(LogLevelKind::Warn) => counts.warn += 1,
+            Some(LogLevelKind::Error) => counts.error += 1,
+            None => {}
         }
     }
 

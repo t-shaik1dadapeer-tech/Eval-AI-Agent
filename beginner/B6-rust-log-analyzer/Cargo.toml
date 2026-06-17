@@ -12,6 +12,10 @@ path = "src/lib.rs"
 name = "log-analyzer"
 path = "src/main.rs"
 
+[[bin]]
+name = "count-bench"
+path = "src/bin/count_bench.rs"
+
 [dependencies]
 
 [dev-dependencies]
