@@ -1,4 +1,6 @@
-from fastapi import APIRouter, status
+from uuid import UUID
+
+from fastapi import APIRouter, HTTPException, status
 
 from app.schemas.transaction import (
     BalanceResponse,
@@ -29,6 +31,21 @@ def create_transaction(payload: TransactionCreate) -> TransactionResponse:
 def get_transactions() -> list[TransactionResponse]:
     transactions = transaction_service.list_transactions()
     return [TransactionResponse.model_validate(item) for item in transactions]
+
+
+@router.get(
+    "/transactions/{transaction_id}",
+    response_model=TransactionResponse,
+    summary="Get a transaction by ID",
+)
+def get_transaction(transaction_id: UUID) -> TransactionResponse:
+    transaction = transaction_service.get_transaction_by_id(transaction_id)
+    if transaction is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Transaction not found",
+        )
+    return TransactionResponse.model_validate(transaction)
 
 
 @router.get(

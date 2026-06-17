@@ -27,6 +27,12 @@ class TransactionService:
     def list_transactions(self) -> list[Transaction]:
         return list(self._transactions)
 
+    def get_transaction_by_id(self, transaction_id: UUID) -> Transaction | None:
+        for transaction in self._transactions:
+            if transaction.id == transaction_id:
+                return transaction
+        return None
+
     def get_balance(self) -> tuple[float, int]:
         balance = 0.0
         for transaction in self._transactions:
