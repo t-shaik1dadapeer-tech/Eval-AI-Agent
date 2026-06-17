@@ -1,0 +1,8 @@
+project_name = "eval-service"
+environment  = "dev"
+region       = "us-east-1"
+
+tags = {
+  Owner = "devops-team"
+  Task  = "D1-terraform"
+}
