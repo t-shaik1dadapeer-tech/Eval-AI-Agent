@@ -56,3 +56,10 @@ fn mixed_log_file() {
     assert_eq!(counts.warn, 1);
     assert_eq!(counts.error, 1);
 }
+
+#[test]
+fn ignores_lines_with_level_prefix_substrings() {
+    let content = "INFORMATION updated\nWARNING sign\nERROR_HANDLER ready\n";
+    let counts = count_log_levels(content);
+    assert_eq!(counts.total(), 0);
+}

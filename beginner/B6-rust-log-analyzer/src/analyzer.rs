@@ -13,6 +13,13 @@ impl LogCounts {
     }
 }
 
+fn matches_log_level(line: &str, level: &str) -> bool {
+    match line.strip_prefix(level) {
+        None => false,
+        Some(rest) => rest.is_empty() || rest.starts_with(' '),
+    }
+}
+
 pub fn count_log_levels(content: &str) -> LogCounts {
     let mut counts = LogCounts::default();
 
@@ -22,11 +29,11 @@ pub fn count_log_levels(content: &str) -> LogCounts {
             continue;
         }
 
-        if trimmed.starts_with("INFO") {
+        if matches_log_level(trimmed, "INFO") {
             counts.info += 1;
-        } else if trimmed.starts_with("WARN") {
+        } else if matches_log_level(trimmed, "WARN") {
             counts.warn += 1;
-        } else if trimmed.starts_with("ERROR") {
+        } else if matches_log_level(trimmed, "ERROR") {
             counts.error += 1;
         }
     }
@@ -112,5 +119,23 @@ INFO Request processed
             format_summary(&counts),
             "## Log Summary\n\nINFO: 3\nWARN: 1\nERROR: 1"
         );
+    }
+
+    #[test]
+    fn does_not_match_longer_level_prefixes() {
+        let content = "INFORMATION log line\nWARNING deprecated\nERROR_HANDLER init\n";
+        let counts = count_log_levels(content);
+        assert_eq!(counts.info, 0);
+        assert_eq!(counts.warn, 0);
+        assert_eq!(counts.error, 0);
+    }
+
+    #[test]
+    fn matches_level_token_followed_by_space() {
+        let content = "INFO Application started\nWARN Rate limit\nERROR Connection failed\n";
+        let counts = count_log_levels(content);
+        assert_eq!(counts.info, 1);
+        assert_eq!(counts.warn, 1);
+        assert_eq!(counts.error, 1);
     }
 }
