@@ -7,7 +7,7 @@
 ## Command
 
 ```bash
-bash devops/D4-kubernetes-deployment/scripts/validate-manifests.sh
+bash devops/D4-kubernetes/scripts/validate-manifests.sh
 ```
 
 ## Output
@@ -39,7 +39,7 @@ VALIDATION_RESULT: PASS (exit 0)
 **Command:**
 
 ```bash
-kubectl apply --dry-run=client -f devops/D4-kubernetes-deployment/k8s/
+kubectl apply --dry-run=client -f devops/D4-kubernetes/k8s/
 ```
 
 **Status:** Not run — requires reachable cluster API (blocked: Docker/kind unavailable).
@@ -54,7 +54,7 @@ kubectl apply --dry-run=client -f devops/D4-kubernetes-deployment/k8s/
 
 ```bash
 kind create cluster --name eval-cluster \
-  --config devops/D4-kubernetes-deployment/kind-config.yaml
+  --config devops/D4-kubernetes/kind-config.yaml
 ```
 
 **Output:**
@@ -136,7 +136,7 @@ Content-Type: application/json
 **Command:**
 
 ```bash
-bash devops/D4-kubernetes-deployment/scripts/verify-health-local.sh
+bash devops/D4-kubernetes/scripts/verify-health-local.sh
 ```
 
 **Output:**

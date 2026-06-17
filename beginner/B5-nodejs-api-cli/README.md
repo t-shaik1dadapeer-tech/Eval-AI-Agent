@@ -14,7 +14,7 @@ Express-based REST API for in-memory transaction management and balance calculat
 ## Folder structure
 
 ```
-B5-nodejs-api/
+B5-nodejs-api-cli/
 ├── src/
 │   ├── app.js
 │   ├── server.js
@@ -39,7 +39,7 @@ B5-nodejs-api/
 ## Installation
 
 ```bash
-cd beginner/B5-nodejs-api
+cd beginner/B5-nodejs-api-cli
 npm install
 ```
 

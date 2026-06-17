@@ -10,7 +10,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Service selected** | **I4 FastAPI Currency Converter** (`intermediate/I4-polyglot-service-pair/fastapi-service/`) |
+| **Service selected** | **I4 FastAPI Currency Converter** (`intermediate/I4-fastapi-node-pair/fastapi-service/`) |
 | **Containerized application** | `POST /convert`, `GET /health`, `GET /docs` |
 | **Dockerfile** | `intermediate/I5-dockerize/Dockerfile` |
 | **Image name** | `eval-service` |
@@ -30,7 +30,7 @@
 
 **Health endpoint update:** `GET /health` response changed from `{"status":"ok"}` to `{"status":"UP"}` per I5 specification.
 
-```28:30:intermediate/I4-polyglot-service-pair/fastapi-service/app/main.py
+```28:30:intermediate/I4-fastapi-node-pair/fastapi-service/app/main.py
 @app.get("/health", tags=["health"])
 def health_check() -> dict[str, str]:
     return {"status": "UP"}
@@ -51,7 +51,7 @@ def health_check() -> dict[str, str]:
 | Health | `HEALTHCHECK` curl to `/health` | Container orchestration readiness |
 | CMD | `uvicorn app.main:app --host 0.0.0.0 --port 8000` | Production ASGI server |
 
-**Build context:** `intermediate/I4-polyglot-service-pair/fastapi-service/`  
+**Build context:** `intermediate/I4-fastapi-node-pair/fastapi-service/`  
 **Dockerfile path:** `intermediate/I5-dockerize/Dockerfile`
 
 ---
@@ -73,7 +73,7 @@ File: `intermediate/I5-dockerize/.dockerignore` (copied to build context for `do
 ## Command
 
 ```bash
-cd intermediate/I4-polyglot-service-pair/fastapi-service
+cd intermediate/I4-fastapi-node-pair/fastapi-service
 docker build -f ../../I5-dockerize/Dockerfile -t eval-service .
 ```
 
@@ -202,7 +202,7 @@ HTTP:200
 ## Unit tests (post health change)
 
 ```bash
-cd intermediate/I4-polyglot-service-pair/fastapi-service
+cd intermediate/I4-fastapi-node-pair/fastapi-service
 pytest -v
 ```
 
@@ -278,7 +278,7 @@ graph TD
 Run on a machine with Docker installed:
 
 ```bash
-cd intermediate/I4-polyglot-service-pair/fastapi-service
+cd intermediate/I4-fastapi-node-pair/fastapi-service
 docker build -f ../../I5-dockerize/Dockerfile -t eval-service .
 docker images eval-service --format "{{.Repository}}:{{.Tag}} {{.Size}}"
 docker run -d -p 8000:8000 --name eval-service eval-service

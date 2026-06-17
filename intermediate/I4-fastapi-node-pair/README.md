@@ -14,7 +14,7 @@ FastAPI currency conversion service + Node.js CLI client.
 ## Folder structure
 
 ```
-I4-polyglot-service-pair/
+I4-fastapi-node-pair/
 ├── fastapi-service/     # Currency conversion API
 ├── node-client/         # CLI HTTP client
 ├── docs/REPORT.md       # Verification report

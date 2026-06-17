@@ -69,12 +69,12 @@ bash scripts/ci-verify.sh
 | Suite | Path | Tests | Result |
 |-------|------|------:|--------|
 | Python | `beginner/B4-fastapi-service` | 8 | PASSED |
-| Python | `intermediate/I4-polyglot-service-pair/fastapi-service` | 4 | PASSED |
+| Python | `intermediate/I4-fastapi-node-pair/fastapi-service` | 4 | PASSED |
 | Python | `advanced/A3-polyglot-system/fastapi-service` | 3 | PASSED |
-| Rust | `beginner/B6-rust-log-analyzer` | 17 | PASSED |
+| Rust | `beginner/B6-rust-cli` | 17 | PASSED |
 | Rust | `advanced/A3-polyglot-system/rust-engine` | 3 | PASSED |
-| Node | `beginner/B5-nodejs-api` | 5 | PASSED |
-| Node | `intermediate/I4-polyglot-service-pair/node-client` | 5 | PASSED |
+| Node | `beginner/B5-nodejs-api-cli` | 5 | PASSED |
+| Node | `intermediate/I4-fastapi-node-pair/node-client` | 5 | PASSED |
 | Node | `advanced/A3-polyglot-system/node-worker` | 2 | PASSED |
 | **Total** | | **47** | **ALL PASSED** |
 

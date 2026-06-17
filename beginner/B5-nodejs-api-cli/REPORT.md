@@ -1,7 +1,7 @@
 # B5 — Node.js Transaction API Report
 
 **Repository:** `Evil-Ai`  
-**Task location:** `beginner/B5-nodejs-api/`  
+**Task location:** `beginner/B5-nodejs-api-cli/`  
 **Report date:** 2026-06-17
 
 ---
@@ -56,7 +56,7 @@ graph TD
 ## Folder Structure
 
 ```
-beginner/B5-nodejs-api/
+beginner/B5-nodejs-api-cli/
 ├── src/
 │   ├── app.js
 │   ├── server.js
@@ -126,7 +126,7 @@ beginner/B5-nodejs-api/
 
 **Evidence — amount validation:**
 
-```22:24:beginner/B5-nodejs-api/src/middleware/validateTransaction.js
+```22:24:beginner/B5-nodejs-api-cli/src/middleware/validateTransaction.js
   } else if (amount <= 0) {
     errors.push({ field: 'amount', message: 'amount must be greater than 0' });
   }
@@ -134,7 +134,7 @@ beginner/B5-nodejs-api/
 
 **Evidence — balance calculation:**
 
-```26:34:beginner/B5-nodejs-api/src/services/transactionService.js
+```26:34:beginner/B5-nodejs-api-cli/src/services/transactionService.js
   getBalance() {
     const balance = this._transactions.reduce((total, transaction) => {
       if (transaction.type === TRANSACTION_TYPES.CREDIT) {
@@ -151,7 +151,7 @@ beginner/B5-nodejs-api/
 ### Commands executed
 
 ```bash
-cd beginner/B5-nodejs-api
+cd beginner/B5-nodejs-api-cli
 npm install
 npm test
 ```

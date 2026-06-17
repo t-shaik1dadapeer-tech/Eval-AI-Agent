@@ -1,6 +1,6 @@
 # I5 — Dockerize Currency Converter Service
 
-Containerizes the **I4 FastAPI Currency Converter** (`intermediate/I4-polyglot-service-pair/fastapi-service/`).
+Containerizes the **I4 FastAPI Currency Converter** (`intermediate/I4-fastapi-node-pair/fastapi-service/`).
 
 ## Overview
 
@@ -14,14 +14,14 @@ Containerizes the **I4 FastAPI Currency Converter** (`intermediate/I4-polyglot-s
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/) installed and running
-- Source service at `../I4-polyglot-service-pair/fastapi-service/`
+- Source service at `../I4-fastapi-node-pair/fastapi-service/`
 
 ## Build
 
 Build context is the FastAPI service directory; Dockerfile lives in this folder.
 
 ```bash
-cd ../I4-polyglot-service-pair/fastapi-service
+cd ../I4-fastapi-node-pair/fastapi-service
 docker build -f ../../I5-dockerize/Dockerfile -t eval-service .
 ```
 

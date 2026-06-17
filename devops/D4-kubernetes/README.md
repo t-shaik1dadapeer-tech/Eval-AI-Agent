@@ -2,7 +2,7 @@
 
 Evaluation task **D4** deploys the **B4 FastAPI transaction service** to Kubernetes using plain manifests (no Helm). Resources live in the `eval-ai-agent` namespace and include Namespace, ConfigMap, Deployment (2 replicas), Service (`ClusterIP`), and optional Ingress.
 
-**Manifests:** `devops/D4-kubernetes-deployment/k8s/`  
+**Manifests:** `devops/D4-kubernetes/k8s/`  
 **Full deploy script:** `scripts/deploy-and-verify.sh` (requires Docker + kind + kubectl)
 
 # Prerequisites
@@ -26,7 +26,7 @@ curl -LO https://github.com/yannh/kubeconform/releases/download/v0.7.0/kubeconfo
 # Validate Manifests
 
 ```bash
-bash devops/D4-kubernetes-deployment/scripts/validate-manifests.sh
+bash devops/D4-kubernetes/scripts/validate-manifests.sh
 ```
 
 Uses **kubeconform** for schema validation. When a cluster context is reachable, also runs `kubectl apply --dry-run=client`.
@@ -35,7 +35,7 @@ Uses **kubeconform** for schema validation. When a cluster context is reachable,
 
 ```bash
 kind create cluster --name eval-cluster \
-  --config devops/D4-kubernetes-deployment/kind-config.yaml
+  --config devops/D4-kubernetes/kind-config.yaml
 ```
 
 # Build and Load Image
@@ -48,13 +48,13 @@ kind load docker-image b4-transaction-api:d4 --name eval-cluster
 # Deploy
 
 ```bash
-kubectl apply -f devops/D4-kubernetes-deployment/k8s/
+kubectl apply -f devops/D4-kubernetes/k8s/
 ```
 
 Or run the full automated flow:
 
 ```bash
-bash devops/D4-kubernetes-deployment/scripts/deploy-and-verify.sh
+bash devops/D4-kubernetes/scripts/deploy-and-verify.sh
 ```
 
 # Verify
@@ -88,13 +88,13 @@ Expected response (ConfigMap sets `ENVIRONMENT=production`):
 **Fallback without cluster** (ConfigMap env simulation):
 
 ```bash
-bash devops/D4-kubernetes-deployment/scripts/verify-health-local.sh
+bash devops/D4-kubernetes/scripts/verify-health-local.sh
 ```
 
 # Cleanup
 
 ```bash
-kubectl delete -f devops/D4-kubernetes-deployment/k8s/
+kubectl delete -f devops/D4-kubernetes/k8s/
 kind delete cluster --name eval-cluster
 ```
 

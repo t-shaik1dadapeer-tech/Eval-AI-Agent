@@ -15,7 +15,7 @@ Profiled and optimized **`count_log_levels()`** in the B6 Rust log analyzer. Bas
 
 | Field | Value |
 |-------|-------|
-| **Component** | `beginner/B6-rust-log-analyzer` — `count_log_levels()` |
+| **Component** | `beginner/B6-rust-cli` — `count_log_levels()` |
 | **File** | `src/analyzer.rs` |
 | **Why selected** | CPU-bound hot loop over every log line; easy to benchmark in isolation; clear per-line overhead |
 
@@ -42,7 +42,7 @@ Profiled and optimized **`count_log_levels()`** in the B6 Rust log analyzer. Bas
 ## Commands
 
 ```bash
-cd beginner/B6-rust-log-analyzer
+cd beginner/B6-rust-cli
 CARGO_TARGET_DIR=./target cargo build --release --bin count-bench
 BENCH_LINES=1000000 BENCH_RUNS=5 ./target/release/count-bench
 ```
@@ -102,7 +102,7 @@ At **1M lines**, micro-per-line overhead accumulates:
 
 | Field | Value |
 |-------|-------|
-| **File** | `beginner/B6-rust-log-analyzer/src/analyzer.rs` |
+| **File** | `beginner/B6-rust-cli/src/analyzer.rs` |
 | **Change** | O(1) whitespace check before trim; first-byte dispatch before prefix match |
 | **Rationale** | Target measured hot path without API or architecture changes |
 
@@ -147,7 +147,7 @@ Same methodology, same machine, same `BENCH_LINES=1000000`, 5 runs.
 ## B6 unit + integration tests
 
 ```bash
-cd beginner/B6-rust-log-analyzer && cargo test
+cd beginner/B6-rust-cli && cargo test
 ```
 
 **Result:** 17/17 passed (9 lib + 8 integration)
@@ -184,7 +184,7 @@ Matches expected 70/20/10 synthetic mix.
 ## Reproduce benchmark
 
 ```bash
-cd beginner/B6-rust-log-analyzer
+cd beginner/B6-rust-cli
 cargo build --release --bin count-bench
 BENCH_LINES=1000000 BENCH_RUNS=5 ./target/release/count-bench
 ```

@@ -24,18 +24,18 @@ mise current
 
 PYTHON_SERVICES=(
   beginner/B4-fastapi-service
-  intermediate/I4-polyglot-service-pair/fastapi-service
+  intermediate/I4-fastapi-node-pair/fastapi-service
   advanced/A3-polyglot-system/fastapi-service
 )
 
 NODE_SERVICES=(
-  beginner/B5-nodejs-api
-  intermediate/I4-polyglot-service-pair/node-client
+  beginner/B5-nodejs-api-cli
+  intermediate/I4-fastapi-node-pair/node-client
   advanced/A3-polyglot-system/node-worker
 )
 
 RUST_SERVICES=(
-  beginner/B6-rust-log-analyzer
+  beginner/B6-rust-cli
   advanced/A3-polyglot-system/rust-engine
 )
 

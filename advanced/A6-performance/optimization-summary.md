@@ -6,9 +6,9 @@
 
 | File | Change |
 |------|--------|
-| `beginner/B6-rust-log-analyzer/src/analyzer.rs` | Optimized `count_log_levels` hot loop |
-| `beginner/B6-rust-log-analyzer/src/bin/count_bench.rs` | **Added** — repeatable benchmark harness |
-| `beginner/B6-rust-log-analyzer/Cargo.toml` | Registered `count-bench` binary |
+| `beginner/B6-rust-cli/src/analyzer.rs` | Optimized `count_log_levels` hot loop |
+| `beginner/B6-rust-cli/src/bin/count_bench.rs` | **Added** — repeatable benchmark harness |
+| `beginner/B6-rust-cli/Cargo.toml` | Registered `count-bench` binary |
 
 **Lines changed in `analyzer.rs`:** ~45 lines (refactor of loop + 3 helper functions)
 
@@ -67,7 +67,7 @@ match classify_log_level(normalized) { ... }
 ## Rollback
 
 ```bash
-git checkout HEAD~1 -- beginner/B6-rust-log-analyzer/src/analyzer.rs
+git checkout HEAD~1 -- beginner/B6-rust-cli/src/analyzer.rs
 ```
 
 Or revert commit containing A6 optimization.

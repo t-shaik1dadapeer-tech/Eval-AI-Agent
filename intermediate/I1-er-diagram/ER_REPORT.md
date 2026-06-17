@@ -59,9 +59,9 @@ The following application-level types were found but **excluded** from the ER mo
 |------|-------------|--------------|
 | `Transaction` (dataclass) | `beginner/B4-fastapi-service/app/models/transaction.py` | Python `@dataclass` — no ORM/table annotation |
 | `TransactionCreate` / `TransactionResponse` / `BalanceResponse` | `beginner/B4-fastapi-service/app/schemas/transaction.py` | Pydantic API DTOs — not persistence models |
-| In-memory transaction object | `beginner/B5-nodejs-api/src/services/transactionService.js` | Plain JS object in `this._transactions[]` array |
-| `TRANSACTION_TYPES` constants | `beginner/B5-nodejs-api/src/models/transactionTypes.js` | Enum constants only — not an entity |
-| `LogCounts` | `beginner/B6-rust-log-analyzer/src/analyzer.rs` | Runtime struct for log counting — no persistence |
+| In-memory transaction object | `beginner/B5-nodejs-api-cli/src/services/transactionService.js` | Plain JS object in `this._transactions[]` array |
+| `TRANSACTION_TYPES` constants | `beginner/B5-nodejs-api-cli/src/models/transactionTypes.js` | Enum constants only — not an entity |
+| `LogCounts` | `beginner/B6-rust-cli/src/analyzer.rs` | Runtime struct for log counting — no persistence |
 
 ---
 
@@ -139,9 +139,9 @@ class Transaction:
 
 ## 2. B5 Node.js — in-memory array (not a database)
 
-**Source:** `beginner/B5-nodejs-api/src/services/transactionService.js`
+**Source:** `beginner/B5-nodejs-api-cli/src/services/transactionService.js`
 
-```4:18:beginner/B5-nodejs-api/src/services/transactionService.js
+```4:18:beginner/B5-nodejs-api-cli/src/services/transactionService.js
 class TransactionService {
   constructor() {
     this._transactions = [];
@@ -163,7 +163,7 @@ class TransactionService {
 
 **Package metadata:**
 
-```4:4:beginner/B5-nodejs-api/package.json
+```4:4:beginner/B5-nodejs-api-cli/package.json
   "description": "In-memory transaction management REST API",
 ```
 
@@ -171,7 +171,7 @@ class TransactionService {
 
 ## 3. B6 Rust CLI — no persistence layer
 
-**Source:** `beginner/B6-rust-log-analyzer/src/analyzer.rs`
+**Source:** `beginner/B6-rust-cli/src/analyzer.rs`
 
 B6 reads log files from disk and counts line prefixes. It does not define entities, tables, or a data store. No database crate (e.g. `sqlx`, `diesel`) appears in `Cargo.toml`.
 
@@ -194,7 +194,7 @@ B6 reads log files from disk and counts line prefixes. It does not define entiti
 
 Prior B1 artifact inventory independently reported zero repositories/DAOs and zero `@Entity` mappings:
 
-```14:16:docs/beginner/B1-repo-artifact-inventory/REPORT.md
+```14:16:beginner/B1-repo-artifact-inventory/REPORT.md
 A complete recursive scan of the `Evil-Ai` repository found **no application source code** and **zero artifacts** in any of the requested software categories (classes, interfaces, controllers, services, models/entities, repositories/DAOs, jobs, consumers/listeners, configuration classes, utilities, middleware/filters, or validators).
 ```
 
@@ -260,16 +260,16 @@ Per task rules, inventing placeholder entities (e.g. `TRANSACTION` table) would 
 
 **B4 FastAPI (13):** `beginner/B4-fastapi-service/app/**/*.py`, `tests/**/*.py`
 
-**B5 Node.js (11):** `beginner/B5-nodejs-api/src/**/*.js`, `tests/**/*.js`, `package.json`
+**B5 Node.js (11):** `beginner/B5-nodejs-api-cli/src/**/*.js`, `tests/**/*.js`, `package.json`
 
-**B6 Rust (6):** `beginner/B6-rust-log-analyzer/src/**/*.rs`, `tests/**/*.rs`, `Cargo.toml`
+**B6 Rust (6):** `beginner/B6-rust-cli/src/**/*.rs`, `tests/**/*.rs`, `Cargo.toml`
 
 ### Documentation reviewed (context only — not ER evidence)
 
-- `docs/beginner/B1-repo-artifact-inventory/REPORT.md`
-- `docs/beginner/B4-fastapi-service/REPORT.md`
-- `docs/beginner/B5-nodejs-api/REPORT.md`
-- `docs/beginner/B6-rust-log-analyzer/REPORT.md`
+- `beginner/B1-repo-artifact-inventory/REPORT.md`
+- `beginner/B4-fastapi-service/REPORT.md`
+- `beginner/B5-nodejs-api-cli/REPORT.md`
+- `beginner/B6-rust-cli/REPORT.md`
 
 ### Scaffold placeholders (no schema)
 

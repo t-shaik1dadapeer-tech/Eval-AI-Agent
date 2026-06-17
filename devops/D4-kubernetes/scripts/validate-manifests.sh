@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-K8S_DIR="${ROOT}/devops/D4-kubernetes-deployment/k8s"
+K8S_DIR="${ROOT}/devops/D4-kubernetes/k8s"
 KUBECTL="${KUBECTL:-${ROOT}/.tools/kubectl}"
 KUBECONFORM="${KUBECONFORM:-${ROOT}/.tools/kubeconform}"
 

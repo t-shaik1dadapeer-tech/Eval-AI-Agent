@@ -2,7 +2,7 @@
 
 **Repository:** `Evil-Ai` (Eval AI Agent scaffold)  
 **Scan date:** 2026-06-17  
-**Task output:** `docs/beginner/B3-test-discovery/`  
+**Task output:** `beginner/B3-test-discovery/`  
 **Working directory:** `/Users/shaikdadapeer/Evil-Ai`
 
 ---
@@ -47,7 +47,7 @@ A full recursive scan of the repository found **no test framework**, **no build 
 
 Prior B1 scan documented no test artifacts:
 
-```120:120:docs/beginner/B1-repo-artifact-inventory/REPORT.md
+```120:120:beginner/B1-repo-artifact-inventory/REPORT.md
 5. **No tests.** No test directories or test source files detected.
 ```
 

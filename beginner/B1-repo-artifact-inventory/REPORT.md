@@ -3,7 +3,7 @@
 **Repository:** `Evil-Ai` (Eval AI Agent scaffold)  
 **Scan date:** 2026-06-17  
 **Scanner scope:** Full recursive scan from repository root, excluding `.git/` internals  
-**Task output:** `docs/beginner/B1-repo-artifact-inventory/`
+**Task output:** `beginner/B1-repo-artifact-inventory/`
 
 ---
 
@@ -103,7 +103,7 @@ No artifacts matched the requested software categories. The `inventory.csv` file
 
 1. **Scaffold-only repository.** All exercise task directories exist but contain only `.gitkeep` placeholders — no implementations yet.
 
-2. **B1 output location mismatch.** Task deliverables are written to `docs/beginner/B1-repo-artifact-inventory/` per requirements. The exercise slot folder `beginner/B1-repo-artifact-inventory/` still contains only `.gitkeep`.
+2. **B1 output location mismatch.** Task deliverables are written to `beginner/B1-repo-artifact-inventory/` per requirements. The exercise slot folder `beginner/B1-repo-artifact-inventory/` still contains only `.gitkeep`.
 
 3. **Pre-provisioned ignore rules.** `.gitignore` anticipates future polyglot development (Python, Node, Java, Go, Rust) but no corresponding source trees exist yet.
 

@@ -23,7 +23,7 @@
 
 | Field | Value |
 |-------|-------|
-| **File path** | `beginner/B6-rust-log-analyzer/src/analyzer.rs` |
+| **File path** | `beginner/B6-rust-cli/src/analyzer.rs` |
 | **Problem** | `trimmed.starts_with("INFO")` matches `INFORMATION`, inflating INFO count |
 | **Estimated risk** | **Low** |
 | **Suggested fix** | Match level token only when followed by space or EOL |
@@ -42,7 +42,7 @@
 
 | Field | Value |
 |-------|-------|
-| **File path** | `beginner/B5-nodejs-api/src/middleware/validateTransaction.js` |
+| **File path** | `beginner/B5-nodejs-api-cli/src/middleware/validateTransaction.js` |
 | **Problem** | `amount: "100"` rejected with 400; some APIs coerce numeric strings |
 | **Estimated risk** | **Medium** (behavior change for clients) |
 | **Suggested fix** | Coerce parseable numeric strings before validation |
@@ -54,7 +54,7 @@
 
 | Field | Value |
 |-------|-------|
-| **File path** | `beginner/B6-rust-log-analyzer/src/analyzer.rs` |
+| **File path** | `beginner/B6-rust-cli/src/analyzer.rs` |
 | **Existing behavior** | Any line starting with substring `INFO`, `WARN`, or `ERROR` is counted |
 | **New behavior** | Line must start with exact level token followed by nothing or a single-space delimiter |
 | **Why low risk** | Single helper function; existing valid logs (`INFO message`) unchanged; only incorrect matches removed |
@@ -84,8 +84,8 @@ fn matches_log_level(line: &str, level: &str) -> bool {
 
 | Path | Purpose | Reason modified |
 |------|---------|-----------------|
-| `beginner/B6-rust-log-analyzer/src/analyzer.rs` | Log counting logic | Add `matches_log_level`; fix false-positive prefix matching |
-| `beginner/B6-rust-log-analyzer/tests/log_analyzer_test.rs` | Integration tests | Assert substring lines are not counted |
+| `beginner/B6-rust-cli/src/analyzer.rs` | Log counting logic | Add `matches_log_level`; fix false-positive prefix matching |
+| `beginner/B6-rust-cli/tests/log_analyzer_test.rs` | Integration tests | Assert substring lines are not counted |
 
 ---
 
@@ -105,7 +105,7 @@ fn matches_log_level(line: &str, level: &str) -> bool {
 ## Command executed
 
 ```bash
-cd beginner/B6-rust-log-analyzer
+cd beginner/B6-rust-cli
 cargo build
 cargo test
 cargo run -- logs/sample.log

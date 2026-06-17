@@ -9,8 +9,8 @@
 
 | File | Change type |
 |------|-------------|
-| `beginner/B6-rust-log-analyzer/src/analyzer.rs` | Modified |
-| `beginner/B6-rust-log-analyzer/tests/log_analyzer_test.rs` | Modified |
+| `beginner/B6-rust-cli/src/analyzer.rs` | Modified |
+| `beginner/B6-rust-cli/tests/log_analyzer_test.rs` | Modified |
 
 ---
 
@@ -31,8 +31,8 @@
 ## Statistics
 
 ```
- beginner/B6-rust-log-analyzer/src/analyzer.rs      | 31 +++++++++++++++++++---
- beginner/B6-rust-log-analyzer/tests/log_analyzer_test.rs | 7 +++++
+ beginner/B6-rust-cli/src/analyzer.rs      | 31 +++++++++++++++++++---
+ beginner/B6-rust-cli/tests/log_analyzer_test.rs | 7 +++++
  2 files changed, 35 insertions(+), 3 deletions(-)
 ```
 

@@ -75,8 +75,8 @@ No `pom.xml`, `build.gradle`, or monorepo build tool exists. Each task folder is
 | Field | Detail |
 |-------|--------|
 | **Description** | Node packages define `test` but no `lint` script |
-| **Evidence** | `beginner/B5-nodejs-api/package.json` scripts: `"start"`, `"test"` only; no `eslint` devDependency |
-| **File path** | `beginner/B5-nodejs-api/package.json`, `advanced/A3-polyglot-system/node-worker/package.json` |
+| **Evidence** | `beginner/B5-nodejs-api-cli/package.json` scripts: `"start"`, `"test"` only; no `eslint` devDependency |
+| **File path** | `beginner/B5-nodejs-api-cli/package.json`, `advanced/A3-polyglot-system/node-worker/package.json` |
 | **Impact** | No JS static analysis |
 | **Risk** | Low |
 
@@ -85,8 +85,8 @@ No `pom.xml`, `build.gradle`, or monorepo build tool exists. Each task folder is
 | Field | Detail |
 |-------|--------|
 | **Description** | B4/B5 return `{"status":"ok"}`; I4/A3/I5 spec use `{"status":"UP"}` |
-| **Evidence** | `beginner/B4-fastapi-service/app/main.py` line 30: `return {"status": "ok"}`; `intermediate/I4-polyglot-service-pair/fastapi-service/app/main.py`: `{"status": "UP"}` |
-| **File path** | `beginner/B4-fastapi-service/app/main.py`, `beginner/B5-nodejs-api/src/app.js` |
+| **Evidence** | `beginner/B4-fastapi-service/app/main.py` line 30: `return {"status": "ok"}`; `intermediate/I4-fastapi-node-pair/fastapi-service/app/main.py`: `{"status": "UP"}` |
+| **File path** | `beginner/B4-fastapi-service/app/main.py`, `beginner/B5-nodejs-api-cli/src/app.js` |
 | **Impact** | Inconsistent ops/monitoring contracts across services |
 | **Risk** | Low — functional but confusing for container health checks |
 

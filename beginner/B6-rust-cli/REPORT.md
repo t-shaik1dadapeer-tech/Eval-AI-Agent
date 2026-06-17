@@ -1,7 +1,7 @@
 # B6 — Rust Log Analyzer CLI Report
 
 **Repository:** `Evil-Ai`  
-**Task location:** `beginner/B6-rust-log-analyzer/`  
+**Task location:** `beginner/B6-rust-cli/`  
 **Report date:** 2026-06-17  
 **Rust toolchain:** cargo 1.96.0
 
@@ -62,7 +62,7 @@ graph TD
 ## Cargo Project Structure
 
 ```
-beginner/B6-rust-log-analyzer/
+beginner/B6-rust-cli/
 ├── Cargo.toml
 ├── src/
 │   ├── main.rs
@@ -113,7 +113,7 @@ ERROR: <count>
 
 **Evidence — summary formatting:**
 
-```39:45:beginner/B6-rust-log-analyzer/src/analyzer.rs
+```39:45:beginner/B6-rust-cli/src/analyzer.rs
 pub fn format_summary(counts: &LogCounts) -> String {
     format!(
         "## Log Summary\n\nINFO: {}\nWARN: {}\nERROR: {}",
@@ -137,7 +137,7 @@ Custom `LogAnalyzerError` enum implements `Display` and `std::error::Error`:
 
 **Evidence — file not found:**
 
-```41:46:beginner/B6-rust-log-analyzer/src/errors.rs
+```41:46:beginner/B6-rust-cli/src/errors.rs
 pub fn read_log_file(path: &Path) -> Result<String, LogAnalyzerError> {
     if !path.exists() {
         return Err(LogAnalyzerError::FileNotFound(
@@ -148,7 +148,7 @@ pub fn read_log_file(path: &Path) -> Result<String, LogAnalyzerError> {
 
 **Evidence — non-zero exit on error:**
 
-```11:15:beginner/B6-rust-log-analyzer/src/main.rs
+```11:15:beginner/B6-rust-cli/src/main.rs
 fn main() {
     if let Err(error) = run() {
         eprintln!("{error}");

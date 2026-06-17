@@ -79,7 +79,7 @@ Pinned in [`mise.toml`](../../../mise.toml) (repo root):
 | **ruff** | D3 lint for B4 | `d3-ci.yml`, `pyproject.toml` |
 | **Terraform 1.9.8** | D1 infrastructure track | `devops/D1-terraform` reports |
 | **Docker** | D2 compose, D3 image build, D4 kind | Dockerfiles, D2/D3/D4 READMEs |
-| **kind + kubectl** | D4 Kubernetes deploy | `D4-kubernetes-deployment` |
+| **kind + kubectl** | D4 Kubernetes deploy | `D4-kubernetes` |
 | **mise** | Not previously documented | Introduced by D5 to pin all runtimes |
 | **make** | Not previously documented | Introduced by D5 as single entrypoint |
 | **System Python/Node in PATH** | Assumed pre-installed | Implicit before D5 — replaced by mise |

@@ -14,7 +14,7 @@ Command-line tool that reads a log file and counts `INFO`, `WARN`, and `ERROR` e
 ## Folder structure
 
 ```
-B6-rust-log-analyzer/
+B6-rust-cli/
 ├── src/
 │   ├── main.rs        # CLI entry point
 │   ├── lib.rs         # Library root
@@ -42,7 +42,7 @@ cargo --version
 ## Build
 
 ```bash
-cd beginner/B6-rust-log-analyzer
+cd beginner/B6-rust-cli
 cargo build
 ```
 

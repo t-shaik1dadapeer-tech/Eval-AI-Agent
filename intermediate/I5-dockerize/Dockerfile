@@ -1,5 +1,5 @@
 # I4 Currency Converter API — production image
-# Build context: ../I4-polyglot-service-pair/fastapi-service
+# Build context: ../I4-fastapi-node-pair/fastapi-service
 #   docker build -f ../../I5-dockerize/Dockerfile -t eval-service .
 
 FROM python:3.11-slim

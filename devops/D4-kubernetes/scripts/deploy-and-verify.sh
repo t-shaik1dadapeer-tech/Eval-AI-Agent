@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-D4="${ROOT}/devops/D4-kubernetes-deployment"
+D4="${ROOT}/devops/D4-kubernetes"
 K8S_DIR="${D4}/k8s"
 NS="eval-ai-agent"
 CLUSTER="eval-cluster"

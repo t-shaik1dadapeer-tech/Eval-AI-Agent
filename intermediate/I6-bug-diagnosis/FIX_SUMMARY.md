@@ -23,9 +23,9 @@ Preserves I3 false-positive protection (`INFORMATION`, `ERROR_HANDLER` still rej
 
 | Path | Reason modified |
 |------|-----------------|
-| `beginner/B6-rust-log-analyzer/src/analyzer.rs` | Fix `matches_log_level`; add unit test for colon format |
-| `beginner/B6-rust-log-analyzer/tests/log_analyzer_test.rs` | Integration test for colon-delimited lines |
-| `beginner/B6-rust-log-analyzer/logs/colon-format.log` | Reproduction fixture (colon format) |
+| `beginner/B6-rust-cli/src/analyzer.rs` | Fix `matches_log_level`; add unit test for colon format |
+| `beginner/B6-rust-cli/tests/log_analyzer_test.rs` | Integration test for colon-delimited lines |
+| `beginner/B6-rust-cli/logs/colon-format.log` | Reproduction fixture (colon format) |
 
 ---
 
@@ -45,7 +45,7 @@ Preserves I3 false-positive protection (`INFORMATION`, `ERROR_HANDLER` still rej
 ## Command
 
 ```bash
-cd beginner/B6-rust-log-analyzer
+cd beginner/B6-rust-cli
 cargo test
 cargo run -- logs/colon-format.log
 cargo run -- logs/sample.log

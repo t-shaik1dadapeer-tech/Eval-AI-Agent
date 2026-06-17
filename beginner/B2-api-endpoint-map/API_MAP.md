@@ -3,7 +3,7 @@
 **Repository:** `Evil-Ai` (Eval AI Agent scaffold)  
 **Scan date:** 2026-06-17  
 **Scanner scope:** Full recursive scan from repository root, excluding `.git/` internals  
-**Task output:** `docs/beginner/B2-api-endpoint-map/`
+**Task output:** `beginner/B2-api-endpoint-map/`
 
 ---
 
@@ -55,7 +55,7 @@ The root README confirms this is an exercise scaffold with implementations defer
 
 B1 inventory (prior task) independently confirmed **0 source files** and **0 controllers/services**:
 
-```14:16:docs/beginner/B1-repo-artifact-inventory/REPORT.md
+```14:16:beginner/B1-repo-artifact-inventory/REPORT.md
 A complete recursive scan of the `Evil-Ai` repository found **no application source code** and **zero artifacts** in any of the requested software categories (classes, interfaces, controllers, services, models/entities, repositories/DAOs, jobs, consumers/listeners, configuration classes, utilities, middleware/filters, or validators).
 ```
 
@@ -187,7 +187,7 @@ sequenceDiagram
 
 1. **Scaffold-only — no HTTP surface.** The repository cannot accept or route HTTP traffic in its current state.
 
-2. **B2 slot is empty.** `beginner/B2-api-endpoint-map/` contains only `.gitkeep`; deliverables live under `docs/beginner/B2-api-endpoint-map/` per task spec.
+2. **B2 slot is empty.** `beginner/B2-api-endpoint-map/` contains only `.gitkeep`; deliverables live under `beginner/B2-api-endpoint-map/` per task spec.
 
 3. **`.gitignore` anticipates future APIs** but none are implemented:
 
@@ -237,6 +237,6 @@ sequenceDiagram
 All **29** repository files were included in scope. None contain route definitions:
 
 - `.gitignore`, `README.md`
-- `docs/beginner/B1-repo-artifact-inventory/REPORT.md`, `inventory.csv`
+- `beginner/B1-repo-artifact-inventory/REPORT.md`, `inventory.csv`
 - `docs/.gitkeep`
 - 25× `**/.gitkeep` across `beginner/`, `intermediate/`, `advanced/`, `devops/`

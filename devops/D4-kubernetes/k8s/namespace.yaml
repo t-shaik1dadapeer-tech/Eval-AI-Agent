@@ -4,4 +4,4 @@ metadata:
   name: eval-ai-agent
   labels:
     app.kubernetes.io/part-of: evil-ai-eval
-    app.kubernetes.io/managed-by: d4-kubernetes-deployment
+    app.kubernetes.io/managed-by: d4-kubernetes

@@ -1,7 +1,7 @@
 # I6 — Root Cause Analysis
 
 **Bug:** Colon-delimited log lines not counted  
-**Component:** `beginner/B6-rust-log-analyzer`  
+**Component:** `beginner/B6-rust-cli`  
 **Branch:** `bugfix/I6-diagnosis-fix`
 
 ---
@@ -10,13 +10,13 @@
 
 | Field | Value |
 |-------|-------|
-| **File path** | `beginner/B6-rust-log-analyzer/src/analyzer.rs` |
+| **File path** | `beginner/B6-rust-cli/src/analyzer.rs` |
 | **Function** | `matches_log_level` |
 | **Called from** | `count_log_levels` |
 
 ## Responsible code (before fix)
 
-```16:21:beginner/B6-rust-log-analyzer/src/analyzer.rs
+```16:21:beginner/B6-rust-cli/src/analyzer.rs
 fn matches_log_level(line: &str, level: &str) -> bool {
     match line.strip_prefix(level) {
         None => false,

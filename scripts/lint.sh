@@ -16,7 +16,7 @@ done
 
 echo ""
 echo "==> Rust lint (fmt + clippy)"
-for service in beginner/B6-rust-log-analyzer advanced/A3-polyglot-system/rust-engine; do
+for service in beginner/B6-rust-cli advanced/A3-polyglot-system/rust-engine; do
   echo "--- ${service} ---"
   (cd "${service}" && mise exec -- cargo fmt --check && mise exec -- cargo clippy -q -- -D warnings)
 done

@@ -15,7 +15,7 @@ jobs:
       matrix:
         service:
           - beginner/B4-fastapi-service
-          - intermediate/I4-polyglot-service-pair/fastapi-service
+          - intermediate/I4-fastapi-node-pair/fastapi-service
           - advanced/A3-polyglot-system/fastapi-service
     steps:
       - uses: actions/checkout@v4
@@ -40,9 +40,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - service: beginner/B5-nodejs-api
+          - service: beginner/B5-nodejs-api-cli
             needs_rust: false
-          - service: intermediate/I4-polyglot-service-pair/node-client
+          - service: intermediate/I4-fastapi-node-pair/node-client
             needs_rust: false
           - service: advanced/A3-polyglot-system/node-worker
             needs_rust: true
@@ -81,7 +81,7 @@ jobs:
       fail-fast: false
       matrix:
         service:
-          - beginner/B6-rust-log-analyzer
+          - beginner/B6-rust-cli
           - advanced/A3-polyglot-system/rust-engine
     steps:
       - uses: actions/checkout@v4

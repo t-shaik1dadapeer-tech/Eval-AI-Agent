@@ -35,7 +35,7 @@
 2. Run the analyzer:
 
    ```bash
-   cd beginner/B6-rust-log-analyzer
+   cd beginner/B6-rust-cli
    cargo run -- /tmp/colon-format.log
    ```
 

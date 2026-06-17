@@ -4,6 +4,8 @@ Hands-on exercises for evaluating AI coding agents across beginner, intermediate
 
 Each subfolder is a self-contained task. Put all deliverables (reports, code, configs) directly in that task folder — not under a separate `docs/` mirror. Then commit and push when ready.
 
+The top-level `docs/` directory is reserved and currently empty (placeholder only).
+
 ## Fresh clone setup
 
 From a clean machine with `git`, `curl`, and `make`:

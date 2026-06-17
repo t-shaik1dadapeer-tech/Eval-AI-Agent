@@ -1,6 +1,6 @@
 # A6 — Profiling Analysis
 
-**Component:** `beginner/B6-rust-log-analyzer` — `count_log_levels()`  
+**Component:** `beginner/B6-rust-cli` — `count_log_levels()`  
 **Date:** 2026-06-17
 
 ---
@@ -13,7 +13,7 @@
 | 2 | macOS `sample` | CPU stack sampling during long benchmark run |
 | 3 | Code inspection | Identify per-line work in hot loop |
 
-**Benchmark binary:** `beginner/B6-rust-log-analyzer/src/bin/count_bench.rs`  
+**Benchmark binary:** `beginner/B6-rust-cli/src/bin/count_bench.rs`  
 **Build:** `cargo build --release --bin count-bench`  
 **Run:** `BENCH_LINES=1000000 BENCH_RUNS=5 ./target/release/count-bench`
 

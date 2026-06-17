@@ -1,5 +1,5 @@
 {
-  "name": "b5-nodejs-api",
+  "name": "b5-nodejs-api-cli",
   "version": "1.0.0",
   "description": "In-memory transaction management REST API",
   "main": "src/server.js",

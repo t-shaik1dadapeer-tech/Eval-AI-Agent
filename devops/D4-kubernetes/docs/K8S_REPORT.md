@@ -68,7 +68,7 @@ Task **D4** packages the **B4 FastAPI transaction service** for Kubernetes with 
 **Command:**
 
 ```bash
-.tools/kubeconform -summary -kubernetes-version 1.29.0 devops/D4-kubernetes-deployment/k8s/*.yaml
+.tools/kubeconform -summary -kubernetes-version 1.29.0 devops/D4-kubernetes/k8s/*.yaml
 ```
 
 **Output:**
@@ -84,7 +84,7 @@ Summary: 5 resources found in 5 files - Valid: 5, Invalid: 0, Errors: 0, Skipped
 **Command (requires reachable cluster):**
 
 ```bash
-kubectl apply --dry-run=client -f devops/D4-kubernetes-deployment/k8s/
+kubectl apply --dry-run=client -f devops/D4-kubernetes/k8s/
 ```
 
 **Local result:** Skipped — no cluster context (Docker/kind unavailable).
@@ -109,7 +109,7 @@ ingress.networking.k8s.io/b4-transaction-api created (dry run)
 
 ```bash
 kind create cluster --name eval-cluster \
-  --config devops/D4-kubernetes-deployment/kind-config.yaml
+  --config devops/D4-kubernetes/kind-config.yaml
 ```
 
 **Captured output (2026-06-17):**
@@ -129,7 +129,7 @@ ERROR: failed to create cluster: failed to get docker info: command "docker info
 **Command:**
 
 ```bash
-kubectl apply -f devops/D4-kubernetes-deployment/k8s/
+kubectl apply -f devops/D4-kubernetes/k8s/
 ```
 
 **Status:** Not executed — cluster not created (Docker missing).
@@ -137,7 +137,7 @@ kubectl apply -f devops/D4-kubernetes-deployment/k8s/
 **Automated alternative:**
 
 ```bash
-bash devops/D4-kubernetes-deployment/scripts/deploy-and-verify.sh
+bash devops/D4-kubernetes/scripts/deploy-and-verify.sh
 ```
 
 ---
@@ -200,7 +200,7 @@ curl http://localhost:8080/health
 **Command:**
 
 ```bash
-bash devops/D4-kubernetes-deployment/scripts/verify-health-local.sh
+bash devops/D4-kubernetes/scripts/verify-health-local.sh
 ```
 
 **Output:**
