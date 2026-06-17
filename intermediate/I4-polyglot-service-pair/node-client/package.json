@@ -1,0 +1,20 @@
+{
+  "name": "i4-currency-cli",
+  "version": "1.0.0",
+  "description": "Node.js CLI client for I4 FastAPI currency converter",
+  "main": "src/cli.js",
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "jest --runInBand"
+  },
+  "dependencies": {
+    "axios": "^1.8.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/tests/**/*.test.js"]
+  }
+}
