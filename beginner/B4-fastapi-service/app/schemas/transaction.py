@@ -11,7 +11,9 @@ from app.models.transaction import TransactionType
 
 class TransactionCreate(BaseModel):
     type: TransactionType
-    amount: float = Field(..., gt=0, description="Transaction amount; must be greater than zero")
+    amount: float = Field(
+        ..., gt=0, description="Transaction amount; must be greater than zero"
+    )
     description: Optional[str] = Field(default=None, max_length=500)
 
     @field_validator("description")
