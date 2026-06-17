@@ -2,7 +2,7 @@
 
 Hands-on exercises for evaluating AI coding agents across beginner, intermediate, advanced, and DevOps tracks.
 
-Each subfolder is a self-contained task. Implement your solution inside the task folder, then commit and push when ready.
+Each subfolder is a self-contained task. Put all deliverables (reports, code, configs) directly in that task folder — not under a separate `docs/` mirror. Then commit and push when ready.
 
 ## Structure
 
