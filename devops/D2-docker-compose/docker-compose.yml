@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: d2-postgres
+    environment:
+      POSTGRES_USER: d2user
+      POSTGRES_PASSWORD: d2pass
+      POSTGRES_DB: transactions
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U d2user -d transactions"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - d2-net
+
+  api:
+    build:
+      context: ./api
+    container_name: d2-api
+    environment:
+      DATABASE_URL: postgresql://d2user:d2pass@postgres:5432/transactions
+    ports:
+      - "8200:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 25s
+    networks:
+      - d2-net
+
+  worker:
+    build:
+      context: ./worker
+    container_name: d2-worker
+    environment:
+      DATABASE_URL: postgresql://d2user:d2pass@postgres:5432/transactions
+      POLL_INTERVAL_MS: "2000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    networks:
+      - d2-net
+
+networks:
+  d2-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
