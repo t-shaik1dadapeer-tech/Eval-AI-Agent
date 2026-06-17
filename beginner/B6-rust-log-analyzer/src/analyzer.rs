@@ -21,7 +21,7 @@ fn line_needs_trim(line: &str) -> bool {
     bytes[0].is_ascii_whitespace() || bytes[bytes.len() - 1].is_ascii_whitespace()
 }
 
-fn normalize_line<'a>(line: &'a str) -> &'a str {
+fn normalize_line(line: &str) -> &str {
     if line_needs_trim(line) {
         line.trim()
     } else {
@@ -32,9 +32,7 @@ fn normalize_line<'a>(line: &'a str) -> &'a str {
 fn matches_log_level(line: &str, level: &str) -> bool {
     match line.strip_prefix(level) {
         None => false,
-        Some(rest) => {
-            rest.is_empty() || rest.starts_with(' ') || rest.starts_with(':')
-        }
+        Some(rest) => rest.is_empty() || rest.starts_with(' ') || rest.starts_with(':'),
     }
 }
 

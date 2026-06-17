@@ -40,9 +40,7 @@ impl std::error::Error for LogAnalyzerError {
 
 pub fn read_log_file(path: &Path) -> Result<String, LogAnalyzerError> {
     if !path.exists() {
-        return Err(LogAnalyzerError::FileNotFound(
-            path.display().to_string(),
-        ));
+        return Err(LogAnalyzerError::FileNotFound(path.display().to_string()));
     }
 
     std::fs::read_to_string(path).map_err(|source| {

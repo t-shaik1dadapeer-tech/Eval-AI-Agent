@@ -13,7 +13,9 @@ fn main() {
 }
 
 fn run() -> Result<(), LogAnalyzerError> {
-    let file_path = env::args().nth(1).ok_or(LogAnalyzerError::MissingArgument)?;
+    let file_path = env::args()
+        .nth(1)
+        .ok_or(LogAnalyzerError::MissingArgument)?;
     let path = Path::new(&file_path);
 
     let content = read_log_file(path)?;

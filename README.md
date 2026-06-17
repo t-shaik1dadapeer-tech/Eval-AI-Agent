@@ -4,6 +4,24 @@ Hands-on exercises for evaluating AI coding agents across beginner, intermediate
 
 Each subfolder is a self-contained task. Put all deliverables (reports, code, configs) directly in that task folder — not under a separate `docs/` mirror. Then commit and push when ready.
 
+## Fresh clone setup
+
+From a clean machine with `git`, `curl`, and `make`:
+
+```bash
+git clone <repo-url> Evil-Ai
+cd Evil-Ai
+make bootstrap
+```
+
+This installs pinned runtimes via [mise](https://mise.jdx.dev) and runs the full test suite. See [`devops/D5-dev-environment/README.md`](devops/D5-dev-environment/README.md) for details.
+
+```bash
+make test    # run tests only
+make lint    # ruff + cargo fmt/clippy
+make help    # all targets
+```
+
 ## Structure
 
 ```
