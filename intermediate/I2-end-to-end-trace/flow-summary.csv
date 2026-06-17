@@ -1,0 +1,9 @@
+Step Number,File Path,Class,Method,Purpose,Input,Output
+1,beginner/B4-fastapi-service/app/main.py,FastAPI (app),include_router + ASGI dispatch,Register transaction routes and dispatch HTTP POST /transactions,HTTP POST request JSON body,Route match to create_transaction handler
+2,beginner/B4-fastapi-service/app/schemas/transaction.py,TransactionCreate,(Pydantic validation),Validate and parse request body before handler,type amount description fields,TransactionCreate instance or validation error
+3,beginner/B4-fastapi-service/app/routes/transactions.py,create_transaction (module function),create_transaction,HTTP route handler delegating to service layer,TransactionCreate,TransactionResponse
+4,beginner/B4-fastapi-service/app/services/transaction_service.py,TransactionService,create_transaction,Build domain transaction and persist in memory,TransactionCreate,Transaction
+5,beginner/B4-fastapi-service/app/models/transaction.py,Transaction,(dataclass constructor),Instantiate domain record with generated id and timestamp,Transaction field values,Transaction instance
+6,beginner/B4-fastapi-service/app/services/transaction_service.py,TransactionService,create_transaction → list.append,Final side effect: append transaction to in-memory store,Transaction object,Transaction stored in self._transactions
+7,beginner/B4-fastapi-service/app/routes/transactions.py,create_transaction (module function),TransactionResponse.model_validate,Map domain model to API response DTO,Transaction,TransactionResponse
+8,beginner/B4-fastapi-service/app/main.py,FastAPI (framework),response serialization,Serialize TransactionResponse to JSON HTTP 201,TransactionResponse,HTTP 201 JSON response body

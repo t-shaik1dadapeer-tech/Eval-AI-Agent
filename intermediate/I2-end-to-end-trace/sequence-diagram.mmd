@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant Client as HTTP Client
+    participant App as FastAPI app<br/>main.py
+    participant Schema as TransactionCreate<br/>schemas/transaction.py
+    participant Route as create_transaction<br/>routes/transactions.py
+    participant Service as TransactionService<br/>services/transaction_service.py
+    participant Model as Transaction<br/>models/transaction.py
+    participant Store as _transactions list<br/>in-memory
+
+    Client->>App: POST /transactions JSON body
+    App->>Schema: Pydantic parse and validate
+    alt validation fails
+        Schema-->>App: RequestValidationError
+        App-->>Client: HTTP 422 JSON detail
+    else validation succeeds
+        Schema-->>Route: TransactionCreate
+        Route->>Service: create_transaction(payload)
+        Service->>Model: Transaction(id uuid4 type amount description created_at)
+        Model-->>Service: Transaction instance
+        Service->>Store: append(transaction)
+        Store-->>Service: stored
+        Service-->>Route: Transaction
+        Route->>Route: TransactionResponse.model_validate(transaction)
+        Route-->>App: TransactionResponse
+        App-->>Client: HTTP 201 JSON TransactionResponse
+    end
