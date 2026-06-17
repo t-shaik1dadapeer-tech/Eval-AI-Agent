@@ -63,3 +63,12 @@ fn ignores_lines_with_level_prefix_substrings() {
     let counts = count_log_levels(content);
     assert_eq!(counts.total(), 0);
 }
+
+#[test]
+fn counts_colon_delimited_log_levels() {
+    let content = "INFO: Application started\nWARN: Rate limit\nERROR: Connection failed\n";
+    let counts = count_log_levels(content);
+    assert_eq!(counts.info, 1);
+    assert_eq!(counts.warn, 1);
+    assert_eq!(counts.error, 1);
+}

@@ -16,7 +16,9 @@ impl LogCounts {
 fn matches_log_level(line: &str, level: &str) -> bool {
     match line.strip_prefix(level) {
         None => false,
-        Some(rest) => rest.is_empty() || rest.starts_with(' '),
+        Some(rest) => {
+            rest.is_empty() || rest.starts_with(' ') || rest.starts_with(':')
+        }
     }
 }
 
@@ -133,6 +135,15 @@ INFO Request processed
     #[test]
     fn matches_level_token_followed_by_space() {
         let content = "INFO Application started\nWARN Rate limit\nERROR Connection failed\n";
+        let counts = count_log_levels(content);
+        assert_eq!(counts.info, 1);
+        assert_eq!(counts.warn, 1);
+        assert_eq!(counts.error, 1);
+    }
+
+    #[test]
+    fn matches_level_token_followed_by_colon() {
+        let content = "INFO: Application started\nWARN: Rate limit\nERROR: Connection failed\n";
         let counts = count_log_levels(content);
         assert_eq!(counts.info, 1);
         assert_eq!(counts.warn, 1);
