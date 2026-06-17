@@ -1,0 +1,15 @@
+{
+  "name": "a3-fraud-node-worker",
+  "version": "1.0.0",
+  "description": "A3 polyglot fraud system — Node.js transaction worker",
+  "type": "module",
+  "main": "src/worker.js",
+  "scripts": {
+    "start": "node src/worker.js",
+    "worker:once": "node src/worker.js --once",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

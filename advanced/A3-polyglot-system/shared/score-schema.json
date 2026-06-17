@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "score-schema.json",
+  "title": "FraudScore",
+  "description": "Risk score output from the Rust fraud engine",
+  "type": "object",
+  "required": ["risk_score", "risk_level"],
+  "additionalProperties": false,
+  "properties": {
+    "risk_score": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Computed fraud risk score"
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"],
+      "description": "Risk band derived from score"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+# Build artifacts
+rust-engine/target/
+fastapi-service/.venv/
+fastapi-service/.pytest_cache/
+node-worker/node_modules/
+
+# Runtime queue data (reset to [] for commits)
+shared/data/transactions.json
+shared/data/processed_transactions.json
+
+# OS / tooling
+.DS_Store
+*.log

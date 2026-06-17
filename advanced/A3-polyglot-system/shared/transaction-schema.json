@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "transaction-schema.json",
+  "title": "Transaction",
+  "description": "Fraud system transaction ingestion payload",
+  "type": "object",
+  "required": ["transaction_id", "user_id", "amount", "merchant", "country"],
+  "additionalProperties": false,
+  "properties": {
+    "transaction_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique transaction identifier"
+    },
+    "user_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "User who initiated the transaction"
+    },
+    "amount": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Transaction amount; must be greater than zero"
+    },
+    "merchant": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Merchant category or name"
+    },
+    "country": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2,
+      "description": "ISO 3166-1 alpha-2 country code"
+    }
+  }
+}
