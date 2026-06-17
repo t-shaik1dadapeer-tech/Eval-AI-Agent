@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: b4-app-config
+  namespace: eval-ai-agent
+  labels:
+    app: b4-transaction-api
+data:
+  APP_NAME: b4-transaction-api
+  ENVIRONMENT: production
+  LOG_LEVEL: info

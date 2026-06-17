@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: b4-transaction-api
+  namespace: eval-ai-agent
+  labels:
+    app: b4-transaction-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: b4-transaction-api
+  template:
+    metadata:
+      labels:
+        app: b4-transaction-api
+    spec:
+      containers:
+        - name: api
+          image: b4-transaction-api:d4
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: b4-app-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3

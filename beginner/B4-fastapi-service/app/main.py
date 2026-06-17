@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -27,4 +29,6 @@ async def validation_exception_handler(
 
 @app.get("/health", tags=["health"])
 def health_check() -> dict[str, str]:
+    if os.getenv("ENVIRONMENT"):
+        return {"status": "UP"}
     return {"status": "ok"}
