@@ -8,12 +8,16 @@ This document describes the evaluation dashboard for tracking AI agent exercise 
 
 | Component | Command | Output |
 | --------- | ------- | ------ |
+| **Live dashboard + API** | `make eval-api` | **http://127.0.0.1:8787/** — 24-task grid, auto-refresh |
+| Agent guide | `GET /api/agent/guide/{TASK}` | Reference `.md` / hints for agents |
+| Agent submit | `POST /api/agent/submit` | Compare output + suggest reference files |
 | Portfolio verify | `make eval` | `docs/eval-status.json` |
-| HTML dashboard | `make eval-dashboard` | `docs/eval-dashboard.html` (24-task grid, completion %) |
-| Compare API | `make eval-api` | `http://127.0.0.1:8787/api/compare/{TASK}` |
 | Agent compare CLI | `make eval-compare TASK=…` | JSON verdict + suggested `.md` files |
 | Prometheus eval metrics | `make eval-metrics` | Text format for optional Grafana panel |
 | Registry | `docs/task-registry.json` | Per-task reference files, verify commands |
+| Agent docs | `docs/AGENT_API.md` | Clone workflow for any AI agent |
+
+Local agent submissions live under `.eval/` (gitignored). See [`AGENT_API.md`](AGENT_API.md).
 
 ## Goals (full vision)
 

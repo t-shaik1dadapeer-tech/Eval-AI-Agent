@@ -85,7 +85,7 @@ Executor collects stdout, exit codes, and artifacts for the dashboard.
 | Task registry    | Done     | `docs/TASK_REGISTRY.md`, `docs/task-registry.json` |
 | Task executor    | Partial  | `make test`, per-task `scripts/`, `make eval --run-tests` |
 | Compare API      | Done     | `scripts/eval/portfolio.py`, `make eval-api` |
-| HTML dashboard   | Done     | `make eval-dashboard` → `docs/eval-dashboard.html` |
+| Live dashboard   | Done     | `make eval-api` → http://127.0.0.1:8787/ |
 | Grafana eval panel | Partial | `make eval-metrics` (Prometheus text); wire into D6 optional |
 | Orchestrator CLI | Planned  | —                                 |
 

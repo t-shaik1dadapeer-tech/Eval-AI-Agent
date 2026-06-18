@@ -60,6 +60,6 @@ tmp/
 temp/
 .cache/
 
-# Eval tooling (regenerate via make eval-dashboard)
+# Eval tooling (local agent submissions + generated status)
+.eval/
 docs/eval-status.json
-docs/eval-dashboard.html

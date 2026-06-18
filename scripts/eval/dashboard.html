@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Eval AI Agent — Live Portfolio</title>
+  <style>
+    :root { --bg: #0f172a; --panel: #1e293b; --border: #334155; --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8; }
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; margin: 0; background: var(--bg); color: var(--text); }
+    header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); }
+    h1 { margin: 0 0 0.25rem; font-size: 1.5rem; }
+    .sub { color: var(--muted); font-size: 0.9rem; }
+    main { padding: 1.5rem 2rem; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .card { background: var(--panel); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border); }
+    .card .num { font-size: 1.75rem; font-weight: 700; color: var(--accent); }
+    .card .lbl { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+    table { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 8px; overflow: hidden; font-size: 0.875rem; }
+    th, td { padding: 0.55rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { background: #334155; position: sticky; top: 0; }
+    .badge { display: inline-block; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.75rem; color: #fff; }
+    .ok { background: #22c55e; } .partial { background: #eab308; color: #000; }
+    .mismatch { background: #ef4444; } .none { background: #64748b; }
+    .unreachable { background: #f97316; }
+    .completed { background: #3b82f6; } .incomplete { background: #ef4444; }
+    code { font-size: 0.8em; word-break: break-all; }
+    .toolbar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+    button { background: var(--accent); color: #0f172a; border: none; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    button.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); }
+    #err { color: #f87171; margin-bottom: 1rem; }
+    .agent-box { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-top: 1.5rem; }
+    .agent-box h2 { margin: 0 0 0.5rem; font-size: 1rem; }
+    .agent-box pre { background: #0f172a; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; white-space: pre-wrap; }
+    #external-api { color: var(--accent); margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Eval AI Agent — 24 Task Portfolio</h1>
+    <p class="sub">Live dashboard · .md + external API compare · related .md suggestions</p>
+  </header>
+  <main>
+    <div id="err"></div>
+    <div id="external-api" class="sub"></div>
+    <div class="toolbar">
+      <button onclick="refresh(true)">Refresh scan</button>
+      <button class="secondary" onclick="location.href='/api/docs'">Agent API docs</button>
+      <span class="sub" id="updated"></span>
+    </div>
+    <div class="cards" id="cards"></div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Task</th><th>Track</th><th>Repo</th>
+          <th>Agent</th><th>API match</th><th>Score</th><th>Related .md</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="agent-box">
+      <h2>Any external API (Library Management, etc.)</h2>
+      <pre id="agent-help">Loading…</pre>
+    </div>
+  </main>
+  <script>
+    async function refresh(runTests = false) {
+      document.getElementById('err').textContent = '';
+      try {
+        const url = `/api/portfolio${runTests ? '?run_tests=1' : ''}`;
+        const r = await fetch(url);
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || r.statusText);
+        render(data);
+      } catch (e) {
+        document.getElementById('err').textContent = 'Cannot load portfolio: ' + e.message +
+          ' — start: python3 scripts/eval/portfolio.py serve --port 8788';
+      }
+    }
+
+    function badge(cls, text) {
+      return `<span class="badge ${cls}">${text}</span>`;
+    }
+
+    function statusBadge(v) {
+      if (!v) return badge('none', 'not submitted');
+      if (v === 'ok') return badge('ok', 'ok');
+      if (v === 'partial') return badge('partial', 'partial');
+      if (v === 'unreachable') return badge('unreachable', 'unreachable');
+      if (v === 'reference_only' || v === 'skipped') return badge('none', '—');
+      return badge('mismatch', v);
+    }
+
+    function render(data) {
+      const s = data.summary;
+      const ext = data.external_target || {};
+      document.getElementById('updated').textContent = 'Updated: ' + (data.generated_at || '');
+      document.getElementById('external-api').textContent = ext.api_base_url
+        ? 'External API target: ' + ext.api_base_url + (ext.project_name ? ' (' + ext.project_name + ')' : '')
+        : 'No external API set — POST /api/external/target with your API URL';
+      document.getElementById('cards').innerHTML = `
+        <div class="card"><div class="num">${s.total}</div><div class="lbl">Total tasks</div></div>
+        <div class="card"><div class="num">${s.deliverables_ok}</div><div class="lbl">Deliverables</div></div>
+        <div class="card"><div class="num">${s.agent_evaluated || 0}</div><div class="lbl">Agent compared</div></div>
+        <div class="card"><div class="num">${s.agent_ok || 0}</div><div class="lbl">Agent OK</div></div>
+        <div class="card"><div class="num">${s.api_checked || 0}</div><div class="lbl">API checked</div></div>
+        <div class="card"><div class="num">${s.api_ok || 0}</div><div class="lbl">API OK</div></div>
+        <div class="card"><div class="num">${s.completion_pct}%</div><div class="lbl">Repo done</div></div>
+      `;
+      document.getElementById('rows').innerHTML = data.tasks.map(t => {
+        const repo = t.deliverables_ok ? badge('completed', 'ready') : badge('incomplete', 'missing');
+        const ar = t.agent_result || {};
+        const api = ar.api_match || {};
+        const score = ar.match_score != null ? ar.match_score : '—';
+        const related = (ar.related_md || []).slice(0, 2).join(', ') || '—';
+        return `<tr>
+          <td><strong>${t.id}</strong></td>
+          <td>${t.name}</td>
+          <td>${t.category}</td>
+          <td>${repo}</td>
+          <td>${statusBadge(ar.verdict)}</td>
+          <td>${statusBadge(api.verdict)}</td>
+          <td>${score}</td>
+          <td><code>${related}</code></td>
+          <td><a href="/api/agent/guide/${t.id}" target="_blank" style="color:var(--accent)">guide</a></td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function loadHelp() {
+      const r = await fetch('/api/docs');
+      const d = await r.json();
+      const lines = (d.workflow || []).concat([
+        '',
+        'Set your API:',
+        'curl -X POST http://127.0.0.1:8788/api/external/target -H "Content-Type: application/json" -d \'{"api_base_url":"http://127.0.0.1:3000","project_name":"UserManagement"}\'',
+        '',
+        'Analyze .md vs API:',
+        'curl -X POST http://127.0.0.1:8788/api/external/analyze -H "Content-Type: application/json" -d \'{"md_path":"docs/AGENT_PROMPTS.md","api_base_url":"http://127.0.0.1:3000","task_id":"B3"}\'',
+      ]);
+      document.getElementById('agent-help').textContent = lines.join('\n');
+    }
+
+    refresh(false);
+    loadHelp();
+    setInterval(() => refresh(false), 15000);
+  </script>
+</body>
+</html>

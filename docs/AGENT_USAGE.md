@@ -21,6 +21,15 @@ How to use AI coding agents (and manual verification) when working on Eval AI Ag
 
 ## Eval compare API (agent output vs reference `.md`)
 
+**Start the eval server first** (works on any fresh clone):
+
+```bash
+make eval-api    # http://127.0.0.1:8787 — live dashboard + all endpoints below
+```
+
+Full API reference: [`AGENT_API.md`](AGENT_API.md).  
+Copy-paste prompts per task: [`AGENT_PROMPTS.md`](AGENT_PROMPTS.md).
+
 When an agent finishes a task, compare its output to the repo ground truth:
 
 ```bash
@@ -41,21 +50,23 @@ HTTP API (after `make eval-api`):
 
 ```bash
 curl http://127.0.0.1:8787/api/portfolio
-curl http://127.0.0.1:8787/api/tasks/I2
-curl -X POST 'http://127.0.0.1:8787/api/compare/B2?agent_output=/path/to/endpoints.csv'
-open http://127.0.0.1:8787/api/dashboard
+curl http://127.0.0.1:8787/api/agent/guide/I2
+curl -X POST http://127.0.0.1:8787/api/agent/submit \
+  -H 'Content-Type: application/json' \
+  -d '{"task_id":"I2","agent_name":"cursor","output_path":"intermediate/I2-end-to-end-trace/FLOW_TRACE.md"}'
+open http://127.0.0.1:8787/
 ```
 
 Registry source: [`task-registry.json`](task-registry.json).
 
 ## Portfolio dashboard (24 tasks)
 
-```bash
-make eval-dashboard
-open docs/eval-dashboard.html
-```
+Open **http://127.0.0.1:8787/** after `make eval-api`. The page auto-refreshes and shows:
 
-Shows **total / deliverables OK / executable / verified** out of 24. For A1, drill into `advanced/A1-parallel-plan/agent-prompts.md` for per-lane agent prompts.
+- **Total / deliverables OK / executable / agent compared / agent OK** out of 24
+- Per-task agent eval status when submissions are posted via `/api/agent/submit`
+
+For A1, drill into `advanced/A1-parallel-plan/agent-prompts.md` for per-lane agent prompts.
 
 ## Verification by task type
 

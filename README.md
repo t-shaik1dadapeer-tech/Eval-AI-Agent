@@ -14,7 +14,10 @@ From a clean machine with `git`, `curl`, and `make`:
 git clone <repo-url> Evil-Ai
 cd Evil-Ai
 make bootstrap
+make eval-api          # live dashboard + agent compare API → http://127.0.0.1:8787
 ```
+
+See [`docs/AGENT_API.md`](docs/AGENT_API.md) for how any AI agent should call the eval API after clone.
 
 This installs pinned runtimes via [mise](https://mise.jdx.dev) and runs the full test suite. See [`devops/D5-dev-environment/README.md`](devops/D5-dev-environment/README.md) for details.
 
@@ -65,19 +68,22 @@ Eval-ai-agent/
 | -------- | ------- |
 | [`docs/TASK_REGISTRY.md`](docs/TASK_REGISTRY.md) | Status of all 24 tasks (B1–D6) |
 | [`docs/TASK_MAPPING.md`](docs/TASK_MAPPING.md) | Task ID → name, purpose, folder |
+| [`docs/AGENT_PROMPTS.md`](docs/AGENT_PROMPTS.md) | **Copy-paste prompts for all 24 tasks** |
+| [`docs/AGENT_API.md`](docs/AGENT_API.md) | **Clone + agent eval API** (guide, submit, live dashboard) |
 | [`docs/AGENT_USAGE.md`](docs/AGENT_USAGE.md) | How to use Cursor/agents + verify work |
-| [`docs/DASHBOARD_VISION.md`](docs/DASHBOARD_VISION.md) | Future eval dashboard (design only) |
+| [`docs/DASHBOARD_VISION.md`](docs/DASHBOARD_VISION.md) | Eval dashboard design + implemented tooling |
 | [`docs/ORCHESTRATOR_DESIGN.md`](docs/ORCHESTRATOR_DESIGN.md) | Future task router/executor (design only) |
 | [`docs/task-registry.json`](docs/task-registry.json) | Machine-readable task profiles + eval API |
 
 ## Eval portfolio (24 tasks)
 
 ```bash
+make eval-api          # live dashboard + agent API → http://127.0.0.1:8787
 make eval              # verify deliverables
-make eval-dashboard    # open docs/eval-dashboard.html
-make eval-api          # compare API :8787
 make eval-compare TASK=B2 AGENT_OUTPUT=./out.csv
 ```
+
+See [`docs/AGENT_PROMPTS.md`](docs/AGENT_PROMPTS.md) for copy-paste prompts per task, or [`docs/AGENT_API.md`](docs/AGENT_API.md) for the clone workflow any agent should follow.
 
 ## Tracks
 

@@ -36,15 +36,18 @@ verify: bootstrap ## Alias for bootstrap (install + test)
 eval: ## Verify all 24 task deliverables (writes docs/eval-status.json)
 	@python3 "$(ROOT)/scripts/eval/portfolio.py" verify
 
-eval-dashboard: eval ## Generate docs/eval-dashboard.html
+eval-dashboard: ## Print live dashboard URL (run make eval-api)
 	@python3 "$(ROOT)/scripts/eval/portfolio.py" dashboard
 
-eval-api: ## Start eval compare API on http://127.0.0.1:8787
-	@python3 "$(ROOT)/scripts/eval/portfolio.py" serve --port 8787
+eval-api: ## Start live eval API + dashboard http://127.0.0.1:8788
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" serve --port 8788
 
-eval-compare: ## Compare agent output: make eval-compare TASK=I2 AGENT_OUTPUT=./out.md
+eval-stop: ## Stop eval server on port 8788 (if running)
+	@lsof -ti :8788 | xargs kill 2>/dev/null || echo "No process on 8788"
+
+eval-compare: ## Compare agent output: make eval-compare TASK=I2 AGENT_OUTPUT=./out.md API_BASE_URL=http://127.0.0.1:3000
 	@test -n "$(TASK)" || (echo "Usage: make eval-compare TASK=B2 AGENT_OUTPUT=./file.md" && exit 1)
-	@python3 "$(ROOT)/scripts/eval/portfolio.py" compare "$(TASK)" $(if $(AGENT_OUTPUT),--agent-output "$(AGENT_OUTPUT)",)
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" compare "$(TASK)" $(if $(AGENT_OUTPUT),--agent-output "$(AGENT_OUTPUT)",) --agent-name "$(or $(AGENT_NAME),manual)" $(if $(API_BASE_URL),--api-base-url "$(API_BASE_URL)",)
 
 eval-metrics: eval ## Prometheus metrics for eval portfolio (Grafana text format)
 	@python3 "$(ROOT)/scripts/eval/portfolio.py" metrics
