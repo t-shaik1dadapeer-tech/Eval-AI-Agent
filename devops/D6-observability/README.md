@@ -11,18 +11,30 @@ Evaluation task **D6** adds observability to the **B4 FastAPI transaction servic
 
 # Start Stack
 
-Requires Docker Desktop.
+Requires **Docker Desktop** (running).
 
 ```bash
 cd devops/D6-observability
-docker compose up -d
+./scripts/start-stack.sh
 ```
+
+This starts API, Prometheus, and Grafana, waits until healthy, and opens Grafana in your browser.
 
 | Service | URL |
 |---------|-----|
+| **Grafana (dashboards)** | http://localhost:3002 (admin / admin) |
 | API | http://localhost:8000 |
 | Prometheus | http://localhost:9090 |
-| Grafana | http://localhost:3000 (admin / admin) |
+
+> Grafana is on **port 3002** (not 3000) to avoid conflicts with other local apps.
+
+**Troubleshooting:** run `./scripts/check-stack.sh` if a URL does not load.
+
+Manual start:
+
+```bash
+docker compose up -d --build
+```
 
 # Generate Traffic
 
@@ -51,9 +63,14 @@ sum(rate(http_requests_total[1m]))
 
 # Access Grafana
 
-http://localhost:3000 — dashboard **API Observability** (folder D6)
+http://localhost:3002 — dashboard **API Observability** (folder D6)
+
+Login: `admin` / `admin`
 
 Primary panel: **Request Rate** — `sum(rate(http_requests_total[1m]))`
+
+> **Do not** open http://localhost:8000/ expecting Grafana — that is the API.
+> If you see `{"error":"Not found","path":"/"}`, you hit the wrong port or another app.
 
 # Local Development (no Docker)
 

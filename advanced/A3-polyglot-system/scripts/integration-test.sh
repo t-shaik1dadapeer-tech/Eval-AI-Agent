@@ -9,6 +9,14 @@ RUST_BIN="$ROOT/rust-engine/target/release/fraud-engine"
 WORKER_DIR="$ROOT/node-worker"
 FASTAPI_DIR="$ROOT/fastapi-service"
 
+run_python() {
+  if command -v mise >/dev/null 2>&1; then
+    mise exec -- python "$@"
+  else
+    python3 "$@"
+  fi
+}
+
 echo "=== A3 Integration Test ==="
 echo "ROOT=$ROOT"
 
@@ -34,7 +42,13 @@ export FRAUD_SYSTEM_ROOT="$ROOT"
 export TRANSACTIONS_QUEUE_FILE="$QUEUE_FILE"
 export PROCESSED_TRANSACTIONS_FILE="$PROCESSED_FILE"
 
-python3 - <<'PY'
+if command -v mise >/dev/null 2>&1; then
+  mise exec -- python -m pip install -q -r requirements.txt
+else
+  python3 -m pip install -q -r requirements.txt
+fi
+
+run_python - <<'PY'
 import json
 import os
 from pathlib import Path
@@ -78,7 +92,7 @@ echo ""
 echo "=== Step 5: Verify processed output ==="
 cat "$PROCESSED_FILE"
 
-python3 - <<'PY'
+run_python - <<'PY'
 import json
 import os
 from pathlib import Path

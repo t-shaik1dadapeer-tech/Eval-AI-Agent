@@ -32,6 +32,23 @@ async def validation_exception_handler(
     )
 
 
+@app.get("/", tags=["root"])
+def root() -> dict[str, object]:
+    return {
+        "service": "b4-transaction-api",
+        "message": "D6 observability API — dashboards are in Grafana, not here",
+        "endpoints": {
+            "health": "/health",
+            "metrics": "/metrics",
+            "docs": "/docs",
+            "transactions": "/transactions",
+            "balance": "/balance",
+        },
+        "grafana": "http://localhost:3002 (admin/admin) — dashboard: API Observability",
+        "prometheus": "http://localhost:9090",
+    }
+
+
 @app.get("/health", tags=["health"])
 def health_check() -> dict[str, str]:
     if os.getenv("ENVIRONMENT"):

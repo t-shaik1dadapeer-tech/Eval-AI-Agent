@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 API_BASE="${API_BASE:-http://localhost:8000}"
 PROMETHEUS_URL="${PROMETHEUS_URL:-http://localhost:9090}"
-GRAFANA_URL="${GRAFANA_URL:-http://localhost:3000}"
+GRAFANA_URL="${GRAFANA_URL:-http://localhost:3002}"
 
 pass() { echo "PASS: $*"; }
 fail() { echo "FAIL: $*" >&2; exit 1; }

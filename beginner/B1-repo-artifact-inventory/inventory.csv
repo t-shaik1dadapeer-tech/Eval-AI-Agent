@@ -1,1 +1,109 @@
 Name,Category,File Path,Purpose,Key Dependencies,Confidence Level
+LogAnalyzerError,Classes,beginner/B6-rust-cli/src/errors.rs,Rust enum (LogAnalyzerError),std,Confirmed
+validation_exception_handler,Configuration classes,advanced/A3-polyglot-system/fastapi-service/app/main.py,App configuration/bootstrap (validation_exception_handler),fastapi,Confirmed
+validation_exception_handler,Configuration classes,beginner/B4-fastapi-service/app/main.py,App configuration/bootstrap (validation_exception_handler),fastapi,Confirmed
+createApp,Configuration classes,beginner/B5-nodejs-api-cli/src/app.js,Express application factory,express,Confirmed
+startup,Configuration classes,devops/D2-docker-compose/api/app/main.py,App configuration/bootstrap (startup),fastapi,Confirmed
+validation_exception_handler,Configuration classes,devops/D6-observability/service/app/main.py,App configuration/bootstrap (validation_exception_handler),fastapi,Confirmed
+configure_logging,Configuration classes,devops/D6-observability/service/app/middleware/observability.py,App configuration/bootstrap (configure_logging),fastapi,Confirmed
+validation_exception_handler,Configuration classes,intermediate/I4-fastapi-node-pair/fastapi-service/app/main.py,App configuration/bootstrap (validation_exception_handler),fastapi,Confirmed
+isValidTransaction,Consumers / Listeners,advanced/A3-polyglot-system/node-worker/src/processor.js,Queue consumer (isValidTransaction),fs/child_process,Confirmed
+processQueueOnce,Consumers / Listeners,advanced/A3-polyglot-system/node-worker/src/processor.js,Queue consumer (processQueueOnce),fs/child_process,Confirmed
+health_check,Controllers,advanced/A3-polyglot-system/fastapi-service/app/main.py,HTTP route handler (health_check),fastapi,Confirmed
+create_transaction,Controllers,advanced/A3-polyglot-system/fastapi-service/app/routes/transactions.py,HTTP route handler (create_transaction),fastapi,Confirmed
+health_check,Controllers,beginner/B4-fastapi-service/app/main.py,HTTP route handler (health_check),fastapi,Confirmed
+root,Controllers,beginner/B4-fastapi-service/app/main.py,HTTP route handler (root),fastapi,Confirmed
+create_transaction,Controllers,beginner/B4-fastapi-service/app/routes/transactions.py,HTTP route handler (create_transaction),fastapi,Confirmed
+get_balance,Controllers,beginner/B4-fastapi-service/app/routes/transactions.py,HTTP route handler (get_balance),fastapi,Confirmed
+get_transaction,Controllers,beginner/B4-fastapi-service/app/routes/transactions.py,HTTP route handler (get_transaction),fastapi,Confirmed
+get_transactions,Controllers,beginner/B4-fastapi-service/app/routes/transactions.py,HTTP route handler (get_transactions),fastapi,Confirmed
+createTransaction,Controllers,beginner/B5-nodejs-api-cli/src/controllers/transactionController.js,Express controller (createTransaction),express,Confirmed
+getBalance,Controllers,beginner/B5-nodejs-api-cli/src/controllers/transactionController.js,Express controller (getBalance),express,Confirmed
+getTransactions,Controllers,beginner/B5-nodejs-api-cli/src/controllers/transactionController.js,Express controller (getTransactions),express,Confirmed
+health_check,Controllers,devops/D2-docker-compose/api/app/main.py,HTTP route handler (health_check),fastapi,Confirmed
+create_transaction,Controllers,devops/D2-docker-compose/api/app/routes.py,HTTP route handler (create_transaction),fastapi,Confirmed
+get_transactions,Controllers,devops/D2-docker-compose/api/app/routes.py,HTTP route handler (get_transactions),fastapi,Confirmed
+health_check,Controllers,devops/D6-observability/service/app/main.py,HTTP route handler (health_check),fastapi,Confirmed
+metrics,Controllers,devops/D6-observability/service/app/main.py,HTTP route handler (metrics),fastapi,Confirmed
+root,Controllers,devops/D6-observability/service/app/main.py,HTTP route handler (root),fastapi,Confirmed
+create_transaction,Controllers,devops/D6-observability/service/app/routes/transactions.py,HTTP route handler (create_transaction),fastapi,Confirmed
+get_balance,Controllers,devops/D6-observability/service/app/routes/transactions.py,HTTP route handler (get_balance),fastapi,Confirmed
+get_transaction,Controllers,devops/D6-observability/service/app/routes/transactions.py,HTTP route handler (get_transaction),fastapi,Confirmed
+get_transactions,Controllers,devops/D6-observability/service/app/routes/transactions.py,HTTP route handler (get_transactions),fastapi,Confirmed
+health_check,Controllers,intermediate/I4-fastapi-node-pair/fastapi-service/app/main.py,HTTP route handler (health_check),fastapi,Confirmed
+convert_currency,Controllers,intermediate/I4-fastapi-node-pair/fastapi-service/app/routes/convert.py,HTTP route handler (convert_currency),fastapi,Confirmed
+runLoop,Jobs / Scheduled tasks,advanced/A3-polyglot-system/node-worker/src/worker.js,Polling background worker (runLoop),pg/node,Confirmed
+handler,Jobs / Scheduled tasks,devops/D1-terraform/lambda/index.py,AWS Lambda handler (handler),boto3/stdlib,Confirmed
+processPendingTransactions,Jobs / Scheduled tasks,devops/D2-docker-compose/worker/src/worker.js,Polling background worker (processPendingTransactions),pg/node,Confirmed
+run,Jobs / Scheduled tasks,devops/D2-docker-compose/worker/src/worker.js,Polling background worker (run),pg/node,Confirmed
+waitForDatabase,Jobs / Scheduled tasks,devops/D2-docker-compose/worker/src/worker.js,Polling background worker (waitForDatabase),pg/node,Confirmed
+errorHandler,Middleware / Filters,beginner/B5-nodejs-api-cli/src/middleware/errorHandler.js,Express middleware (errorHandler),express,Confirmed
+notFoundHandler,Middleware / Filters,beginner/B5-nodejs-api-cli/src/middleware/errorHandler.js,Express middleware (notFoundHandler),express,Confirmed
+ObservabilityMiddleware,Middleware / Filters,devops/D6-observability/service/app/middleware/observability.py,HTTP middleware (ObservabilityMiddleware),starlette/fastapi,Confirmed
+TransactionAccepted,Models / Entities,advanced/A3-polyglot-system/fastapi-service/app/schemas/transaction.py,Data model (TransactionAccepted),pydantic/stdlib,Confirmed
+TransactionCreate,Models / Entities,advanced/A3-polyglot-system/fastapi-service/app/schemas/transaction.py,Data model (TransactionCreate),pydantic/stdlib,Confirmed
+ScoreInput,Models / Entities,advanced/A3-polyglot-system/rust-engine/src/lib.rs,Rust struct (ScoreInput),serde,Confirmed
+ScoreOutput,Models / Entities,advanced/A3-polyglot-system/rust-engine/src/lib.rs,Rust struct (ScoreOutput),serde,Confirmed
+Transaction,Models / Entities,beginner/B4-fastapi-service/app/models/transaction.py,Data model (Transaction),pydantic/stdlib,Confirmed
+TransactionType,Models / Entities,beginner/B4-fastapi-service/app/models/transaction.py,Data model (TransactionType),pydantic/stdlib,Confirmed
+BalanceResponse,Models / Entities,beginner/B4-fastapi-service/app/schemas/transaction.py,Data model (BalanceResponse),pydantic/stdlib,Confirmed
+TransactionCreate,Models / Entities,beginner/B4-fastapi-service/app/schemas/transaction.py,Data model (TransactionCreate),pydantic/stdlib,Confirmed
+TransactionResponse,Models / Entities,beginner/B4-fastapi-service/app/schemas/transaction.py,Data model (TransactionResponse),pydantic/stdlib,Confirmed
+LogCounts,Models / Entities,beginner/B6-rust-cli/src/analyzer.rs,Rust struct (LogCounts),std,Confirmed
+TransactionAccepted,Models / Entities,devops/D2-docker-compose/api/app/schemas.py,Data model (TransactionAccepted),pydantic/stdlib,Confirmed
+TransactionCreate,Models / Entities,devops/D2-docker-compose/api/app/schemas.py,Data model (TransactionCreate),pydantic/stdlib,Confirmed
+TransactionResponse,Models / Entities,devops/D2-docker-compose/api/app/schemas.py,Data model (TransactionResponse),pydantic/stdlib,Confirmed
+Transaction,Models / Entities,devops/D6-observability/service/app/models/transaction.py,Data model (Transaction),pydantic/stdlib,Confirmed
+TransactionType,Models / Entities,devops/D6-observability/service/app/models/transaction.py,Data model (TransactionType),pydantic/stdlib,Confirmed
+BalanceResponse,Models / Entities,devops/D6-observability/service/app/schemas/transaction.py,Data model (BalanceResponse),pydantic/stdlib,Confirmed
+TransactionCreate,Models / Entities,devops/D6-observability/service/app/schemas/transaction.py,Data model (TransactionCreate),pydantic/stdlib,Confirmed
+TransactionResponse,Models / Entities,devops/D6-observability/service/app/schemas/transaction.py,Data model (TransactionResponse),pydantic/stdlib,Confirmed
+ConvertRequest,Models / Entities,intermediate/I4-fastapi-node-pair/fastapi-service/app/schemas/convert.py,Data model (ConvertRequest),pydantic/stdlib,Confirmed
+ConvertResponse,Models / Entities,intermediate/I4-fastapi-node-pair/fastapi-service/app/schemas/convert.py,Data model (ConvertResponse),pydantic/stdlib,Confirmed
+ErrorResponse,Models / Entities,intermediate/I4-fastapi-node-pair/fastapi-service/app/schemas/convert.py,Data model (ErrorResponse),pydantic/stdlib,Confirmed
+get_connection,Repositories / DAOs,devops/D2-docker-compose/api/app/database.py,Database access (get_connection),psycopg2,Confirmed
+get_database_url,Repositories / DAOs,devops/D2-docker-compose/api/app/database.py,Database access (get_database_url),psycopg2,Confirmed
+get_transaction_by_id,Repositories / DAOs,devops/D2-docker-compose/api/app/database.py,Database access (get_transaction_by_id),psycopg2,Confirmed
+insert_transaction,Repositories / DAOs,devops/D2-docker-compose/api/app/database.py,Database access (insert_transaction),psycopg2,Confirmed
+list_transactions,Repositories / DAOs,devops/D2-docker-compose/api/app/database.py,Database access (list_transactions),psycopg2,Confirmed
+wait_for_database,Repositories / DAOs,devops/D2-docker-compose/api/app/database.py,Database access (wait_for_database),psycopg2,Confirmed
+_ensure_queue_file,Services,advanced/A3-polyglot-system/fastapi-service/app/services/queue_service.py,Queue/file-backed service (_ensure_queue_file),stdlib/pathlib,Confirmed
+_read_queue,Services,advanced/A3-polyglot-system/fastapi-service/app/services/queue_service.py,Queue/file-backed service (_read_queue),stdlib/pathlib,Confirmed
+_write_queue,Services,advanced/A3-polyglot-system/fastapi-service/app/services/queue_service.py,Queue/file-backed service (_write_queue),stdlib/pathlib,Confirmed
+clear_queue,Services,advanced/A3-polyglot-system/fastapi-service/app/services/queue_service.py,Queue/file-backed service (clear_queue),stdlib/pathlib,Confirmed
+enqueue_transaction,Services,advanced/A3-polyglot-system/fastapi-service/app/services/queue_service.py,Queue/file-backed service (enqueue_transaction),stdlib/pathlib,Confirmed
+get_queue_file,Services,advanced/A3-polyglot-system/fastapi-service/app/services/queue_service.py,Queue/file-backed service (get_queue_file),stdlib/pathlib,Confirmed
+getRustEnginePath,Services,advanced/A3-polyglot-system/node-worker/src/rustClient.js,Rust engine integration (getRustEnginePath),child_process,Confirmed
+scoreTransaction,Services,advanced/A3-polyglot-system/node-worker/src/rustClient.js,Rust engine integration (scoreTransaction),child_process,Confirmed
+calculate_risk_score,Services,advanced/A3-polyglot-system/rust-engine/src/lib.rs,Risk scoring service (calculate_risk_score),serde,Confirmed
+classify_risk_level,Services,advanced/A3-polyglot-system/rust-engine/src/lib.rs,Risk scoring service (classify_risk_level),serde,Confirmed
+TransactionService,Services,beginner/B4-fastapi-service/app/services/transaction_service.py,Business logic service (TransactionService),stdlib,Confirmed
+TransactionService,Services,beginner/B5-nodejs-api-cli/src/services/transactionService.js,JavaScript class (TransactionService),node,Confirmed
+TransactionService,Services,devops/D6-observability/service/app/services/transaction_service.py,Business logic service (TransactionService),stdlib,Confirmed
+ConverterService,Services,intermediate/I4-fastapi-node-pair/fastapi-service/app/services/converter.py,Business logic service (ConverterService),stdlib,Confirmed
+appendProcessedResults,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (appendProcessedResults),fs,Confirmed
+dequeuePendingTransactions,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (dequeuePendingTransactions),fs,Confirmed
+ensureFile,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (ensureFile),fs,Confirmed
+getProcessedPath,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (getProcessedPath),fs,Confirmed
+getQueuePath,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (getQueuePath),fs,Confirmed
+getSystemRoot,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (getSystemRoot),fs,Confirmed
+markQueueRemaining,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (markQueueRemaining),fs,Confirmed
+readJsonArray,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (readJsonArray),fs,Confirmed
+readProcessed,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (readProcessed),fs,Confirmed
+readQueue,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (readQueue),fs,Confirmed
+writeJsonArray,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (writeJsonArray),fs,Confirmed
+writeProcessed,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (writeProcessed),fs,Confirmed
+writeQueue,Utility / Helper classes,advanced/A3-polyglot-system/node-worker/src/queue.js,File queue I/O helper (writeQueue),fs,Confirmed
+parse_input_json,Utility / Helper classes,advanced/A3-polyglot-system/rust-engine/src/lib.rs,Log analysis utility (parse_input_json),std/serde,Confirmed
+score_to_json,Utility / Helper classes,advanced/A3-polyglot-system/rust-engine/src/lib.rs,Log analysis utility (score_to_json),std/serde,Confirmed
+count_log_levels,Utility / Helper classes,beginner/B6-rust-cli/src/analyzer.rs,Log analysis utility (count_log_levels),std/serde,Confirmed
+format_summary,Utility / Helper classes,beginner/B6-rust-cli/src/analyzer.rs,Log analysis utility (format_summary),std/serde,Confirmed
+UnsupportedCurrencyPairError,Utility / Helper classes,intermediate/I4-fastapi-node-pair/fastapi-service/app/services/converter.py,Custom exception (UnsupportedCurrencyPairError),stdlib,Confirmed
+main,Utility / Helper classes,intermediate/I4-fastapi-node-pair/node-client/src/cli.js,CLI/client helper (main),node:http,Confirmed
+printUsage,Utility / Helper classes,intermediate/I4-fastapi-node-pair/node-client/src/cli.js,CLI/client helper (printUsage),node:http,Confirmed
+validateArgs,Utility / Helper classes,intermediate/I4-fastapi-node-pair/node-client/src/cli.js,CLI/client helper (validateArgs),node:http,Confirmed
+convertCurrency,Utility / Helper classes,intermediate/I4-fastapi-node-pair/node-client/src/client.js,CLI/client helper (convertCurrency),node:http,Confirmed
+formatError,Utility / Helper classes,intermediate/I4-fastapi-node-pair/node-client/src/client.js,CLI/client helper (formatError),node:http,Confirmed
+formatSuccess,Utility / Helper classes,intermediate/I4-fastapi-node-pair/node-client/src/client.js,CLI/client helper (formatSuccess),node:http,Confirmed
+getBaseUrl,Utility / Helper classes,intermediate/I4-fastapi-node-pair/node-client/src/client.js,CLI/client helper (getBaseUrl),node:http,Confirmed
+validateCreateTransaction,Validators,beginner/B5-nodejs-api-cli/src/middleware/validateTransaction.js,Request validator (validateCreateTransaction),express,Confirmed

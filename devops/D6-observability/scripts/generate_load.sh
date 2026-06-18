@@ -7,6 +7,13 @@ DURATION_SEC="${DURATION_SEC:-45}"
 
 log() { printf '[%s] %s\n' "$(date -u +%H:%M:%S)" "$*"; }
 
+if ! curl -fsS "${API_BASE}/health" >/dev/null 2>&1; then
+  echo "ERROR: D6 API not reachable at ${API_BASE}/health"
+  echo "Run: ./scripts/start-stack.sh"
+  echo "Or check: ./scripts/check-stack.sh"
+  exit 1
+fi
+
 log "Generating traffic to ${API_BASE} for ${DURATION_SEC}s"
 
 end=$((SECONDS + DURATION_SEC))

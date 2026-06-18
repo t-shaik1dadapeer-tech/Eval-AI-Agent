@@ -27,6 +27,14 @@ async def validation_exception_handler(
     )
 
 
+@app.get("/", tags=["root"])
+def root() -> dict[str, object]:
+    return {
+        "service": "b4-transaction-api",
+        "endpoints": ["/health", "/docs", "/transactions", "/balance"],
+    }
+
+
 @app.get("/health", tags=["health"])
 def health_check() -> dict[str, str]:
     if os.getenv("ENVIRONMENT"):

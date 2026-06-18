@@ -2,38 +2,61 @@
 
 **Repository:** `Evil-Ai` (Eval AI Agent scaffold)  
 **Scan date:** 2026-06-17  
-**Scanner scope:** Full recursive scan from repository root, excluding `.git/` internals  
+**Scanner scope:** Full recursive scan from repository root, excluding `.git/`, `node_modules/`, `target/`, `.venv/`, and `__pycache__/`  
 **Task output:** `beginner/B1-repo-artifact-inventory/`
 
 ---
 
 ## Executive Summary
 
-A complete recursive scan of the `Evil-Ai` repository found **no application source code** and **zero artifacts** in any of the requested software categories (classes, interfaces, controllers, services, models/entities, repositories/DAOs, jobs, consumers/listeners, configuration classes, utilities, middleware/filters, or validators).
+A complete recursive scan of the `Evil-Ai` repository found **108 classified application artifacts** across **61 non-test source files** (Python, JavaScript, Rust). The repo is a **multi-track exercise monorepo** with implementations in `beginner/`, `intermediate/`, `advanced/`, and `devops/` task folders.
 
-The repository is a **scaffold-only** project: it contains a root `README.md`, a root `.gitignore`, and **25** empty placeholder `.gitkeep` files across exercise track directories (`beginner/`, `intermediate/`, `advanced/`, `devops/`, `docs/`). No `.java`, `.py`, `.ts`, `.js`, `.go`, `.rs`, `.kt`, `.rb`, `.cs`, `.php`, `.xml`, `.yml`, `.yaml`, `.properties`, `.json`, or `.toml` source or configuration files were present at scan time.
+Primary stacks: **FastAPI** (transaction and currency APIs), **Express** (Node.js REST API and workers), and **Rust** (CLI log analyzer and risk-scoring engine). No Java, Go, Kotlin, or C# application code was detected. **Zero interfaces** (no `interface` keyword in TypeScript/Java or Rust traits declared as interfaces).
 
-**Conclusion:** This inventory documents the absence of implementable application artifacts. Future tasks (B4–B6, I4–I5, D1–D6, etc.) are expected to introduce code into their respective task folders; this report should be re-run after substantive code is added.
+| Category | Count |
+|----------|------:|
+| Controllers | 23 |
+| Models / Entities | 21 |
+| Utility / Helper classes | 25 |
+| Services | 14 |
+| Configuration classes | 7 |
+| Repositories / DAOs | 6 |
+| Jobs / Scheduled tasks | 5 |
+| Middleware / Filters | 3 |
+| Consumers / Listeners | 2 |
+| Validators | 1 |
+| Classes | 1 |
+| Interfaces | 0 |
+| **Total classified artifacts** | **108** |
+
+**Conclusion:** The repository has evolved from scaffold-only to a polyglot exercise codebase. Transaction-domain patterns repeat across B4/B5/D2/D6/A3 with in-memory, PostgreSQL, and file-queue persistence variants. See `inventory.csv` for the full machine-readable export.
 
 ---
 
 ## Architecture Overview
 
 ```
-Evil-Ai/                          ← Git repository root (branch: main)
-├── README.md                     ← Project documentation (Confirmed)
-├── .gitignore                    ← Git ignore rules (Confirmed)
-├── docs/                         ← Documentation area (placeholder only)
-├── beginner/                     ← 6 exercise slots (B1–B6), all empty
-├── intermediate/                 ← 6 exercise slots (I1–I6), all empty
-├── advanced/                     ← 6 exercise slots (A1–A6), all empty
-└── devops/                       ← 6 exercise slots (D1–D6), all empty
+Evil-Ai/                              ← Git repository root
+├── README.md                         ← Project overview, make bootstrap
+├── mise.toml                         ← Pinned runtimes (Python, Node, Rust)
+├── beginner/                         ← B1–B6 implementations
+│   ├── B4-fastapi-service/           ← FastAPI in-memory transaction API
+│   ├── B5-nodejs-api-cli/            ← Express transaction API + CLI
+│   └── B6-rust-cli/                  ← Rust log-level analyzer CLI
+├── intermediate/
+│   └── I4-fastapi-node-pair/         ← Currency conversion API + Node client
+├── advanced/
+│   └── A3-polyglot-system/           ← FastAPI → file queue → Node worker → Rust scorer
+└── devops/
+    ├── D1-terraform/                 ← AWS Lambda (Python handler)
+    ├── D2-docker-compose/            ← FastAPI + PostgreSQL + polling worker
+    └── D6-observability/             ← FastAPI + Prometheus middleware
 ```
 
-**Observed architecture type:** Multi-track exercise monorepo scaffold (directory-based partitioning by skill level).  
-**Runtime / deployment topology:** None — no services, containers, or infrastructure code present.  
-**Primary languages detected:** None (0 source files).  
-**Frameworks detected:** None.
+**Observed architecture type:** Multi-track exercise monorepo with per-task isolated services.  
+**Runtime topology:** Standalone HTTP APIs, background polling workers, AWS Lambda, and CLI binaries — no unified production deployment.  
+**Primary languages:** Python (53 files), JavaScript (19), Rust (9) — excluding virtualenv/build caches.  
+**Frameworks detected:** FastAPI, Express, Pydantic, Starlette, psycopg2, serde, Prometheus client.
 
 ### Evidence — repository purpose
 
@@ -42,7 +65,7 @@ Evil-Ai/                          ← Git repository root (branch: main)
 
 Hands-on exercises for evaluating AI coding agents across beginner, intermediate, advanced, and DevOps tracks.
 
-Each subfolder is a self-contained task. Implement your solution inside the task folder, then commit and push when ready.
+Each subfolder is a self-contained task. Put all deliverables (reports, code, configs) directly in that task folder — not under a separate `docs/` mirror. Then commit and push when ready.
 ```
 
 ---
@@ -51,11 +74,14 @@ Each subfolder is a self-contained task. Implement your solution inside the task
 
 | Step | Action | Result |
 |------|--------|--------|
-| 1 | `find . -type f` excluding `.git/` | **27** files total |
-| 2 | Extension inventory | 25× `.gitkeep`, 1× `.md`, 1× `.gitignore` |
-| 3 | Source file glob (`*.java`, `*.py`, `*.ts`, `*.js`, `*.go`, `*.rs`, `*.kt`, `*.rb`, `*.cs`, `*.php`) | **0** matches |
-| 4 | Config file glob (`*.xml`, `*.yml`, `*.yaml`, `*.properties`, `*.json`, `*.toml`) | **0** matches |
-| 5 | Pattern grep for `class`, `interface`, `@Controller`, `@Service`, `@Repository`, `@Entity`, `@Scheduled`, `@KafkaListener` | **0** application matches (only `*.class` in `.gitignore`) |
+| 1 | `find . -type f` excluding `.git/`, `node_modules/`, `target/`, `.venv/` | **240** files |
+| 2 | Application source glob (`*.py`, `*.js`, `*.rs`) excl. tests | **61** files |
+| 3 | Total source incl. tests | **81** files |
+| 4 | Pattern extraction | Classes, structs, enums, route handlers, services, middleware, validators, DAO functions, workers |
+| 5 | Categorization | 12 taxonomy buckets per B1 spec |
+| 6 | Export | `inventory.csv` (108 data rows) |
+
+**Exclusions:** Test files (`tests/`, `*_test.py`, `*.test.js`, `conftest.py`), CI fixtures (`broken_*.py`), dependency trees (`node_modules/`, `.venv/`, `target/`).
 
 ---
 
@@ -63,63 +89,91 @@ Each subfolder is a self-contained task. Implement your solution inside the task
 
 | Category | Count | Notes |
 |----------|------:|-------|
-| Classes | 0 | No source files |
-| Interfaces | 0 | No source files |
-| Controllers | 0 | No source files |
-| Services | 0 | No source files |
-| Models / Entities | 0 | No source files |
-| Repositories / DAOs | 0 | No source files |
-| Jobs / Scheduled tasks | 0 | No source files |
-| Consumers / Listeners | 0 | No source files |
-| Configuration classes | 0 | No source files |
-| Utility / Helper classes | 0 | No source files |
-| Middleware / Filters | 0 | No source files |
-| Validators | 0 | No source files |
-| **Total classified application artifacts** | **0** | |
+| Classes | 1 | `LogAnalyzerError` enum (Rust) |
+| Interfaces | 0 | No TS/Java interfaces; no Rust `trait` artifacts inventoried |
+| Controllers | 23 | FastAPI route handlers + Express controller functions |
+| Services | 14 | `TransactionService`, `ConverterService`, queue/risk scoring |
+| Models / Entities | 21 | Pydantic schemas, dataclasses, Rust structs |
+| Repositories / DAOs | 6 | `database.py` PostgreSQL accessors (D2) |
+| Jobs / Scheduled tasks | 5 | D2/A3 polling workers, D1 Lambda `handler` |
+| Consumers / Listeners | 2 | A3 `processQueueOnce`, `isValidTransaction` |
+| Configuration classes | 7 | FastAPI app bootstrap, `createApp`, logging config |
+| Utility / Helper classes | 25 | Queue I/O, CLI client, log analysis, exceptions |
+| Middleware / Filters | 3 | B5 error handlers, D6 `ObservabilityMiddleware` |
+| Validators | 1 | B5 `validateCreateTransaction` |
+| **Total** | **108** | |
 
-### Non-application repository files (informational — outside requested categories)
+### Artifacts by track (source files with implementations)
 
-| File | Path | Purpose | Confidence |
-|------|------|---------|------------|
-| README | `README.md` | Project overview and exercise workflow | Confirmed |
-| Git ignore rules | `.gitignore` | Excludes build artifacts, env files, IDE dirs | Confirmed |
-| Directory placeholders | `**/.gitkeep` (25 files) | Preserve empty exercise directories in Git | Confirmed |
+| Track | Application source files | Primary artifacts |
+|-------|-------------------------:|-------------------|
+| beginner | 23 | B4 FastAPI, B5 Express, B6 Rust CLI |
+| intermediate | 7 | I4 currency conversion pair |
+| advanced | 12 | A3 polyglot queue system |
+| devops | 19 | D1 Lambda, D2 Compose stack, D6 observability |
 
 ---
 
-## Detailed Inventory Table
+## Detailed Inventory Highlights
 
-No artifacts matched the requested software categories. The `inventory.csv` file contains headers only.
+### Controllers (23)
 
-| Name | Category | File Path | Purpose | Key Dependencies | Confidence |
-|------|----------|-----------|---------|----------------|------------|
-| — | — | — | — | — | — |
+Repeated transaction CRUD handlers appear in B4, D6 (full CRUD + balance), D2 (create + list), and A3 (create only). I4 exposes `convert_currency`. D6 adds `metrics` and `root` endpoints.
 
-*See `inventory.csv` for machine-readable export (header row, zero data rows).*
+| Name | File Path | Framework |
+|------|-----------|-----------|
+| `create_transaction` | `beginner/B4-fastapi-service/app/routes/transactions.py` | FastAPI |
+| `createTransaction` | `beginner/B5-nodejs-api-cli/src/controllers/transactionController.js` | Express |
+| `convert_currency` | `intermediate/I4-fastapi-node-pair/fastapi-service/app/routes/convert.py` | FastAPI |
+| `metrics` | `devops/D6-observability/service/app/main.py` | FastAPI |
+
+### Services (14)
+
+| Name | File Path | Purpose |
+|------|-----------|---------|
+| `TransactionService` | `beginner/B4-fastapi-service/app/services/transaction_service.py` | In-memory transaction store |
+| `TransactionService` | `beginner/B5-nodejs-api-cli/src/services/transactionService.js` | In-memory transaction store (JS) |
+| `ConverterService` | `intermediate/I4-fastapi-node-pair/fastapi-service/app/services/converter.py` | Currency conversion logic |
+| `calculate_risk_score` | `advanced/A3-polyglot-system/rust-engine/src/lib.rs` | Risk scoring engine |
+| `enqueue_transaction` | `advanced/A3-polyglot-system/fastapi-service/app/services/queue_service.py` | File-backed queue writer |
+
+### Models / Entities (21)
+
+Domain models center on **transactions** (`Transaction`, `TransactionType`, `TransactionCreate`, `TransactionResponse`, `BalanceResponse`) and **currency conversion** (`ConvertRequest`, `ConvertResponse`). A3 adds `ScoreInput` / `ScoreOutput` for risk scoring.
+
+### Repositories / DAOs (6)
+
+All in `devops/D2-docker-compose/api/app/database.py`:
+
+- `get_connection`, `wait_for_database` — connection lifecycle
+- `insert_transaction`, `list_transactions`, `get_transaction_by_id` — PostgreSQL CRUD
+
+No JPA `@Repository`, Spring Data, or ORM entity mappings were found (consistent with I1 ER diagram findings).
+
+### Jobs / Consumers (7 combined)
+
+| Name | Category | File Path |
+|------|----------|-----------|
+| `handler` | Jobs | `devops/D1-terraform/lambda/index.py` |
+| `run`, `processPendingTransactions` | Jobs | `devops/D2-docker-compose/worker/src/worker.js` |
+| `runLoop` | Jobs | `advanced/A3-polyglot-system/node-worker/src/worker.js` |
+| `processQueueOnce` | Consumers | `advanced/A3-polyglot-system/node-worker/src/processor.js` |
 
 ---
 
 ## Notable Findings
 
-1. **Scaffold-only repository.** All exercise task directories exist but contain only `.gitkeep` placeholders — no implementations yet.
+1. **Polyglot repetition.** Transaction APIs are implemented three ways: FastAPI in-memory (B4, D6), Express in-memory (B5), and FastAPI + PostgreSQL (D2). Useful for cross-task comparison but increases duplicate artifact names in the inventory.
 
-2. **B1 output location mismatch.** Task deliverables are written to `beginner/B1-repo-artifact-inventory/` per requirements. The exercise slot folder `beginner/B1-repo-artifact-inventory/` still contains only `.gitkeep`.
+2. **No traditional ORM layer.** Persistence is either in-memory lists, raw `psycopg2` SQL, or JSON file queues — no SQLAlchemy models, Hibernate entities, or `@Entity` annotations.
 
-3. **Pre-provisioned ignore rules.** `.gitignore` anticipates future polyglot development (Python, Node, Java, Go, Rust) but no corresponding source trees exist yet.
+3. **B1 output location resolved.** Deliverables (`REPORT.md`, `inventory.csv`) are written directly to `beginner/B1-repo-artifact-inventory/` per README workflow.
 
-   ```19:29:.gitignore
-   # Python
-   __pycache__/
-   *.py[cod]
-   ...
-   .ruff_cache/
-   ```
+4. **Observability extension.** D6 adds `ObservabilityMiddleware` and Prometheus `metrics` endpoint atop the B4 transaction service pattern.
 
-4. **No build or CI artifacts.** No `pom.xml`, `package.json`, `requirements.txt`, `Cargo.toml`, `Dockerfile`, Terraform files, or pipeline definitions were found.
+5. **Documentation-heavy tracks.** Many tasks (B2, B3, I1–I3, A1–A2, A4–A6, D3–D5) contain reports and plans without additional application source code beyond markdown.
 
-5. **No tests.** No test directories or test source files detected.
-
-6. **No submodules or nested repositories.** `.git` is the sole version-control root; no `.gitmodules` file present.
+6. **Build/CI present.** Root `.github/workflows/ci.yml`, `Makefile`, `mise.toml`, Terraform (`devops/D1-terraform/`), Kubernetes manifests (`devops/D4-kubernetes/`), and Docker Compose files exist but are infrastructure/config — outside the B1 application-artifact taxonomy.
 
 ---
 
@@ -127,11 +181,11 @@ No artifacts matched the requested software categories. The `inventory.csv` file
 
 | # | Area | Reason |
 |---|------|--------|
-| 1 | Ignored paths | Files matching `.gitignore` patterns (e.g. `.env`, `node_modules/`, `target/`) are excluded from Git and were not present on disk during scan |
-| 2 | Uncommitted local changes | Scan reflects working tree at analysis time; artifacts added but not saved to disk would be missed |
-| 3 | External / submodule code | No submodules detected; if added later, re-scan required |
-| 4 | Generated artifacts | Build outputs are gitignored; none were found locally |
-| 5 | Intended target repository | If B1 was meant to analyze a different (external) application repo, this scaffold will not satisfy that intent — confirm evaluation target with task owner |
+| 1 | Ignored paths | `node_modules/`, `.venv/`, `target/` excluded; local-only deps not scanned |
+| 2 | Function vs. class controllers | FastAPI uses function-based handlers classified as Controllers, not classes |
+| 3 | Duplicate names across tasks | Same symbol (e.g. `TransactionService`) in multiple task folders — paths disambiguate |
+| 4 | Pydantic validators | `@field_validator` methods on schema classes counted as part of Models, not separate Validators |
+| 5 | Report-only tasks | Markdown deliverables in A1, I1, D3, etc. are not application artifacts |
 
 ---
 
@@ -139,48 +193,26 @@ No artifacts matched the requested software categories. The `inventory.csv` file
 
 | Metric | Verified Value |
 |--------|---------------:|
-| Total files scanned (excl. `.git/`) | 27 |
-| Total source code files | 0 |
-| Total directories (excl. `.git/`) | 30 |
-| **Total controllers** | **0** |
-| **Total services** | **0** |
-| **Total repositories** | **0** |
-| **Total entities/models** | **0** |
-| **Total jobs** | **0** |
-| **Total consumers** | **0** |
-| **Total config classes** | **0** |
-| **Total utilities** | **0** |
+| Total files scanned (excl. deps) | 240 |
+| Application source files (excl. tests) | 61 |
+| Total directories (excl. `.git/`, deps) | 181 |
+| **Total classified artifacts** | **108** |
+| **Total controllers** | **23** |
+| **Total services** | **14** |
+| **Total repositories / DAOs** | **6** |
+| **Total entities/models** | **21** |
+| **Total jobs** | **5** |
+| **Total consumers** | **2** |
+| **Total config classes** | **7** |
+| **Total utilities** | **25** |
+| **Total middleware** | **3** |
+| **Total validators** | **1** |
+| **Total interfaces** | **0** |
 
 ---
 
-## Appendix — Complete File Manifest
+## Appendix — Machine-Readable Export
 
-| # | Path | Type |
-|---|------|------|
-| 1 | `.gitignore` | Git configuration |
-| 2 | `README.md` | Documentation |
-| 3 | `docs/.gitkeep` | Placeholder |
-| 4 | `beginner/B1-repo-artifact-inventory/.gitkeep` | Placeholder |
-| 5 | `beginner/B2-api-endpoint-map/.gitkeep` | Placeholder |
-| 6 | `beginner/B3-test-discovery/.gitkeep` | Placeholder |
-| 7 | `beginner/B4-fastapi-service/.gitkeep` | Placeholder |
-| 8 | `beginner/B5-nodejs-api-cli/.gitkeep` | Placeholder |
-| 9 | `beginner/B6-rust-cli/.gitkeep` | Placeholder |
-| 10 | `intermediate/I1-er-diagram/.gitkeep` | Placeholder |
-| 11 | `intermediate/I2-end-to-end-trace/.gitkeep` | Placeholder |
-| 12 | `intermediate/I3-safe-change/.gitkeep` | Placeholder |
-| 13 | `intermediate/I4-fastapi-node-pair/.gitkeep` | Placeholder |
-| 14 | `intermediate/I5-dockerize/.gitkeep` | Placeholder |
-| 15 | `intermediate/I6-bug-diagnosis/.gitkeep` | Placeholder |
-| 16 | `advanced/A1-parallel-plan/.gitkeep` | Placeholder |
-| 17 | `advanced/A2-parallel-worktrees/.gitkeep` | Placeholder |
-| 18 | `advanced/A3-polyglot-system/.gitkeep` | Placeholder |
-| 19 | `advanced/A4-modernization/.gitkeep` | Placeholder |
-| 20 | `advanced/A5-agent-review/.gitkeep` | Placeholder |
-| 21 | `advanced/A6-performance/.gitkeep` | Placeholder |
-| 22 | `devops/D1-terraform/.gitkeep` | Placeholder |
-| 23 | `devops/D2-docker-compose/.gitkeep` | Placeholder |
-| 24 | `devops/D3-ci-pipeline/.gitkeep` | Placeholder |
-| 25 | `devops/D4-kubernetes/.gitkeep` | Placeholder |
-| 26 | `devops/D5-dev-environment/.gitkeep` | Placeholder |
-| 27 | `devops/D6-observability/.gitkeep` | Placeholder |
+Full artifact listing: **`inventory.csv`** (108 rows + header).
+
+Columns: `Name`, `Category`, `File Path`, `Purpose`, `Key Dependencies`, `Confidence Level`.

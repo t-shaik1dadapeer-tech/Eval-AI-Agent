@@ -49,7 +49,7 @@ npm install
 npm start
 ```
 
-Server starts at `http://127.0.0.1:3000`.
+Server starts at `http://127.0.0.1:3001` (port 3001 avoids conflict with D6 Grafana on 3000).
 
 ## Run tests
 
@@ -83,7 +83,7 @@ Expected: **5 passed**.
 ### Create a credit transaction
 
 ```bash
-curl -X POST http://localhost:3000/transactions \
+curl -X POST http://localhost:3001/transactions \
   -H "Content-Type: application/json" \
   -d '{"type":"credit","amount":150.0,"description":"Initial deposit"}'
 ```
@@ -103,7 +103,7 @@ curl -X POST http://localhost:3000/transactions \
 ### Create a debit transaction
 
 ```bash
-curl -X POST http://localhost:3000/transactions \
+curl -X POST http://localhost:3001/transactions \
   -H "Content-Type: application/json" \
   -d '{"type":"debit","amount":50.0,"description":"Purchase"}'
 ```
@@ -111,7 +111,7 @@ curl -X POST http://localhost:3000/transactions \
 ### List transactions
 
 ```bash
-curl http://localhost:3000/transactions
+curl http://localhost:3001/transactions
 ```
 
 **Sample response (200):**
@@ -138,7 +138,7 @@ curl http://localhost:3000/transactions
 ### Get balance
 
 ```bash
-curl http://localhost:3000/balance
+curl http://localhost:3001/balance
 ```
 
 **Sample response (200):**
@@ -153,7 +153,7 @@ curl http://localhost:3000/balance
 ### Invalid payload
 
 ```bash
-curl -X POST http://localhost:3000/transactions \
+curl -X POST http://localhost:3001/transactions \
   -H "Content-Type: application/json" \
   -d '{"type":"credit","amount":-5}'
 ```
