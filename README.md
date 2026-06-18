@@ -67,7 +67,17 @@ Eval-ai-agent/
 | [`docs/TASK_MAPPING.md`](docs/TASK_MAPPING.md) | Task ID → name, purpose, folder |
 | [`docs/AGENT_USAGE.md`](docs/AGENT_USAGE.md) | How to use Cursor/agents + verify work |
 | [`docs/DASHBOARD_VISION.md`](docs/DASHBOARD_VISION.md) | Future eval dashboard (design only) |
-| [`docs/ORCHESTRATOR_DESIGN.md`](docs/ORCHESTRATOR_DESIGN.md) | Future task orchestrator (design only) |
+| [`docs/ORCHESTRATOR_DESIGN.md`](docs/ORCHESTRATOR_DESIGN.md) | Future task router/executor (design only) |
+| [`docs/task-registry.json`](docs/task-registry.json) | Machine-readable task profiles + eval API |
+
+## Eval portfolio (24 tasks)
+
+```bash
+make eval              # verify deliverables
+make eval-dashboard    # open docs/eval-dashboard.html
+make eval-api          # compare API :8787
+make eval-compare TASK=B2 AGENT_OUTPUT=./out.csv
+```
 
 ## Tracks
 

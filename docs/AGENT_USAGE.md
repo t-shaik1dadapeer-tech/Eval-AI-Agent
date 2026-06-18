@@ -19,6 +19,44 @@ How to use AI coding agents (and manual verification) when working on Eval AI Ag
 4. **Run verification** before marking complete (see below).
 5. **Update registry status** if you refresh a task (e.g. B2, B3).
 
+## Eval compare API (agent output vs reference `.md`)
+
+When an agent finishes a task, compare its output to the repo ground truth:
+
+```bash
+# Show reference files and hint (no agent file)
+make eval-compare TASK=I2
+
+# Compare agent-produced file
+make eval-compare TASK=I2 AGENT_OUTPUT=./agent-flow.md
+```
+
+The response includes:
+
+- `verdict`: `ok` | `partial` | `mismatch` | `reference_only`
+- `reference_files`: which `.md` / `.csv` files define expected output
+- `suggestion`: e.g. “Read `intermediate/I2-end-to-end-trace/FLOW_TRACE.md`…”
+
+HTTP API (after `make eval-api`):
+
+```bash
+curl http://127.0.0.1:8787/api/portfolio
+curl http://127.0.0.1:8787/api/tasks/I2
+curl -X POST 'http://127.0.0.1:8787/api/compare/B2?agent_output=/path/to/endpoints.csv'
+open http://127.0.0.1:8787/api/dashboard
+```
+
+Registry source: [`task-registry.json`](task-registry.json).
+
+## Portfolio dashboard (24 tasks)
+
+```bash
+make eval-dashboard
+open docs/eval-dashboard.html
+```
+
+Shows **total / deliverables OK / executable / verified** out of 24. For A1, drill into `advanced/A1-parallel-plan/agent-prompts.md` for per-lane agent prompts.
+
 ## Verification by task type
 
 ### Analysis tasks (B1–B3)

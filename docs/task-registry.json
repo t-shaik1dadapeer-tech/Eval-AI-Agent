@@ -1,0 +1,264 @@
+{
+  "version": "1.0",
+  "total_tasks": 24,
+  "tasks": [
+    {
+      "id": "B1",
+      "category": "beginner",
+      "name": "Repository Artifact Inventory",
+      "folder": "beginner/B1-repo-artifact-inventory",
+      "type": "analysis",
+      "reference_files": ["README.md", "REPORT.md", "inventory.csv"],
+      "required_files": ["REPORT.md", "inventory.csv"],
+      "compare_hint": "Agent output should match artifact categories and paths in inventory.csv; cross-check counts in REPORT.md."
+    },
+    {
+      "id": "B2",
+      "category": "beginner",
+      "name": "API Endpoint Map",
+      "folder": "beginner/B2-api-endpoint-map",
+      "type": "analysis",
+      "reference_files": ["README.md", "API_MAP.md", "endpoints.csv"],
+      "required_files": ["API_MAP.md", "endpoints.csv"],
+      "compare_hint": "Routes in endpoints.csv must match FastAPI/Express handlers in B4, B5, I4, A3, D2, D6."
+    },
+    {
+      "id": "B3",
+      "category": "beginner",
+      "name": "Test Discovery",
+      "folder": "beginner/B3-test-discovery",
+      "type": "analysis",
+      "reference_files": ["README.md", "TEST_REPORT.md"],
+      "required_files": ["TEST_REPORT.md"],
+      "verify_command": "make test",
+      "compare_hint": "TEST_REPORT.md should reflect make test results (pytest, Jest, Cargo)."
+    },
+    {
+      "id": "B4",
+      "category": "beginner",
+      "name": "FastAPI Transaction Service",
+      "folder": "beginner/B4-fastapi-service",
+      "type": "code",
+      "reference_files": ["README.md", "REPORT.md"],
+      "required_files": ["app/main.py", "app/routes/transactions.py", "tests/test_transactions.py"],
+      "verify_command": "cd beginner/B4-fastapi-service && mise exec -- pytest -q",
+      "compare_hint": "Run pytest; compare API behavior to README endpoint list."
+    },
+    {
+      "id": "B5",
+      "category": "beginner",
+      "name": "Node.js Transaction API",
+      "folder": "beginner/B5-nodejs-api-cli",
+      "type": "code",
+      "reference_files": ["README.md", "REPORT.md"],
+      "required_files": ["src/app.js", "src/routes/transactionRoutes.js", "tests/transactions.test.js"],
+      "verify_command": "cd beginner/B5-nodejs-api-cli && mise exec -- npm test",
+      "compare_hint": "Run npm test; endpoints should mirror B4 (see B2 endpoints.csv)."
+    },
+    {
+      "id": "B6",
+      "category": "beginner",
+      "name": "Rust Log Analyzer CLI",
+      "folder": "beginner/B6-rust-cli",
+      "type": "code",
+      "reference_files": ["README.md", "REPORT.md"],
+      "required_files": ["src/main.rs", "src/analyzer.rs", "tests/log_analyzer_test.rs"],
+      "verify_command": "cd beginner/B6-rust-cli && mise exec -- cargo test -q",
+      "compare_hint": "Run cargo test; CLI counts INFO/WARN/ERROR per README."
+    },
+    {
+      "id": "I1",
+      "category": "intermediate",
+      "name": "ER Diagram",
+      "folder": "intermediate/I1-er-diagram",
+      "type": "report",
+      "reference_files": ["README.md", "ER_REPORT.md", "er-diagram.mmd", "entities.csv"],
+      "required_files": ["ER_REPORT.md", "er-diagram.mmd"],
+      "compare_hint": "Compare entities/relationships to models in B4, D2, A3."
+    },
+    {
+      "id": "I2",
+      "category": "intermediate",
+      "name": "End-to-End Trace",
+      "folder": "intermediate/I2-end-to-end-trace",
+      "type": "report",
+      "reference_files": ["README.md", "FLOW_TRACE.md", "sequence-diagram.mmd", "flow-summary.csv"],
+      "required_files": ["FLOW_TRACE.md", "sequence-diagram.mmd"],
+      "compare_hint": "Agent trace should follow steps in FLOW_TRACE.md and sequence-diagram.mmd."
+    },
+    {
+      "id": "I3",
+      "category": "intermediate",
+      "name": "Safe Change",
+      "folder": "intermediate/I3-safe-change",
+      "type": "report",
+      "reference_files": ["README.md", "CHANGE_REPORT.md", "risk-assessment.md", "diff-summary.md"],
+      "required_files": ["CHANGE_REPORT.md", "risk-assessment.md"],
+      "compare_hint": "Align change scope and risks with CHANGE_REPORT.md."
+    },
+    {
+      "id": "I4",
+      "category": "intermediate",
+      "name": "FastAPI + Node Pair",
+      "folder": "intermediate/I4-fastapi-node-pair",
+      "type": "code",
+      "reference_files": ["README.md", "docs/REPORT.md", "fastapi-service/README.md", "node-client/README.md"],
+      "required_files": ["fastapi-service/app/main.py", "node-client/src/cli.js"],
+      "verify_command": "cd intermediate/I4-fastapi-node-pair/fastapi-service && mise exec -- pytest -q && cd ../node-client && mise exec -- npm test",
+      "compare_hint": "POST /convert on FastAPI; Node client tests in node-client/tests/."
+    },
+    {
+      "id": "I5",
+      "category": "intermediate",
+      "name": "Dockerize",
+      "folder": "intermediate/I5-dockerize",
+      "type": "infra",
+      "reference_files": ["README.md", "docs/DOCKER_REPORT.md", "Dockerfile"],
+      "required_files": ["Dockerfile", "docs/DOCKER_REPORT.md"],
+      "verify_requires": ["docker"],
+      "compare_hint": "See DOCKER_REPORT.md for build/run instructions."
+    },
+    {
+      "id": "I6",
+      "category": "intermediate",
+      "name": "Bug Diagnosis",
+      "folder": "intermediate/I6-bug-diagnosis",
+      "type": "report",
+      "reference_files": ["README.md", "BUG_REPORT.md", "ROOT_CAUSE_ANALYSIS.md", "FIX_SUMMARY.md"],
+      "required_files": ["BUG_REPORT.md", "ROOT_CAUSE_ANALYSIS.md", "FIX_SUMMARY.md"],
+      "compare_hint": "Agent diagnosis should match structure in ROOT_CAUSE_ANALYSIS.md."
+    },
+    {
+      "id": "A1",
+      "category": "advanced",
+      "name": "Parallel Planning",
+      "folder": "advanced/A1-parallel-plan",
+      "type": "report",
+      "reference_files": ["README.md", "PARALLEL_EXECUTION_PLAN.md", "agent-prompts.md", "branch-strategy.md"],
+      "required_files": ["PARALLEL_EXECUTION_PLAN.md", "agent-prompts.md", "branch-strategy.md"],
+      "agent_prompt_file": "agent-prompts.md",
+      "compare_hint": "Multi-lane prompts in agent-prompts.md define per-agent scope; compare lane deliverables to that file."
+    },
+    {
+      "id": "A2",
+      "category": "advanced",
+      "name": "Parallel Worktrees",
+      "folder": "advanced/A2-parallel-worktrees",
+      "type": "report",
+      "reference_files": ["README.md", "WORKTREE_EXECUTION_REPORT.md", "merge-log.md"],
+      "required_files": ["WORKTREE_EXECUTION_REPORT.md", "merge-log.md"],
+      "compare_hint": "See WORKTREE_EXECUTION_REPORT.md for expected worktree workflow."
+    },
+    {
+      "id": "A3",
+      "category": "advanced",
+      "name": "Polyglot System",
+      "folder": "advanced/A3-polyglot-system",
+      "type": "code",
+      "reference_files": ["README.md", "docs/ARCHITECTURE.md", "docs/REPORT.md", "scripts/integration-test.sh"],
+      "required_files": ["fastapi-service/app/main.py", "node-worker/src/worker.js", "rust-engine/src/lib.rs"],
+      "verify_command": "bash advanced/A3-polyglot-system/scripts/integration-test.sh",
+      "compare_hint": "Run integration-test.sh; FastAPI 202 → queue → worker → Rust score."
+    },
+    {
+      "id": "A4",
+      "category": "advanced",
+      "name": "Modernization",
+      "folder": "advanced/A4-modernization",
+      "type": "report",
+      "reference_files": ["README.md", "MODERNIZATION_REPORT.md", "PRIORITIZATION_MATRIX.md"],
+      "required_files": ["MODERNIZATION_REPORT.md", "PRIORITIZATION_MATRIX.md"],
+      "compare_hint": "Priorities in PRIORITIZATION_MATRIX.md are the reference ranking."
+    },
+    {
+      "id": "A5",
+      "category": "advanced",
+      "name": "Agent Review",
+      "folder": "advanced/A5-agent-review",
+      "type": "report",
+      "reference_files": ["README.md", "REVIEW_REPORT.md", "FINDINGS_MATRIX.md", "VERIFICATION_PLAN.md"],
+      "required_files": ["REVIEW_REPORT.md", "FINDINGS_MATRIX.md"],
+      "compare_hint": "Findings should be categorized like FINDINGS_MATRIX.md."
+    },
+    {
+      "id": "A6",
+      "category": "advanced",
+      "name": "Performance",
+      "folder": "advanced/A6-performance",
+      "type": "code",
+      "reference_files": ["README.md", "PERFORMANCE_REPORT.md", "run-benchmark.sh", "benchmark-results.csv"],
+      "required_files": ["PERFORMANCE_REPORT.md", "run-benchmark.sh"],
+      "verify_command": "BENCH_LINES=100000 BENCH_RUNS=2 bash advanced/A6-performance/run-benchmark.sh",
+      "compare_hint": "Reproduce benchmarks via run-benchmark.sh; compare to PERFORMANCE_REPORT.md."
+    },
+    {
+      "id": "D1",
+      "category": "devops",
+      "name": "Terraform",
+      "folder": "devops/D1-terraform",
+      "type": "infra",
+      "reference_files": ["README.md", "docs/TERRAFORM_REPORT.md", "main.tf"],
+      "required_files": ["main.tf", "lambda/index.py"],
+      "verify_command": "cd devops/D1-terraform && mise exec -- terraform init -backend=false -input=false && mise exec -- terraform validate",
+      "verify_requires": ["terraform"],
+      "compare_hint": "terraform validate must pass; see TERRAFORM_REPORT.md."
+    },
+    {
+      "id": "D2",
+      "category": "devops",
+      "name": "Docker Compose",
+      "folder": "devops/D2-docker-compose",
+      "type": "infra",
+      "reference_files": ["README.md", "docs/STACK_REPORT.md", "docker-compose.yml"],
+      "required_files": ["docker-compose.yml", "scripts/e2e_test.sh"],
+      "verify_command": "bash devops/D2-docker-compose/scripts/e2e_test.sh",
+      "verify_requires": ["docker"],
+      "compare_hint": "Run e2e_test.sh with Docker; API on port 8200."
+    },
+    {
+      "id": "D3",
+      "category": "devops",
+      "name": "CI Pipeline",
+      "folder": "devops/D3-ci-pipeline",
+      "type": "infra",
+      "reference_files": ["README.md", "docs/PIPELINE_REPORT.md", "scripts/run-pipeline-local.sh"],
+      "required_files": ["docs/PIPELINE_REPORT.md", "scripts/run-pipeline-local.sh"],
+      "verify_command": "bash devops/D3-ci-pipeline/scripts/run-pipeline-local.sh",
+      "compare_hint": "Local pipeline mirrors GitHub Actions; see PIPELINE_REPORT.md."
+    },
+    {
+      "id": "D4",
+      "category": "devops",
+      "name": "Kubernetes",
+      "folder": "devops/D4-kubernetes",
+      "type": "infra",
+      "reference_files": ["README.md", "docs/K8S_REPORT.md", "k8s/deployment.yaml"],
+      "required_files": ["k8s/deployment.yaml", "scripts/validate-manifests.sh"],
+      "verify_command": "bash devops/D4-kubernetes/scripts/validate-manifests.sh",
+      "compare_hint": "validate-manifests.sh must pass; see K8S_REPORT.md."
+    },
+    {
+      "id": "D5",
+      "category": "devops",
+      "name": "Dev Environment",
+      "folder": "devops/D5-dev-environment",
+      "type": "infra",
+      "reference_files": ["README.md", "docs/DEV_ENVIRONMENT_REPORT.md", "docs/BOOTSTRAP_VERIFICATION.md"],
+      "required_files": ["README.md"],
+      "verify_command": "make test",
+      "compare_hint": "make bootstrap from repo root; see D5 README and root Makefile."
+    },
+    {
+      "id": "D6",
+      "category": "devops",
+      "name": "Observability",
+      "folder": "devops/D6-observability",
+      "type": "infra",
+      "reference_files": ["README.md", "docs/OBSERVABILITY_REPORT.md", "docs/METRICS_REPORT.md", "scripts/start-stack.sh"],
+      "required_files": ["docker-compose.yml", "service/app/main.py", "service/tests/test_metrics.py"],
+      "verify_command": "cd devops/D6-observability/service && mise exec -- pytest -q",
+      "verify_requires": ["docker"],
+      "compare_hint": "pytest for service; full stack via start-stack.sh + verify_metrics.sh (Docker)."
+    }
+  ]
+}

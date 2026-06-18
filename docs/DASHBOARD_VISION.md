@@ -1,10 +1,21 @@
 # Dashboard Vision
 
-**Status:** Future design — not implemented in this repository yet.
+**Status:** Partially implemented — see **Eval tooling** below. Service metrics remain in **D6 Grafana**.
 
-This document describes a planned evaluation dashboard for tracking AI agent exercise completion across all 24 tasks. It complements the existing **D6 Grafana** stack (`devops/D6-observability/`), which monitors API metrics only.
+This document describes the evaluation dashboard for tracking AI agent exercise completion across all 24 tasks. It complements the existing **D6 Grafana** stack (`devops/D6-observability/`), which monitors API request metrics only.
 
-## Goals
+## Implemented today
+
+| Component | Command | Output |
+| --------- | ------- | ------ |
+| Portfolio verify | `make eval` | `docs/eval-status.json` |
+| HTML dashboard | `make eval-dashboard` | `docs/eval-dashboard.html` (24-task grid, completion %) |
+| Compare API | `make eval-api` | `http://127.0.0.1:8787/api/compare/{TASK}` |
+| Agent compare CLI | `make eval-compare TASK=…` | JSON verdict + suggested `.md` files |
+| Prometheus eval metrics | `make eval-metrics` | Text format for optional Grafana panel |
+| Registry | `docs/task-registry.json` | Per-task reference files, verify commands |
+
+## Goals (full vision)
 
 Provide evaluators and developers a single view of:
 

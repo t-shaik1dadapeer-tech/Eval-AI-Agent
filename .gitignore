@@ -60,5 +60,6 @@ tmp/
 temp/
 .cache/
 
-# Local tooling (not committed)
-.tools/
+# Eval tooling (regenerate via make eval-dashboard)
+docs/eval-status.json
+docs/eval-dashboard.html

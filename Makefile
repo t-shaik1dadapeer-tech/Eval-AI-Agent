@@ -5,7 +5,7 @@ SHELL := /bin/bash
 ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 export PATH := $(HOME)/.local/bin:$(PATH)
 
-.PHONY: help bootstrap install install-mise test lint clean verify versions
+.PHONY: help bootstrap install install-mise test lint clean verify versions eval eval-dashboard eval-api eval-compare eval-metrics
 
 help: ## Show targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -32,6 +32,22 @@ clean: ## Remove node_modules and caches (keeps Cargo target/)
 	@echo "clean complete (cargo target/ retained for A3 integration tests)"
 
 verify: bootstrap ## Alias for bootstrap (install + test)
+
+eval: ## Verify all 24 task deliverables (writes docs/eval-status.json)
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" verify
+
+eval-dashboard: eval ## Generate docs/eval-dashboard.html
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" dashboard
+
+eval-api: ## Start eval compare API on http://127.0.0.1:8787
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" serve --port 8787
+
+eval-compare: ## Compare agent output: make eval-compare TASK=I2 AGENT_OUTPUT=./out.md
+	@test -n "$(TASK)" || (echo "Usage: make eval-compare TASK=B2 AGENT_OUTPUT=./file.md" && exit 1)
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" compare "$(TASK)" $(if $(AGENT_OUTPUT),--agent-output "$(AGENT_OUTPUT)",)
+
+eval-metrics: eval ## Prometheus metrics for eval portfolio (Grafana text format)
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" metrics
 
 versions: ## Print pinned and active tool versions
 	@command -v mise >/dev/null 2>&1 && mise current || echo "mise not installed"

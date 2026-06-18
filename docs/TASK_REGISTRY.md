@@ -47,3 +47,13 @@ make lint        # optional linters
 ```
 
 See [`TASK_MAPPING.md`](TASK_MAPPING.md) for task descriptions and [`AGENT_USAGE.md`](AGENT_USAGE.md) for evaluation workflow.
+
+## Eval tooling
+
+```bash
+make eval              # deliverables check for all 24 tasks
+make eval-dashboard    # HTML portfolio dashboard
+make eval-api          # compare API on :8787
+```
+
+Machine-readable registry: [`task-registry.json`](task-registry.json).
