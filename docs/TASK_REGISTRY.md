@@ -5,8 +5,8 @@ Master index of all 24 evaluation tasks in this repository. Status reflects the 
 | Category     | Task | Folder                              | Status        | Primary deliverables                          |
 | ------------ | ---- | ----------------------------------- | ------------- | --------------------------------------------- |
 | Beginner     | B1   | `beginner/B1-repo-artifact-inventory/` | Completed     | `REPORT.md`, `inventory.csv`                  |
-| Beginner     | B2   | `beginner/B2-api-endpoint-map/`        | Needs refresh | `API_MAP.md`, `endpoints.csv` (stale)         |
-| Beginner     | B3   | `beginner/B3-test-discovery/`          | Needs refresh | `TEST_REPORT.md` (pre–B4/B5/B6)               |
+| Beginner     | B2   | `beginner/B2-api-endpoint-map/`        | Completed     | `API_MAP.md`, `endpoints.csv` (25 routes)     |
+| Beginner     | B3   | `beginner/B3-test-discovery/`          | Completed     | `TEST_REPORT.md` (`make test` — 47 pass)      |
 | Beginner     | B4   | `beginner/B4-fastapi-service/`         | Completed     | FastAPI service, tests, `REPORT.md`           |
 | Beginner     | B5   | `beginner/B5-nodejs-api-cli/`          | Completed     | Express API, tests, `REPORT.md`               |
 | Beginner     | B6   | `beginner/B6-rust-cli/`                | Completed     | Rust CLI, tests, `REPORT.md`                  |
@@ -33,8 +33,8 @@ Master index of all 24 evaluation tasks in this repository. Status reflects the 
 
 | Status        | Count |
 | ------------- | ----: |
-| Completed     |    22 |
-| Needs refresh |     2 |
+| Completed     |    24 |
+| Needs refresh |     0 |
 | Planned       |     0 |
 
 ## Verification entry point

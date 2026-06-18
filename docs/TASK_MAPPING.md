@@ -49,6 +49,6 @@ Maps each evaluation task ID to its purpose, expected deliverable type, and fold
 ## Cross-task relationships
 
 - **B4 / B5 / D6** — same transaction domain; D6 extends B4 with observability.
-- **B1 ↔ B2 ↔ B3** — analysis tasks; should stay consistent after B4–B6 were added (B2/B3 need refresh).
+- **B1 ↔ B2 ↔ B3** — analysis tasks; kept consistent after 2026-06-18 refresh (108 artifacts, 25 routes, 47 tests in `make test`).
 - **D5** — entry point for all automated tests (`make bootstrap`).
 - **D6** — Grafana dashboards consume metrics from the D6 FastAPI service; see `DASHBOARD_VISION.md` for future unified dashboard ideas.

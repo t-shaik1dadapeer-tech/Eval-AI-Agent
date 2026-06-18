@@ -13,8 +13,8 @@ Discover and document all HTTP/API routes exposed by services in the repository.
 
 # Status
 
-Needs refresh — report was created before B4/B5/D2/D6 services existed; re-run scan to populate routes from current code.
+Completed — refreshed 2026-06-18 (25 routes across 6 HTTP services).
 
 # Verification
 
-Compare `endpoints.csv` to route definitions in `beginner/B4-fastapi-service/`, `beginner/B5-nodejs-api-cli/`, and related services.
+Compare `endpoints.csv` to route definitions in B4, B5, I4, A3, D2, and D6 source files.

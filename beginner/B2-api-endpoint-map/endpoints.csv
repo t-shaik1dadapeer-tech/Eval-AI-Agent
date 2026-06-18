@@ -1,1 +1,26 @@
 HTTP Method,Route Path,Endpoint Type,Controller/Class Name,Handler Method,Request DTO/Model,Response DTO/Model,Auth Requirement,Source File Path,Confidence Level
+GET,/,REST,FastAPI app,root,,dict (service info),Public,beginner/B4-fastapi-service/app/main.py,Confirmed
+GET,/health,REST,FastAPI app,health_check,,dict (status),Public,beginner/B4-fastapi-service/app/main.py,Confirmed
+POST,/transactions,REST,transactions router,create_transaction,TransactionCreate,TransactionResponse,Public,beginner/B4-fastapi-service/app/routes/transactions.py,Confirmed
+GET,/transactions,REST,transactions router,get_transactions,,list[TransactionResponse],Public,beginner/B4-fastapi-service/app/routes/transactions.py,Confirmed
+GET,/transactions/{transaction_id},REST,transactions router,get_transaction,,TransactionResponse,Public,beginner/B4-fastapi-service/app/routes/transactions.py,Confirmed
+GET,/balance,REST,transactions router,get_balance,,BalanceResponse,Public,beginner/B4-fastapi-service/app/routes/transactions.py,Confirmed
+GET,/,REST,Express app,root handler,,JSON (service info),Public,beginner/B5-nodejs-api-cli/src/app.js,Confirmed
+GET,/health,REST,Express app,health handler,,JSON (status),Public,beginner/B5-nodejs-api-cli/src/app.js,Confirmed
+POST,/transactions,REST,transactionRoutes,createTransaction,JSON body (validated),JSON transaction,Public,beginner/B5-nodejs-api-cli/src/routes/transactionRoutes.js,Confirmed
+GET,/transactions,REST,transactionRoutes,getTransactions,,JSON array,Public,beginner/B5-nodejs-api-cli/src/routes/transactionRoutes.js,Confirmed
+GET,/balance,REST,transactionRoutes,getBalance,,JSON balance,Public,beginner/B5-nodejs-api-cli/src/routes/transactionRoutes.js,Confirmed
+GET,/health,REST,FastAPI app,health_check,,dict (status),Public,intermediate/I4-fastapi-node-pair/fastapi-service/app/main.py,Confirmed
+POST,/convert,REST,convert router,convert_currency,ConvertRequest,ConvertResponse,Public,intermediate/I4-fastapi-node-pair/fastapi-service/app/routes/convert.py,Confirmed
+GET,/health,REST,FastAPI app,health_check,,dict (status),Public,advanced/A3-polyglot-system/fastapi-service/app/main.py,Confirmed
+POST,/transactions,REST,transactions router,create_transaction,TransactionCreate,TransactionAccepted (202),Public,advanced/A3-polyglot-system/fastapi-service/app/routes/transactions.py,Confirmed
+GET,/health,REST,FastAPI app,health_check,,dict (status UP),Public,devops/D2-docker-compose/api/app/main.py,Confirmed
+POST,/transactions,REST,transactions router,create_transaction,TransactionCreate,TransactionAccepted (201),Public,devops/D2-docker-compose/api/app/routes.py,Confirmed
+GET,/transactions,REST,transactions router,get_transactions,,list[TransactionResponse],Public,devops/D2-docker-compose/api/app/routes.py,Confirmed
+GET,/,REST,FastAPI app,root,,dict (service info),Public,devops/D6-observability/service/app/main.py,Confirmed
+GET,/health,REST,FastAPI app,health_check,,dict (status UP),Public,devops/D6-observability/service/app/main.py,Confirmed
+GET,/metrics,REST,FastAPI app,metrics,,Prometheus text,Public,devops/D6-observability/service/app/main.py,Confirmed
+POST,/transactions,REST,transactions router,create_transaction,TransactionCreate,TransactionResponse,Public,devops/D6-observability/service/app/routes/transactions.py,Confirmed
+GET,/transactions,REST,transactions router,get_transactions,,list[TransactionResponse],Public,devops/D6-observability/service/app/routes/transactions.py,Confirmed
+GET,/transactions/{transaction_id},REST,transactions router,get_transaction,,TransactionResponse,Public,devops/D6-observability/service/app/routes/transactions.py,Confirmed
+GET,/balance,REST,transactions router,get_balance,,BalanceResponse,Public,devops/D6-observability/service/app/routes/transactions.py,Confirmed

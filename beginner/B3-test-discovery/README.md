@@ -12,12 +12,10 @@ Discover test frameworks in the repo, run applicable suites, and document result
 
 # Status
 
-Needs refresh — report predates B4–B6 test suites; re-run after `make test` for current counts.
+Completed — refreshed 2026-06-18 (`make test`: 47 passed).
 
 # Verification
 
 ```bash
 make test
 ```
-
-Update `TEST_REPORT.md` to match frameworks under B4, B5, B6, I4, A3, and D6.
