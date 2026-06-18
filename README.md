@@ -4,7 +4,7 @@ Hands-on exercises for evaluating AI coding agents across beginner, intermediate
 
 Each subfolder is a self-contained task. Put all deliverables (reports, code, configs) directly in that task folder — not under a separate `docs/` mirror. Then commit and push when ready.
 
-The top-level `docs/` directory is reserved and currently empty (placeholder only).
+The top-level `docs/` directory holds **evaluation framework** documentation (task registry, mapping, agent usage, future dashboard/orchestrator design). See [`docs/TASK_REGISTRY.md`](docs/TASK_REGISTRY.md) for status of all 24 tasks.
 
 ## Fresh clone setup
 
@@ -28,7 +28,7 @@ make help    # all targets
 
 ```
 Eval-ai-agent/
-├── docs/
+├── docs/                    ← task registry, mapping, agent usage (see below)
 ├── beginner/
 │   ├── B1-repo-artifact-inventory/
 │   ├── B2-api-endpoint-map/
@@ -58,6 +58,16 @@ Eval-ai-agent/
     ├── D5-dev-environment/
     └── D6-observability/
 ```
+
+## Evaluation framework (`docs/`)
+
+| Document | Purpose |
+| -------- | ------- |
+| [`docs/TASK_REGISTRY.md`](docs/TASK_REGISTRY.md) | Status of all 24 tasks (B1–D6) |
+| [`docs/TASK_MAPPING.md`](docs/TASK_MAPPING.md) | Task ID → name, purpose, folder |
+| [`docs/AGENT_USAGE.md`](docs/AGENT_USAGE.md) | How to use Cursor/agents + verify work |
+| [`docs/DASHBOARD_VISION.md`](docs/DASHBOARD_VISION.md) | Future eval dashboard (design only) |
+| [`docs/ORCHESTRATOR_DESIGN.md`](docs/ORCHESTRATOR_DESIGN.md) | Future task orchestrator (design only) |
 
 ## Tracks
 
