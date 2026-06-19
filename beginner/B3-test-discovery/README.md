@@ -12,7 +12,7 @@ Discover test frameworks in the repo, run applicable suites, and document result
 
 # Status
 
-Completed — refreshed 2026-06-18 (`make test`: 47 passed).
+Completed — refreshed 2026-06-18 (`make test`: 47 passed, 0 failed).
 
 # Verification
 
