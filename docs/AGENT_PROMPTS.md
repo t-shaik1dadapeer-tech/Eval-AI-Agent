@@ -1,6 +1,6 @@
 # Agent Prompts — All 24 Tasks
 
-Copy-paste prompts for evaluating any task after clone. Works with **Evil-Ai repo files** and **any external API** (UserManagement, Library API, etc.) when you pass `api_base_url` to the eval server.
+Copy-paste prompts for evaluating any task after clone. Works with **Evil-Ai repo files** and **any external API(s)** you register on the eval server — no default API is built in.
 
 ## Before you start
 
@@ -24,14 +24,14 @@ Copy this block when testing **your** API with any task prompt below:
 You are evaluating an Evil-Ai task using the eval API + my external running API.
 
 Eval server: http://127.0.0.1:8788
-My API: http://127.0.0.1:YOUR_PORT   (e.g. UserManagement — start it first)
+My API: http://127.0.0.1:YOUR_PORT   (start your service first)
 
 Steps:
-1. POST http://127.0.0.1:8788/api/external/target  {"api_base_url":"http://127.0.0.1:YOUR_PORT","project_name":"MyProject"}
+1. POST http://127.0.0.1:8788/api/external/register  {"id":"my-dev-api","name":"My Project","api_base_url":"http://127.0.0.1:YOUR_PORT","default":true}
 2. GET http://127.0.0.1:8788/api/agent/guide/{TASK_ID}
 3. Read reference .md files from the guide; read the task prompt from docs/AGENT_PROMPTS.md
 4. curl my API endpoints and compare responses to what the .md expects
-5. POST http://127.0.0.1:8788/api/agent/submit  {"task_id":"{TASK_ID}","agent_name":"cursor","output_path":"<deliverable>","api_base_url":"http://127.0.0.1:YOUR_PORT"}
+5. POST http://127.0.0.1:8788/api/agent/submit  {"task_id":"{TASK_ID}","agent_name":"cursor","output_path":"<deliverable>","api_id":"my-dev-api"}
 6. If partial/mismatch, read related_md from the JSON response and fix
 7. Open http://127.0.0.1:8788/ dashboard — check Agent + API match columns
 ```

@@ -5,7 +5,7 @@ SHELL := /bin/bash
 ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 export PATH := $(HOME)/.local/bin:$(PATH)
 
-.PHONY: help bootstrap install install-mise test lint clean verify versions eval eval-dashboard eval-api eval-compare eval-metrics
+.PHONY: help bootstrap install install-mise test lint clean verify versions eval eval-dashboard eval-api eval-stop eval-compare eval-metrics eval-bot eval-bots-all eval-orch-config
 
 help: ## Show targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -51,6 +51,16 @@ eval-compare: ## Compare agent output: make eval-compare TASK=I2 AGENT_OUTPUT=./
 
 eval-metrics: eval ## Prometheus metrics for eval portfolio (Grafana text format)
 	@python3 "$(ROOT)/scripts/eval/portfolio.py" metrics
+
+eval-bot: ## Run one orchestrator bot: make eval-bot TASK=B3 API_ID=my-dev-api
+	@test -n "$(TASK)" || (echo "Usage: make eval-bot TASK=B3 [API_ID=...] [API_BASE_URL=...]" && exit 1)
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" bot "$(TASK)" $(if $(API_ID),--api-id "$(API_ID)",) $(if $(API_BASE_URL),--api-base-url "$(API_BASE_URL)",) $(if $(RUN_TESTS),--run-tests,)
+
+eval-bots-all: ## Run all 24 orchestrator bots
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" bots-all $(if $(API_ID),--api-id "$(API_ID)",) $(if $(API_BASE_URL),--api-base-url "$(API_BASE_URL)",) $(if $(RUN_TESTS),--run-tests,)
+
+eval-orch-config: ## Register API + show config: make eval-orch-config API_ID=my-api API_BASE_URL=http://127.0.0.1:9000
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" orch-config $(if $(API_ID),--api-id "$(API_ID)",) $(if $(API_BASE_URL),--api-base-url "$(API_BASE_URL)",) $(if $(PROJECT_NAME),--project-name "$(PROJECT_NAME)",)
 
 versions: ## Print pinned and active tool versions
 	@command -v mise >/dev/null 2>&1 && mise current || echo "mise not installed"

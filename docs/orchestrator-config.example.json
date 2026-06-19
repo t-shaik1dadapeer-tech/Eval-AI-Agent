@@ -1,0 +1,8 @@
+{
+  "agent_name": "orchestrator-bot",
+  "run_tests": false,
+  "use_api_for_all_tasks": false,
+  "default_api_id": null,
+  "task_api_map": {},
+  "output_map": {}
+}

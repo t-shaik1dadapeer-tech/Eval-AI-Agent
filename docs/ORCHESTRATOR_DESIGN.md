@@ -1,6 +1,6 @@
 # Orchestrator Design
 
-**Status:** Future architecture — not implemented in this repository yet.
+**Status:** Partially implemented — orchestrator bots in `scripts/eval/orchestrator.py`. See [`ORCHESTRATOR.md`](ORCHESTRATOR.md).
 
 This document outlines a planned orchestrator for running and tracking evaluation tasks with AI coding agents. Existing task implementations and `make bootstrap` remain the source of truth until this is built.
 
@@ -87,7 +87,7 @@ Executor collects stdout, exit codes, and artifacts for the dashboard.
 | Compare API      | Done     | `scripts/eval/portfolio.py`, `make eval-api` |
 | Live dashboard   | Done     | `make eval-api` → http://127.0.0.1:8787/ |
 | Grafana eval panel | Partial | `make eval-metrics` (Prometheus text); wire into D6 optional |
-| Orchestrator CLI | Planned  | —                                 |
+| Orchestrator CLI | Done     | `make eval-bot`, `make eval-bots-all`, `POST /api/orchestrator/run` |
 
 ## Related documents
 

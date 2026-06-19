@@ -33,6 +33,13 @@ EVAL_DIR = ROOT / ".eval"
 AGENT_RUNS_PATH = EVAL_DIR / "agent-runs.json"
 SUBMISSIONS_DIR = EVAL_DIR / "submissions"
 EXTERNAL_TARGET_PATH = EVAL_DIR / "external-target.json"
+EXTERNAL_APIS_PATH = EVAL_DIR / "external-apis.json"
+
+# Orchestrator (lazy import in handlers to avoid circular load at CLI startup)
+def _orch():
+    import orchestrator as orch  # noqa: PLC0415
+
+    return orch
 
 # Related .md files from other tasks when agent/API match fails (suggest on dashboard).
 RELATED_MD: dict[str, list[str]] = {
@@ -164,15 +171,139 @@ def _rel_path(path: Path) -> str:
 
 
 def load_external_target() -> dict[str, Any]:
+    """Legacy single-target read; prefer load_external_apis()."""
+    apis = load_external_apis()
+    if apis.get("apis"):
+        first = apis["apis"][0]
+        return {
+            "api_base_url": first.get("api_base_url"),
+            "project_name": first.get("name"),
+            "id": first.get("id"),
+            "apis": apis["apis"],
+            "default_api_id": apis.get("default_api_id"),
+        }
     ensure_eval_dir()
     if EXTERNAL_TARGET_PATH.exists():
-        return json.loads(EXTERNAL_TARGET_PATH.read_text(encoding="utf-8"))
+        legacy = json.loads(EXTERNAL_TARGET_PATH.read_text(encoding="utf-8"))
+        if legacy.get("api_base_url"):
+            return legacy
     return {}
 
 
-def save_external_target(data: dict[str, Any]) -> None:
+def default_external_apis() -> dict[str, Any]:
+    return {"apis": [], "default_api_id": None, "updated_at": None}
+
+
+def load_external_apis() -> dict[str, Any]:
     ensure_eval_dir()
-    EXTERNAL_TARGET_PATH.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    if EXTERNAL_APIS_PATH.exists():
+        data = json.loads(EXTERNAL_APIS_PATH.read_text(encoding="utf-8"))
+        data.setdefault("apis", [])
+        return data
+    if EXTERNAL_TARGET_PATH.exists():
+        legacy = json.loads(EXTERNAL_TARGET_PATH.read_text(encoding="utf-8"))
+        if legacy.get("api_base_url"):
+            migrated = {
+                "apis": [
+                    {
+                        "id": legacy.get("project_name", "default").lower().replace(" ", "-")[:32],
+                        "name": legacy.get("project_name") or "external",
+                        "api_base_url": legacy["api_base_url"].rstrip("/"),
+                    }
+                ],
+                "default_api_id": None,
+                "updated_at": legacy.get("updated_at"),
+            }
+            save_external_apis(migrated)
+            return migrated
+    return default_external_apis()
+
+
+def save_external_apis(data: dict[str, Any]) -> dict[str, Any]:
+    ensure_eval_dir()
+    data = {**default_external_apis(), **data}
+    data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    for api in data.get("apis", []):
+        if api.get("api_base_url"):
+            api["api_base_url"] = str(api["api_base_url"]).rstrip("/")
+    EXTERNAL_APIS_PATH.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    return data
+
+
+def save_external_target(data: dict[str, Any]) -> None:
+    """Legacy: register as one API in the multi-api store."""
+    if data.get("api_base_url"):
+        register_external_api(
+            data.get("id") or data.get("project_name", "default"),
+            data.get("project_name") or "external",
+            data["api_base_url"],
+        )
+
+
+def register_external_api(api_id: str, name: str, api_base_url: str) -> dict[str, Any]:
+    store = load_external_apis()
+    api_id = api_id.strip().lower().replace(" ", "-")
+    entry = {"id": api_id, "name": name.strip() or api_id, "api_base_url": api_base_url.rstrip("/")}
+    apis = [a for a in store.get("apis", []) if a.get("id") != api_id]
+    apis.append(entry)
+    store["apis"] = apis
+    return save_external_apis(store)
+
+
+def remove_external_api(api_id: str) -> dict[str, Any]:
+    store = load_external_apis()
+    api_id = api_id.strip().lower()
+    store["apis"] = [a for a in store.get("apis", []) if a.get("id") != api_id]
+    if store.get("default_api_id") == api_id:
+        store["default_api_id"] = None
+    return save_external_apis(store)
+
+
+def clear_external_apis() -> dict[str, Any]:
+    if EXTERNAL_TARGET_PATH.exists():
+        EXTERNAL_TARGET_PATH.unlink()
+    return save_external_apis(default_external_apis())
+
+
+def get_external_api(api_id: str) -> dict[str, Any] | None:
+    api_id = api_id.strip().lower()
+    for api in load_external_apis().get("apis", []):
+        if api.get("id") == api_id:
+            return api
+    return None
+
+
+def resolve_api_base_url(
+    *,
+    api_base_url: str | None = None,
+    api_id: str | None = None,
+    task_id: str | None = None,
+    orch_config: dict[str, Any] | None = None,
+) -> str | None:
+    if api_base_url:
+        return api_base_url.rstrip("/")
+    store = load_external_apis()
+    if api_id:
+        found = get_external_api(api_id)
+        return found["api_base_url"] if found else None
+    cfg = orch_config or {}
+    if task_id and cfg.get("task_api_map", {}).get(task_id.upper()):
+        found = get_external_api(cfg["task_api_map"][task_id.upper()])
+        if found:
+            return found["api_base_url"]
+    if cfg.get("use_api_for_all_tasks") and cfg.get("default_api_id"):
+        found = get_external_api(cfg["default_api_id"])
+        if found:
+            return found["api_base_url"]
+    if cfg.get("default_api_id"):
+        found = get_external_api(cfg["default_api_id"])
+        if found:
+            return found["api_base_url"]
+    if store.get("default_api_id"):
+        found = get_external_api(store["default_api_id"])
+        if found:
+            return found["api_base_url"]
+    return None
 
 
 def resolve_md_path(md_path: str | None, task: dict[str, Any] | None) -> Path | None:
@@ -579,6 +710,9 @@ def evaluate_task(
             "related_md": agent_result.get("related_md"),
             "combined_verdict": agent_result.get("combined_verdict"),
         }
+    bot = _orch().bot_status_for_task(task["id"])
+    if bot:
+        out["bot"] = bot
     return out
 
 
@@ -608,7 +742,9 @@ def build_portfolio(*, run_tests: bool = False, run_docker: bool = False) -> dic
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "repo_root": str(ROOT),
+        "external_apis": load_external_apis(),
         "external_target": load_external_target(),
+        "orchestrator": _orch().orchestrator_status(),
         "summary": {
             "total": total,
             "deliverables_ok": deliverables_ok,
@@ -646,20 +782,21 @@ def submit_agent_output(
     content: str | None,
     api_base_url: str | None = None,
     md_path: str | None = None,
+    api_id: str | None = None,
 ) -> dict[str, Any]:
     path = resolve_output_path(task, output_path, content)
     md_result = score_agent_output(task, path)
 
-    target = load_external_target()
-    base = api_base_url or target.get("api_base_url")
-    if base:
-        save_external_target(
-            {
-                "api_base_url": base.rstrip("/"),
-                "project_name": target.get("project_name") or "external",
-                "updated_at": datetime.now(timezone.utc).isoformat(),
-            }
-        )
+    try:
+        orch_cfg = _orch().load_config()
+    except Exception:
+        orch_cfg = {}
+    base = resolve_api_base_url(
+        api_base_url=api_base_url,
+        api_id=api_id,
+        task_id=task["id"],
+        orch_config=orch_cfg,
+    )
 
     api_result: dict[str, Any] | None = None
     md_for_api = resolve_md_path(md_path, task)
@@ -732,6 +869,8 @@ def api_docs() -> dict[str, Any]:
             "6. POST /api/agent/submit  — include api_base_url to compare .md + live API",
             "7. POST /api/external/analyze  — analyze any .md file vs your API",
             "8. Open /  — dashboard shows agent eval + API match + related .md suggestions",
+            "9. POST /api/orchestrator/run  {task_id} or {mode:all}  — run verify bots",
+            "10. GET /api/orchestrator/status  — bot run state for all 24",
         ],
         "endpoints": [
             "GET  /",
@@ -741,12 +880,20 @@ def api_docs() -> dict[str, Any]:
             "GET  /api/tasks",
             "GET  /api/tasks/{id}",
             "GET  /api/agent/guide/{id}",
+            "GET  /api/external/apis",
             "GET  /api/external/target",
+            "POST /api/external/register",
             "POST /api/external/target",
+            "POST /api/external/clear",
+            "DELETE /api/external/apis/{id}",
             "POST /api/external/analyze",
             "POST /api/agent/submit",
             "POST /api/agent/compare/{id}",
             "POST /api/portfolio/refresh",
+            "GET  /api/orchestrator/status",
+            "GET  /api/orchestrator/config",
+            "POST /api/orchestrator/config",
+            "POST /api/orchestrator/run",
             "GET  /api/metrics",
         ],
         "submit_example": {
@@ -760,7 +907,19 @@ def api_docs() -> dict[str, Any]:
             "api_base_url": "http://127.0.0.1:3000",
             "task_id": "B3",
         },
-        "docs_files": ["docs/AGENT_API.md", "docs/EXTERNAL_EVAL.md", "docs/AGENT_PROMPTS.md"],
+        "docs_files": ["docs/AGENT_API.md", "docs/EXTERNAL_EVAL.md", "docs/ORCHESTRATOR.md", "docs/AGENT_PROMPTS.md"],
+        "orchestrator_run_single": {"task_id": "B3", "api_id": "my-dev-api"},
+        "orchestrator_run_all": {"mode": "all", "default_api_id": "my-dev-api"},
+        "register_api_example": {"id": "my-dev-api", "name": "My Dev API", "api_base_url": "http://127.0.0.1:9000"},
+        "multi_api_config_example": {
+            "apis": [
+                {"id": "home-api", "name": "Home API", "api_base_url": "http://127.0.0.1:9000"},
+                {"id": "billing-api", "name": "Billing API", "api_base_url": "http://127.0.0.1:9001"},
+            ],
+            "default_api_id": "home-api",
+            "task_api_map": {"B2": "home-api", "B3": "billing-api"},
+            "use_api_for_all_tasks": False,
+        },
     }
 
 
@@ -796,10 +955,71 @@ def cmd_compare(args: argparse.Namespace) -> int:
     return 0 if out.get("verdict") in ("ok", "reference_only") else 1
 
 
+def cmd_bot(args: argparse.Namespace) -> int:
+    orch = _orch()
+    overrides: dict[str, Any] = {}
+    if getattr(args, "api_id", None):
+        overrides["api_id"] = args.api_id
+    if getattr(args, "api_base_url", None):
+        overrides["api_base_url"] = args.api_base_url
+    if getattr(args, "run_tests", False):
+        overrides["run_tests"] = True
+    result = orch.run_orchestrator(task_id=args.task_id, config_overrides=overrides or None)
+    print(json.dumps(result, indent=2))
+    return 0 if result["summary"].get("failed", 0) == 0 else 1
+
+
+def cmd_bots_all(args: argparse.Namespace) -> int:
+    orch = _orch()
+    overrides: dict[str, Any] = {}
+    if getattr(args, "api_id", None):
+        overrides["default_api_id"] = args.api_id
+        overrides["use_api_for_all_tasks"] = True
+    if getattr(args, "api_base_url", None):
+        overrides["api_base_url"] = args.api_base_url
+    if getattr(args, "run_tests", False):
+        overrides["run_tests"] = True
+    result = orch.run_orchestrator(mode="all", config_overrides=overrides or None)
+    print(json.dumps(result, indent=2))
+    s = result["summary"]
+    print(f"\nBots done: {s['done']}/{s['total']}  verdict_ok: {s['verdict_ok']}")
+    return 0 if s.get("failed", 0) == 0 else 1
+
+
+def cmd_orchestrator_config(args: argparse.Namespace) -> int:
+    orch = _orch()
+    if args.api_base_url or args.api_id:
+        payload: dict[str, Any] = {}
+        if args.api_id and args.api_base_url:
+            payload["apis"] = [
+                {
+                    "id": args.api_id,
+                    "name": args.project_name or args.api_id,
+                    "api_base_url": args.api_base_url,
+                }
+            ]
+            payload["default_api_id"] = args.api_id
+        elif args.api_base_url:
+            payload["apis"] = [
+                {
+                    "id": (args.project_name or "my-api").lower().replace(" ", "-"),
+                    "name": args.project_name or "my-api",
+                    "api_base_url": args.api_base_url,
+                }
+            ]
+            payload["default_api_id"] = payload["apis"][0]["id"]
+        cfg = orch.save_config(payload)
+    else:
+        cfg = orch.load_config()
+    apis = load_external_apis()
+    print(json.dumps({**cfg, "registered_apis": apis.get("apis", [])}, indent=2))
+    return 0
+
+
 def cmd_dashboard(_: argparse.Namespace) -> int:
     print("Live dashboard is served by: make eval-api")
     print("Static template: scripts/eval/dashboard.html")
-    print("Open: http://127.0.0.1:8787/")
+    print("Open: http://127.0.0.1:8788/")
     return 0
 
 
@@ -897,9 +1117,16 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
             self.wfile.write(buf.getvalue().encode("utf-8"))
             return
 
-        if path.path == "/api/external/target":
-            target = load_external_target()
-            self._json(200, target or {"api_base_url": None, "hint": "POST /api/external/target with your API URL"})
+        if path.path in ("/api/external/target", "/api/external/apis"):
+            self._json(200, load_external_apis())
+            return
+
+        if path.path == "/api/orchestrator/status":
+            self._json(200, _orch().orchestrator_status())
+            return
+
+        if path.path == "/api/orchestrator/config":
+            self._json(200, _orch().load_config())
             return
 
         m = re.match(r"^/api/tasks/([A-Za-z0-9]+)$", path.path)
@@ -946,6 +1173,7 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
                     output_path=body.get("output_path"),
                     content=body.get("content"),
                     api_base_url=body.get("api_base_url"),
+                    api_id=body.get("api_id"),
                     md_path=body.get("md_path"),
                 )
                 self._json(200, result)
@@ -960,21 +1188,39 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
                 if not url:
                     self._json(400, {"error": "api_base_url required"})
                     return
-                data = {
-                    "api_base_url": url.rstrip("/"),
-                    "project_name": body.get("project_name") or "external",
-                    "updated_at": datetime.now(timezone.utc).isoformat(),
-                }
-                save_external_target(data)
+                api_id = body.get("id") or body.get("project_name", "default")
+                name = body.get("name") or body.get("project_name") or api_id
+                data = register_external_api(api_id, name, url)
                 self._json(200, data)
             except json.JSONDecodeError as exc:
                 self._json(400, {"error": str(exc)})
             return
 
+        if path.path == "/api/external/register":
+            try:
+                body = self._read_json_body()
+                api_id = body.get("id", "").strip()
+                url = body.get("api_base_url", "").strip()
+                if not api_id or not url:
+                    self._json(400, {"error": "id and api_base_url required"})
+                    return
+                data = register_external_api(api_id, body.get("name", api_id), url)
+                if body.get("default"):
+                    store = load_external_apis()
+                    store["default_api_id"] = api_id.lower()
+                    data = save_external_apis(store)
+                self._json(200, data)
+            except json.JSONDecodeError as exc:
+                self._json(400, {"error": str(exc)})
+            return
+
+        if path.path == "/api/external/clear":
+            self._json(200, clear_external_apis())
+            return
+
         if path.path == "/api/external/analyze":
             try:
                 body = self._read_json_body()
-                url = body.get("api_base_url", "").strip()
                 md_raw = body.get("md_path", "").strip()
                 if not md_raw:
                     self._json(400, {"error": "md_path required"})
@@ -988,15 +1234,17 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
                 task = None
                 if body.get("task_id"):
                     task = task_by_id(self.registry, body["task_id"])
-                if url:
-                    save_external_target(
-                        {
-                            "api_base_url": url.rstrip("/"),
-                            "project_name": body.get("project_name") or "external",
-                            "updated_at": datetime.now(timezone.utc).isoformat(),
-                        }
-                    )
-                result = analyze_md_file(md_p, url or None, task=task)
+                try:
+                    orch_cfg = _orch().load_config()
+                except Exception:
+                    orch_cfg = {}
+                url = resolve_api_base_url(
+                    api_base_url=body.get("api_base_url"),
+                    api_id=body.get("api_id"),
+                    task_id=body.get("task_id"),
+                    orch_config=orch_cfg,
+                )
+                result = analyze_md_file(md_p, url, task=task)
                 if task and result.get("api_match", {}).get("verdict") not in ("ok", "skipped"):
                     result["related_md"] = related_suggestions(
                         task,
@@ -1005,6 +1253,52 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
                     )
                 self._json(200, result)
             except json.JSONDecodeError as exc:
+                self._json(400, {"error": str(exc)})
+            return
+
+        if path.path == "/api/orchestrator/config":
+            try:
+                body = self._read_json_body()
+                cfg = _orch().save_config(body)
+                self._json(200, cfg)
+            except json.JSONDecodeError as exc:
+                self._json(400, {"error": str(exc)})
+            return
+
+        if path.path == "/api/orchestrator/run":
+            try:
+                body = self._read_json_body()
+                overrides: dict[str, Any] = {}
+                if body.get("api_base_url"):
+                    overrides["api_base_url"] = body["api_base_url"]
+                if body.get("project_name"):
+                    overrides["project_name"] = body["project_name"]
+                if "run_tests" in body:
+                    overrides["run_tests"] = bool(body["run_tests"])
+                if body.get("output_map"):
+                    overrides["output_map"] = body["output_map"]
+                if body.get("task_api_map"):
+                    overrides["task_api_map"] = body["task_api_map"]
+                if body.get("default_api_id"):
+                    overrides["default_api_id"] = body["default_api_id"]
+                if body.get("apis"):
+                    overrides["apis"] = body["apis"]
+                if body.get("api_id"):
+                    overrides["api_id"] = body["api_id"]
+                if body.get("api_base_url"):
+                    overrides["api_base_url"] = body["api_base_url"]
+                if body.get("mode") == "all":
+                    result = _orch().run_orchestrator(mode="all", config_overrides=overrides or None)
+                elif body.get("task_id"):
+                    result = _orch().run_orchestrator(
+                        task_id=body["task_id"],
+                        config_overrides=overrides or None,
+                    )
+                else:
+                    self._json(400, {"error": "Provide task_id or mode=all", "examples": api_docs()["orchestrator_run_all"]})
+                    return
+                self._json(200, result)
+            except (json.JSONDecodeError, ValueError) as exc:
                 self._json(400, {"error": str(exc)})
             return
 
@@ -1035,7 +1329,15 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
                 self._json(400, {"error": str(exc)})
             return
 
-        self._json(404, {"error": "POST /api/agent/submit, /api/external/analyze, /api/external/target"})
+        self._json(404, {"error": "POST /api/agent/submit, /api/orchestrator/run, /api/external/register"})
+
+    def do_DELETE(self) -> None:  # noqa: N802
+        path = urlparse(self.path)
+        m = re.match(r"^/api/external/apis/([A-Za-z0-9_-]+)$", path.path)
+        if m:
+            self._json(200, remove_external_api(m.group(1)))
+            return
+        self._json(404, {"error": "DELETE /api/external/apis/{id}"})
 
     def log_message(self, fmt: str, *args: Any) -> None:
         sys.stderr.write(f"[eval-api] {fmt % args}\n")
@@ -1052,7 +1354,9 @@ def cmd_serve(args: argparse.Namespace) -> int:
     print(f"  Set your API:      POST {base}/api/external/target")
     print(f"  Agent submit:      POST {base}/api/agent/submit  (+ api_base_url)")
     print(f"  Portfolio JSON:    {base}/api/portfolio")
-    print(f"  Docs:              docs/EXTERNAL_EVAL.md\n")
+    print(f"  Orchestrator:    POST {base}/api/orchestrator/run")
+    print(f"  Bot status:      {base}/api/orchestrator/status")
+    print(f"  Docs:              docs/ORCHESTRATOR.md\n")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -1081,6 +1385,22 @@ def main() -> int:
     p_serve.add_argument("--host", default="127.0.0.1")
     p_serve.add_argument("--port", type=int, default=8788)
 
+    p_bot = sub.add_parser("bot", help="Run orchestrator bot for one task")
+    p_bot.add_argument("task_id")
+    p_bot.add_argument("--api-id", help="Registered API id from /api/external/register")
+    p_bot.add_argument("--api-base-url", help="One-off API URL (not saved)")
+    p_bot.add_argument("--run-tests", action="store_true")
+
+    p_all = sub.add_parser("bots-all", help="Run orchestrator bots for all 24 tasks")
+    p_all.add_argument("--api-id", help="Use this registered API for all tasks")
+    p_all.add_argument("--api-base-url", help="One-off API URL for all tasks")
+    p_all.add_argument("--run-tests", action="store_true")
+
+    p_ocfg = sub.add_parser("orch-config", help="Show or set orchestrator config")
+    p_ocfg.add_argument("--api-id", help="Register/update API id")
+    p_ocfg.add_argument("--api-base-url", help="API base URL to register")
+    p_ocfg.add_argument("--project-name", help="Display name for registered API")
+
     args = parser.parse_args()
     handlers = {
         "verify": cmd_verify,
@@ -1088,6 +1408,9 @@ def main() -> int:
         "dashboard": cmd_dashboard,
         "metrics": cmd_metrics,
         "serve": cmd_serve,
+        "bot": cmd_bot,
+        "bots-all": cmd_bots_all,
+        "orch-config": cmd_orchestrator_config,
     }
     return handlers[args.command](args)
 

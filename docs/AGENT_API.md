@@ -8,10 +8,10 @@ Use this after cloning the repo so any AI agent can discover tasks, get referenc
 git clone <repo-url> Evil-Ai
 cd Evil-Ai
 make bootstrap          # optional: install + run tests
-make eval-api           # starts http://127.0.0.1:8787
+make eval-api           # starts http://127.0.0.1:8788
 ```
 
-Open **http://127.0.0.1:8787** — live dashboard (all 24 tasks).
+Open **http://127.0.0.1:8788** — live dashboard (all 24 tasks).
 
 ---
 
@@ -20,9 +20,9 @@ Open **http://127.0.0.1:8787** — live dashboard (all 24 tasks).
 ### 1. Get task instructions + reference files
 
 ```bash
-curl http://127.0.0.1:8787/api/agent/guide/B4
-curl http://127.0.0.1:8787/api/agent/guide/I2
-curl http://127.0.0.1:8787/api/agent/guide/A1
+curl http://127.0.0.1:8788/api/agent/guide/B4
+curl http://127.0.0.1:8788/api/agent/guide/I2
+curl http://127.0.0.1:8788/api/agent/guide/A1
 ```
 
 Response includes:
@@ -37,21 +37,23 @@ Response includes:
 
 Example: implement or write report under `beginner/B4-fastapi-service/`.
 
-## External API (any project)
+## External APIs (register when your services are ready)
 
-Compare **your running API** + **`.md` prompts** — see [`EXTERNAL_EVAL.md`](EXTERNAL_EVAL.md).
+No default API is stored. Register one or more — see [`EXTERNAL_EVAL.md`](EXTERNAL_EVAL.md).
 
 ```bash
-curl -X POST http://127.0.0.1:8788/api/external/target \
+curl -X POST http://127.0.0.1:8788/api/external/register \
   -H 'Content-Type: application/json' \
-  -d '{"api_base_url":"http://127.0.0.1:3000","project_name":"UserManagement"}'
+  -d '{"id":"my-dev-api","name":"My Dev API","api_base_url":"http://127.0.0.1:9000","default":true}'
+
+curl http://127.0.0.1:8788/api/external/apis
 
 curl -X POST http://127.0.0.1:8788/api/agent/submit \
   -H 'Content-Type: application/json' \
-  -d '{"task_id":"B3","output_path":"beginner/B3-test-discovery/TEST_REPORT.md","api_base_url":"http://127.0.0.1:3000"}'
+  -d '{"task_id":"B3","output_path":"beginner/B3-test-discovery/TEST_REPORT.md","api_id":"my-dev-api"}'
 ```
 
-Submit body also accepts `api_base_url` and optional `md_path`.
+Submit body accepts `api_id` (registered) or `api_base_url` (one-off). Optional `md_path`.
 
 ---
 
