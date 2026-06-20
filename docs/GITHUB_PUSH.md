@@ -36,7 +36,22 @@ git clone git@github.com:t-shaik1dadapeer-tech/Eval-AI-Agent.git
 
 ---
 
-## SSH setup (if port 22 blocked)
+## Token push (office laptop)
+
+```bash
+cd /Users/shaikdadapeer/Evil-Ai
+GITHUB_TOKEN=ghp_YOUR_TOKEN bash scripts/push-with-token.sh
+```
+
+**Classic token scopes required:** `repo` + **`workflow`** (this repo has `.github/workflows/`).
+
+**Fine-grained token permissions:** Contents **Read and write** + Workflows **Read and write**.
+
+If you see `403 Permission denied`, the token is missing **workflow** / write permissions — create a new token with the scopes above.
+
+**Do not paste tokens in chat.** Revoke after push: https://github.com/settings/tokens
+
+---
 
 Add to `~/.ssh/config`:
 
