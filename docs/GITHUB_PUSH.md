@@ -1,52 +1,44 @@
 # Push Evil-Ai to GitHub
 
-**Target repo:** [t-shaik1dadapeer-tech/Dadapeer-evil-ai](https://github.com/t-shaik1dadapeer-tech/Dadapeer-evil-ai)
+**Target repo:** [t-shaik1dadapeer-tech/Eval-AI-Agent](https://github.com/t-shaik1dadapeer-tech/Eval-AI-Agent)
 
-Remote is configured as SSH:
+Remote URLs:
 
 ```text
-git@github.com:t-shaik1dadapeer-tech/Dadapeer-evil-ai.git
+SSH:  git@github.com:t-shaik1dadapeer-tech/Eval-AI-Agent.git
+HTTPS: https://github.com/t-shaik1dadapeer-tech/Eval-AI-Agent.git
 ```
 
 ---
 
-## Option A — GitHub CLI (`gh`)
+## Quick push (after auth)
 
 ```bash
-# Install (fix brew permissions first if needed)
-brew install gh
-
-# Login
-gh auth login
-
-# From Evil-Ai repo root — push full history
 cd /Users/shaikdadapeer/Evil-Ai
+
+# Option A — GitHub CLI
+gh auth login
+git push -u origin main --force
+
+# Option B — SSH
+git remote set-url origin git@github.com:t-shaik1dadapeer-tech/Eval-AI-Agent.git
+ssh -T git@github.com
 git push -u origin main --force
 ```
 
 Clone on another machine:
 
 ```bash
-gh repo clone t-shaik1dadapeer-tech/Dadapeer-evil-ai
+gh repo clone t-shaik1dadapeer-tech/Eval-AI-Agent
+# or
+git clone git@github.com:t-shaik1dadapeer-tech/Eval-AI-Agent.git
 ```
 
 ---
 
-## Option B — SSH (recommended)
+## SSH setup (if port 22 blocked)
 
-### 1. Generate key (if you don't have one)
-
-```bash
-ssh-keygen -t ed25519 -C "your-email@example.com" -f ~/.ssh/id_ed25519 -N ""
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-```
-
-### 2. Add public key to GitHub
-
-Copy `~/.ssh/id_ed25519.pub` → GitHub → **Settings → SSH and GPG keys → New SSH key**
-
-### 3. If port 22 is blocked, add to `~/.ssh/config`
+Add to `~/.ssh/config`:
 
 ```sshconfig
 Host github.com
@@ -55,43 +47,34 @@ Host github.com
   User git
 ```
 
-### 4. Test and push
+Generate and add key to GitHub → Settings → SSH keys:
 
 ```bash
-ssh -T git@github.com
-cd /Users/shaikdadapeer/Evil-Ai
-git remote set-url origin git@github.com:t-shaik1dadapeer-tech/Dadapeer-evil-ai.git
-git push -u origin main --force
-```
-
-Clone:
-
-```bash
-git clone git@github.com:t-shaik1dadapeer-tech/Dadapeer-evil-ai.git
+ssh-keygen -t ed25519 -C "your-email@example.com" -f ~/.ssh/id_ed25519
+cat ~/.ssh/id_ed25519.pub
 ```
 
 ---
 
-## Option C — Helper script
+## What gets pushed (39 commits)
 
-```bash
-cd /Users/shaikdadapeer/Evil-Ai
-bash scripts/push-to-github.sh
-```
+| Track | Commits |
+|-------|---------|
+| Beginner B1–B6 | dc959ba .. 09bd86f |
+| Intermediate I1–I6 | 21d4eab .. e0936a0 |
+| Advanced A1–A6 | 9565fdb .. 95b009f |
+| DevOps D1–D6 | 568a96c .. 0045be1 |
+| Framework docs | 2afec22, dd0630a, 3d6f9e6 |
+
+`--force` is needed because the remote only has a placeholder README.
 
 ---
 
-## Why `--force`?
-
-The GitHub repo currently has only a placeholder README. Your local repo has the full 24-task history (B1–D6 commits). Force push replaces the remote with the complete Evil-Ai portfolio.
-
----
-
-## After push — verify
+## After push
 
 ```bash
 make setup
 make eval-api    # http://127.0.0.1:8788
 ```
 
-See also: [`JIRA_TASK_MAP.md`](JIRA_TASK_MAP.md) for PM4-6626 subtask mapping.
+See: [`JIRA_TASK_MAP.md`](JIRA_TASK_MAP.md) for PM4-6626 subtask mapping.

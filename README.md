@@ -11,10 +11,10 @@ The top-level `docs/` directory holds **evaluation framework** docs. Start with 
 From a clean machine with `git`, `curl`, and `make`:
 
 ```bash
-git clone <repo-url> Evil-Ai
-cd Evil-Ai
+git clone git@github.com:t-shaik1dadapeer-tech/Eval-AI-Agent.git
+cd Eval-AI-Agent
 make setup
-make eval-api          # Evil-Ai portfolio → http://127.0.0.1:8788
+make eval-api          # portfolio dashboard → http://127.0.0.1:8788
 ```
 
 See [`docs/SETUP.md`](docs/SETUP.md) for the full 24-task pipeline workflow.

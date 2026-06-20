@@ -1,7 +1,7 @@
 # Jira Task Map — Evil-Ai (24 Tasks)
 
 **Epic / Parent:** [PM4-6626](https://paytmmoney.atlassian.net/browse/PM4-6626) — Coding Agent Skill Self-Evaluation  
-**GitHub:** [t-shaik1dadapeer-tech/Dadapeer-evil-ai](https://github.com/t-shaik1dadapeer-tech/Dadapeer-evil-ai)  
+**GitHub:** [t-shaik1dadapeer-tech/Eval-AI-Agent](https://github.com/t-shaik1dadapeer-tech/Eval-AI-Agent)  
 **Eval API:** `make eval-api` → http://127.0.0.1:8788
 
 This file maps each repo task (B1–D6) to its Jira subtask, folder, primary deliverable, and git commit.
