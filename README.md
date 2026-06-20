@@ -4,7 +4,7 @@ Hands-on exercises for evaluating AI coding agents across beginner, intermediate
 
 Each subfolder is a self-contained task. Put all deliverables (reports, code, configs) directly in that task folder — not under a separate `docs/` mirror. Then commit and push when ready.
 
-The top-level `docs/` directory holds **evaluation framework** documentation (task registry, mapping, agent usage, future dashboard/orchestrator design). See [`docs/TASK_REGISTRY.md`](docs/TASK_REGISTRY.md) for status of all 24 tasks.
+The top-level `docs/` directory holds **evaluation framework** docs. Start with [`docs/SETUP.md`](docs/SETUP.md).
 
 ## Fresh clone setup
 
@@ -13,11 +13,11 @@ From a clean machine with `git`, `curl`, and `make`:
 ```bash
 git clone <repo-url> Evil-Ai
 cd Evil-Ai
-make bootstrap
-make eval-api          # live dashboard + agent compare API → http://127.0.0.1:8787
+make setup
+make eval-api          # Evil-Ai portfolio → http://127.0.0.1:8788
 ```
 
-See [`docs/AGENT_API.md`](docs/AGENT_API.md) for how any AI agent should call the eval API after clone.
+See [`docs/SETUP.md`](docs/SETUP.md) for the full 24-task pipeline workflow.
 
 This installs pinned runtimes via [mise](https://mise.jdx.dev) and runs the full test suite. See [`devops/D5-dev-environment/README.md`](devops/D5-dev-environment/README.md) for details.
 
@@ -78,7 +78,7 @@ Eval-ai-agent/
 ## Eval portfolio (24 tasks)
 
 ```bash
-make eval-api          # live dashboard + agent API → http://127.0.0.1:8787
+make eval-api          # Evil-Ai portfolio — live dashboard + agent API → http://127.0.0.1:8788
 make eval              # verify deliverables
 make eval-compare TASK=B2 AGENT_OUTPUT=./out.csv
 ```

@@ -125,9 +125,9 @@ Response includes:
 | **Repo** | Required deliverable files present |
 | **Agent work** | Latest agent submit verdict (`ok` / `partial` / …) |
 | **Remote API** | Optional registered URL (display only) |
-| **Score** | Repo ready + tests + agent output — **not** live API probe |
+| **Score** | **0% until checked** — updates after submit or `/api/external/analyze` (with `task_id`) |
 
-Use **POST /api/external/analyze** when you want a separate live API vs `.md` check.
+Use **POST /api/external/analyze** with `task_id` to score your live API vs a `.md` file.
 
 ---
 

@@ -1,7 +1,7 @@
 # B3 — Test Discovery and Execution Report
 
 **Repository:** `Evil-Ai` (Eval AI Agent)  
-**Scan date:** 2026-06-18 (refreshed via `make test`)  
+**Scan date:** 2026-06-20 (refreshed via `make test`)  
 **Task:** B3 — Test Discovery  
 **Reference files:** `beginner/B3-test-discovery/README.md`, `beginner/B3-test-discovery/TEST_REPORT.md`  
 **Working directory:** `/Users/shaikdadapeer/Evil-Ai`
@@ -78,7 +78,7 @@ make test
 | B6 CLI | `cargo test` | 17 (9 unit + 8 integration) | PASS |
 | A3 rust-engine | `cargo test` | 3 | PASS |
 
-### Node.js (Jest) — 12 tests
+### Node.js (Jest) — 16 tests
 
 | Project | Command | Tests | Result |
 |---------|---------|------:|--------|

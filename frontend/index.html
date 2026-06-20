@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Evil-Ai — 24 Task Pipeline</title>
+  <style>
+    :root { --bg:#0f172a; --panel:#1e293b; --border:#334155; --text:#e2e8f0; --muted:#94a3b8; --accent:#38bdf8; --ok:#22c55e; }
+    * { box-sizing:border-box; }
+    body { font-family:system-ui,sans-serif; margin:0; background:var(--bg); color:var(--text); line-height:1.5; }
+    header { padding:1.25rem 2rem; border-bottom:1px solid var(--border); }
+    h1 { margin:0 0 .35rem; font-size:1.35rem; }
+    .sub { color:var(--muted); font-size:.9rem; max-width:40rem; }
+    main { padding:1.25rem 2rem 2rem; max-width:960px; }
+    .panel { background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:1rem; margin-bottom:1rem; }
+    label { font-size:.85rem; color:var(--muted); display:block; margin-bottom:.35rem; }
+    input[type=text] { width:100%; padding:.5rem .65rem; border-radius:6px; border:1px solid var(--border); background:#0f172a; color:var(--text); }
+    button { background:var(--accent); color:#0f172a; border:none; padding:.45rem .9rem; border-radius:6px; font-weight:600; cursor:pointer; margin-right:.5rem; margin-top:.5rem; }
+    button.secondary { background:var(--panel); color:var(--text); border:1px solid var(--border); }
+    .step { border:1px solid var(--border); border-radius:8px; padding:.85rem 1rem; margin-bottom:.65rem; background:var(--panel); }
+    .step.done { border-color:var(--ok); opacity:.85; }
+    .step.active { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+    .step-head { display:flex; justify-content:space-between; align-items:flex-start; gap:.75rem; }
+    .step-id { font-weight:700; color:var(--accent); }
+    .badge { font-size:.72rem; padding:.1rem .4rem; border-radius:4px; background:#334155; color:var(--muted); }
+    .badge.ok { background:var(--ok); color:#000; }
+    .badge.miss { background:#ef4444; color:#fff; }
+    ul { margin:.35rem 0 0; padding-left:1.2rem; font-size:.82rem; color:var(--muted); }
+    .cmd { font-family:ui-monospace,monospace; font-size:.8rem; background:#0f172a; padding:.35rem .5rem; border-radius:4px; display:inline-block; margin:.25rem 0; }
+    #progress { font-size:.9rem; color:var(--muted); margin-bottom:1rem; }
+    .tabs { display:flex; gap:.5rem; margin-bottom:1rem; }
+    .tabs button { margin:0; }
+    .tabs button.active { outline:2px solid var(--accent); }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Evil-Ai — 24 Task Pipeline</h1>
+    <p class="sub">Walk through all PML agent tasks in order. Do each step in Cursor, then mark done. No scores — just files and blueprints.</p>
+  </header>
+  <main>
+    <div class="tabs">
+      <button class="active" id="tab-pipeline" onclick="showTab('pipeline')">Pipeline</button>
+      <button class="secondary" id="tab-agents" onclick="showTab('agents')">All 24 agents</button>
+    </div>
+
+    <div id="view-pipeline">
+      <div class="panel">
+        <label>Target repository path (for Cursor — use @path in chat)</label>
+        <input type="text" id="target" placeholder="/Users/you/projects/Evil-Ai"/>
+        <button onclick="loadPlan()">Load pipeline</button>
+        <button class="secondary" onclick="verifyAll()">Verify all 24</button>
+        <button class="secondary" onclick="resetProgress()">Reset progress</button>
+      </div>
+      <p id="progress"></p>
+      <div id="current-step"></div>
+      <div id="steps"></div>
+    </div>
+
+    <div id="view-agents" class="hidden">
+      <div id="agent-list"></div>
+    </div>
+  </main>
+  <script>
+    const STORAGE_KEY = 'evil-ai-pipeline-done';
+    let plan = null;
+    let doneSet = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+    function showTab(name) {
+      document.getElementById('view-pipeline').classList.toggle('hidden', name !== 'pipeline');
+      document.getElementById('view-agents').classList.toggle('hidden', name !== 'agents');
+      document.getElementById('tab-pipeline').classList.toggle('active', name === 'pipeline');
+      document.getElementById('tab-agents').classList.toggle('active', name === 'agents');
+    }
+
+    function saveDone() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...doneSet]));
+    }
+
+    function resetProgress() {
+      doneSet = new Set();
+      saveDone();
+      if (plan) renderPlan(plan);
+    }
+
+    function markDone(id) {
+      doneSet.add(id);
+      saveDone();
+      if (plan) renderPlan(plan);
+    }
+
+    function nextUndone(steps) {
+      return steps.find(s => !doneSet.has(s.id));
+    }
+
+    function renderStep(s, opts = {}) {
+      const isDone = doneSet.has(s.id);
+      const cls = ['step', isDone ? 'done' : '', opts.active ? 'active' : ''].filter(Boolean).join(' ');
+      const files = (s.required_files || []).map(f => `<li>${f}${s.missing_files && s.missing_files.includes(f) ? ' <span class="badge miss">missing</span>' : ''}</li>`).join('');
+      const slash = s.skill_slug ? `/${s.skill_slug}` : '';
+      const target = document.getElementById('target').value.trim();
+      const at = target ? ` @${target}` : '';
+      return `<div class="${cls}">
+        <div class="step-head">
+          <div><span class="step-id">${s.id}</span> — ${s.name}
+            ${s.deliverables_ok ? '<span class="badge ok">files ready</span>' : '<span class="badge miss">files missing</span>'}
+          </div>
+          ${!isDone ? `<button onclick="markDone('${s.id}')">Mark done</button>` : '<span class="badge ok">done</span>'}
+        </div>
+        <p style="font-size:.85rem;color:var(--muted);margin:.4rem 0">${s.summary || ''}</p>
+        <p>Folder: <code>${s.folder}/</code></p>
+        <p>Blueprint: <code>${s.blueprint}</code></p>
+        <p>Cursor: <span class="cmd">${slash}${at}</span></p>
+        <p style="font-size:.82rem">Or open <code>docs/AGENT_PROMPTS.md</code> → section <strong>${s.id}</strong></p>
+        <ul>${files}</ul>
+      </div>`;
+    }
+
+    function renderPlan(data) {
+      plan = data;
+      const steps = data.steps || [];
+      const n = doneSet.size;
+      document.getElementById('progress').textContent = `Progress: ${n} / ${steps.length} completed`;
+      const cur = nextUndone(steps);
+      document.getElementById('current-step').innerHTML = cur
+        ? `<h2 style="font-size:1rem;margin:0 0 .5rem">Current step</h2>` + renderStep(cur, { active: true })
+        : '<p style="color:var(--ok)">All 24 tasks marked done.</p>';
+      document.getElementById('steps').innerHTML = '<h2 style="font-size:1rem">All steps</h2>' +
+        steps.map(s => renderStep(s)).join('');
+
+      document.getElementById('agent-list').innerHTML = steps.map(s => renderStep(s)).join('');
+    }
+
+    async function loadPlan() {
+      const target = encodeURIComponent(document.getElementById('target').value.trim());
+      const r = await fetch('/api/pipeline/plan?target=' + target);
+      const data = await r.json();
+      renderPlan(data);
+    }
+
+    async function verifyAll() {
+      const btn = event.target;
+      btn.disabled = true;
+      btn.textContent = 'Verifying…';
+      try {
+        const r = await fetch('/api/pipeline/run-all', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({}),
+        });
+        const data = await r.json();
+        const ok = data.deliverables_ok ?? 0;
+        const total = data.total ?? 24;
+        document.getElementById('progress').textContent =
+          `Verified: ${ok} / ${total} deliverables OK` +
+          (data.all_complete ? ' — all complete' : '');
+        if (data.portfolio && data.portfolio.tasks) {
+          const byId = Object.fromEntries(data.portfolio.tasks.map(t => [t.id, t]));
+          if (plan && plan.steps) {
+            plan.steps = plan.steps.map(s => ({
+              ...s,
+              deliverables_ok: byId[s.id]?.deliverables_ok ?? s.deliverables_ok,
+              missing_files: byId[s.id]?.missing_files ?? s.missing_files,
+            }));
+            renderPlan(plan);
+          }
+        } else {
+          await loadPlan();
+        }
+      } catch (e) {
+        document.getElementById('progress').textContent = 'Verify failed: ' + e.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Verify all 24';
+      }
+    }
+
+    loadPlan();
+  </script>
+</body>
+</html>

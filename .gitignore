@@ -63,3 +63,6 @@ temp/
 # Eval tooling (local agent submissions + generated status)
 .eval/
 docs/eval-status.json
+
+# Local tool binaries (kubectl, terraform, etc.)
+.tools/

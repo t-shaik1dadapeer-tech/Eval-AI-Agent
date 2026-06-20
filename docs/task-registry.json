@@ -8,9 +8,20 @@
       "name": "Repository Artifact Inventory",
       "folder": "beginner/B1-repo-artifact-inventory",
       "type": "analysis",
-      "reference_files": ["README.md", "REPORT.md", "inventory.csv"],
-      "required_files": ["REPORT.md", "inventory.csv"],
-      "compare_hint": "Agent output should match artifact categories and paths in inventory.csv; cross-check counts in REPORT.md."
+      "reference_files": [
+        "README.md",
+        "REPORT.md",
+        "inventory.csv"
+      ],
+      "required_files": [
+        "REPORT.md",
+        "inventory.csv"
+      ],
+      "compare_hint": "Agent output should match artifact categories and paths in inventory.csv; cross-check counts in REPORT.md.",
+      "depends_on": [],
+      "blueprint": "eval_blueprints/B1_blueprint.md",
+      "skill_slug": "evil-ai-repo-inventory",
+      "primary_output": "beginner/B1-repo-artifact-inventory/REPORT.md"
     },
     {
       "id": "B2",
@@ -18,9 +29,22 @@
       "name": "API Endpoint Map",
       "folder": "beginner/B2-api-endpoint-map",
       "type": "analysis",
-      "reference_files": ["README.md", "API_MAP.md", "endpoints.csv"],
-      "required_files": ["API_MAP.md", "endpoints.csv"],
-      "compare_hint": "Routes in endpoints.csv must match FastAPI/Express handlers in B4, B5, I4, A3, D2, D6."
+      "reference_files": [
+        "README.md",
+        "API_MAP.md",
+        "endpoints.csv"
+      ],
+      "required_files": [
+        "API_MAP.md",
+        "endpoints.csv"
+      ],
+      "compare_hint": "Routes in endpoints.csv must match FastAPI/Express handlers in B4, B5, I4, A3, D2, D6.",
+      "depends_on": [
+        "B1"
+      ],
+      "blueprint": "eval_blueprints/B2_blueprint.md",
+      "skill_slug": "evil-ai-api-endpoint-map",
+      "primary_output": "beginner/B2-api-endpoint-map/API_MAP.md"
     },
     {
       "id": "B3",
@@ -28,10 +52,19 @@
       "name": "Test Discovery",
       "folder": "beginner/B3-test-discovery",
       "type": "analysis",
-      "reference_files": ["README.md", "TEST_REPORT.md"],
-      "required_files": ["TEST_REPORT.md"],
+      "reference_files": [
+        "README.md",
+        "TEST_REPORT.md"
+      ],
+      "required_files": [
+        "TEST_REPORT.md"
+      ],
       "verify_command": "make test",
-      "compare_hint": "TEST_REPORT.md should reflect make test results (pytest, Jest, Cargo)."
+      "compare_hint": "TEST_REPORT.md should reflect make test results (pytest, Jest, Cargo).",
+      "depends_on": [],
+      "blueprint": "eval_blueprints/B3_blueprint.md",
+      "skill_slug": "evil-ai-test-discovery",
+      "primary_output": "beginner/B3-test-discovery/TEST_REPORT.md"
     },
     {
       "id": "B4",
@@ -39,10 +72,21 @@
       "name": "FastAPI Transaction Service",
       "folder": "beginner/B4-fastapi-service",
       "type": "code",
-      "reference_files": ["README.md", "REPORT.md"],
-      "required_files": ["app/main.py", "app/routes/transactions.py", "tests/test_transactions.py"],
+      "reference_files": [
+        "README.md",
+        "REPORT.md"
+      ],
+      "required_files": [
+        "app/main.py",
+        "app/routes/transactions.py",
+        "tests/test_transactions.py"
+      ],
       "verify_command": "cd beginner/B4-fastapi-service && mise exec -- pytest -q",
-      "compare_hint": "Run pytest; compare API behavior to README endpoint list."
+      "compare_hint": "Run pytest; compare API behavior to README endpoint list.",
+      "depends_on": [],
+      "blueprint": "eval_blueprints/B4_blueprint.md",
+      "skill_slug": "evil-ai-fastapi-service",
+      "primary_output": "beginner/B4-fastapi-service/app/main.py"
     },
     {
       "id": "B5",
@@ -50,10 +94,23 @@
       "name": "Node.js Transaction API",
       "folder": "beginner/B5-nodejs-api-cli",
       "type": "code",
-      "reference_files": ["README.md", "REPORT.md"],
-      "required_files": ["src/app.js", "src/routes/transactionRoutes.js", "tests/transactions.test.js"],
+      "reference_files": [
+        "README.md",
+        "REPORT.md"
+      ],
+      "required_files": [
+        "src/app.js",
+        "src/routes/transactionRoutes.js",
+        "tests/transactions.test.js"
+      ],
       "verify_command": "cd beginner/B5-nodejs-api-cli && mise exec -- npm test",
-      "compare_hint": "Run npm test; endpoints should mirror B4 (see B2 endpoints.csv)."
+      "compare_hint": "Run npm test; endpoints should mirror B4 (see B2 endpoints.csv).",
+      "depends_on": [
+        "B4"
+      ],
+      "blueprint": "eval_blueprints/B5_blueprint.md",
+      "skill_slug": "evil-ai-nodejs-api",
+      "primary_output": "beginner/B5-nodejs-api-cli/src/app.js"
     },
     {
       "id": "B6",
@@ -61,10 +118,21 @@
       "name": "Rust Log Analyzer CLI",
       "folder": "beginner/B6-rust-cli",
       "type": "code",
-      "reference_files": ["README.md", "REPORT.md"],
-      "required_files": ["src/main.rs", "src/analyzer.rs", "tests/log_analyzer_test.rs"],
+      "reference_files": [
+        "README.md",
+        "REPORT.md"
+      ],
+      "required_files": [
+        "src/main.rs",
+        "src/analyzer.rs",
+        "tests/log_analyzer_test.rs"
+      ],
       "verify_command": "cd beginner/B6-rust-cli && mise exec -- cargo test -q",
-      "compare_hint": "Run cargo test; CLI counts INFO/WARN/ERROR per README."
+      "compare_hint": "Run cargo test; CLI counts INFO/WARN/ERROR per README.",
+      "depends_on": [],
+      "blueprint": "eval_blueprints/B6_blueprint.md",
+      "skill_slug": "evil-ai-rust-cli",
+      "primary_output": "beginner/B6-rust-cli/src/main.rs"
     },
     {
       "id": "I1",
@@ -72,9 +140,23 @@
       "name": "ER Diagram",
       "folder": "intermediate/I1-er-diagram",
       "type": "report",
-      "reference_files": ["README.md", "ER_REPORT.md", "er-diagram.mmd", "entities.csv"],
-      "required_files": ["ER_REPORT.md", "er-diagram.mmd"],
-      "compare_hint": "Compare entities/relationships to models in B4, D2, A3."
+      "reference_files": [
+        "README.md",
+        "ER_REPORT.md",
+        "er-diagram.mmd",
+        "entities.csv"
+      ],
+      "required_files": [
+        "ER_REPORT.md",
+        "er-diagram.mmd"
+      ],
+      "compare_hint": "Compare entities/relationships to models in B4, D2, A3.",
+      "depends_on": [
+        "B1"
+      ],
+      "blueprint": "eval_blueprints/I1_blueprint.md",
+      "skill_slug": "evil-ai-er-diagram",
+      "primary_output": "intermediate/I1-er-diagram/ER_REPORT.md"
     },
     {
       "id": "I2",
@@ -82,9 +164,23 @@
       "name": "End-to-End Trace",
       "folder": "intermediate/I2-end-to-end-trace",
       "type": "report",
-      "reference_files": ["README.md", "FLOW_TRACE.md", "sequence-diagram.mmd", "flow-summary.csv"],
-      "required_files": ["FLOW_TRACE.md", "sequence-diagram.mmd"],
-      "compare_hint": "Agent trace should follow steps in FLOW_TRACE.md and sequence-diagram.mmd."
+      "reference_files": [
+        "README.md",
+        "FLOW_TRACE.md",
+        "sequence-diagram.mmd",
+        "flow-summary.csv"
+      ],
+      "required_files": [
+        "FLOW_TRACE.md",
+        "sequence-diagram.mmd"
+      ],
+      "compare_hint": "Agent trace should follow steps in FLOW_TRACE.md and sequence-diagram.mmd.",
+      "depends_on": [
+        "B2"
+      ],
+      "blueprint": "eval_blueprints/I2_blueprint.md",
+      "skill_slug": "evil-ai-flow-trace",
+      "primary_output": "intermediate/I2-end-to-end-trace/FLOW_TRACE.md"
     },
     {
       "id": "I3",
@@ -92,9 +188,23 @@
       "name": "Safe Change",
       "folder": "intermediate/I3-safe-change",
       "type": "report",
-      "reference_files": ["README.md", "CHANGE_REPORT.md", "risk-assessment.md", "diff-summary.md"],
-      "required_files": ["CHANGE_REPORT.md", "risk-assessment.md"],
-      "compare_hint": "Align change scope and risks with CHANGE_REPORT.md."
+      "reference_files": [
+        "README.md",
+        "CHANGE_REPORT.md",
+        "risk-assessment.md",
+        "diff-summary.md"
+      ],
+      "required_files": [
+        "CHANGE_REPORT.md",
+        "risk-assessment.md"
+      ],
+      "compare_hint": "Align change scope and risks with CHANGE_REPORT.md.",
+      "depends_on": [
+        "B3"
+      ],
+      "blueprint": "eval_blueprints/I3_blueprint.md",
+      "skill_slug": "evil-ai-safe-change",
+      "primary_output": "intermediate/I3-safe-change/CHANGE_REPORT.md"
     },
     {
       "id": "I4",
@@ -102,10 +212,25 @@
       "name": "FastAPI + Node Pair",
       "folder": "intermediate/I4-fastapi-node-pair",
       "type": "code",
-      "reference_files": ["README.md", "docs/REPORT.md", "fastapi-service/README.md", "node-client/README.md"],
-      "required_files": ["fastapi-service/app/main.py", "node-client/src/cli.js"],
+      "reference_files": [
+        "README.md",
+        "docs/REPORT.md",
+        "fastapi-service/README.md",
+        "node-client/README.md"
+      ],
+      "required_files": [
+        "fastapi-service/app/main.py",
+        "node-client/src/cli.js"
+      ],
       "verify_command": "cd intermediate/I4-fastapi-node-pair/fastapi-service && mise exec -- pytest -q && cd ../node-client && mise exec -- npm test",
-      "compare_hint": "POST /convert on FastAPI; Node client tests in node-client/tests/."
+      "compare_hint": "POST /convert on FastAPI; Node client tests in node-client/tests/.",
+      "depends_on": [
+        "B4",
+        "B5"
+      ],
+      "blueprint": "eval_blueprints/I4_blueprint.md",
+      "skill_slug": "evil-ai-fastapi-node-pair",
+      "primary_output": "intermediate/I4-fastapi-node-pair/fastapi-service/app/main.py"
     },
     {
       "id": "I5",
@@ -113,11 +238,24 @@
       "name": "Dockerize",
       "folder": "intermediate/I5-dockerize",
       "type": "infra",
-      "reference_files": ["README.md", "docs/DOCKER_REPORT.md", "Dockerfile"],
-      "required_files": ["Dockerfile", "docs/DOCKER_REPORT.md"],
+      "reference_files": [
+        "README.md",
+        "docs/DOCKER_REPORT.md",
+        "Dockerfile"
+      ],
+      "required_files": [
+        "Dockerfile",
+        "docs/DOCKER_REPORT.md"
+      ],
       "verify_command": "bash intermediate/I5-dockerize/scripts/verify-docker.sh",
-      "verify_requires": ["docker"],
-      "compare_hint": "See DOCKER_REPORT.md for build/run instructions."
+      "verify_requires": [
+        "docker"
+      ],
+      "compare_hint": "See DOCKER_REPORT.md for build/run instructions.",
+      "depends_on": [],
+      "blueprint": "eval_blueprints/I5_blueprint.md",
+      "skill_slug": "evil-ai-dockerize",
+      "primary_output": "intermediate/I5-dockerize/docs/DOCKER_REPORT.md"
     },
     {
       "id": "I6",
@@ -125,9 +263,24 @@
       "name": "Bug Diagnosis",
       "folder": "intermediate/I6-bug-diagnosis",
       "type": "report",
-      "reference_files": ["README.md", "BUG_REPORT.md", "ROOT_CAUSE_ANALYSIS.md", "FIX_SUMMARY.md"],
-      "required_files": ["BUG_REPORT.md", "ROOT_CAUSE_ANALYSIS.md", "FIX_SUMMARY.md"],
-      "compare_hint": "Agent diagnosis should match structure in ROOT_CAUSE_ANALYSIS.md."
+      "reference_files": [
+        "README.md",
+        "BUG_REPORT.md",
+        "ROOT_CAUSE_ANALYSIS.md",
+        "FIX_SUMMARY.md"
+      ],
+      "required_files": [
+        "BUG_REPORT.md",
+        "ROOT_CAUSE_ANALYSIS.md",
+        "FIX_SUMMARY.md"
+      ],
+      "compare_hint": "Agent diagnosis should match structure in ROOT_CAUSE_ANALYSIS.md.",
+      "depends_on": [
+        "I2"
+      ],
+      "blueprint": "eval_blueprints/I6_blueprint.md",
+      "skill_slug": "evil-ai-bug-diagnosis",
+      "primary_output": "intermediate/I6-bug-diagnosis/BUG_REPORT.md"
     },
     {
       "id": "A1",
@@ -135,10 +288,23 @@
       "name": "Parallel Planning",
       "folder": "advanced/A1-parallel-plan",
       "type": "report",
-      "reference_files": ["README.md", "PARALLEL_EXECUTION_PLAN.md", "agent-prompts.md", "branch-strategy.md"],
-      "required_files": ["PARALLEL_EXECUTION_PLAN.md", "agent-prompts.md", "branch-strategy.md"],
+      "reference_files": [
+        "README.md",
+        "PARALLEL_EXECUTION_PLAN.md",
+        "agent-prompts.md",
+        "branch-strategy.md"
+      ],
+      "required_files": [
+        "PARALLEL_EXECUTION_PLAN.md",
+        "agent-prompts.md",
+        "branch-strategy.md"
+      ],
       "agent_prompt_file": "agent-prompts.md",
-      "compare_hint": "Multi-lane prompts in agent-prompts.md define per-agent scope; compare lane deliverables to that file."
+      "compare_hint": "Multi-lane prompts in agent-prompts.md define per-agent scope; compare lane deliverables to that file.",
+      "depends_on": [],
+      "blueprint": "eval_blueprints/A1_blueprint.md",
+      "skill_slug": "evil-ai-parallel-plan",
+      "primary_output": "advanced/A1-parallel-plan/PARALLEL_EXECUTION_PLAN.md"
     },
     {
       "id": "A2",
@@ -146,9 +312,22 @@
       "name": "Parallel Worktrees",
       "folder": "advanced/A2-parallel-worktrees",
       "type": "report",
-      "reference_files": ["README.md", "WORKTREE_EXECUTION_REPORT.md", "merge-log.md"],
-      "required_files": ["WORKTREE_EXECUTION_REPORT.md", "merge-log.md"],
-      "compare_hint": "See WORKTREE_EXECUTION_REPORT.md for expected worktree workflow."
+      "reference_files": [
+        "README.md",
+        "WORKTREE_EXECUTION_REPORT.md",
+        "merge-log.md"
+      ],
+      "required_files": [
+        "WORKTREE_EXECUTION_REPORT.md",
+        "merge-log.md"
+      ],
+      "compare_hint": "See WORKTREE_EXECUTION_REPORT.md for expected worktree workflow.",
+      "depends_on": [
+        "A1"
+      ],
+      "blueprint": "eval_blueprints/A2_blueprint.md",
+      "skill_slug": "evil-ai-parallel-worktrees",
+      "primary_output": "advanced/A2-parallel-worktrees/WORKTREE_EXECUTION_REPORT.md"
     },
     {
       "id": "A3",
@@ -156,10 +335,28 @@
       "name": "Polyglot System",
       "folder": "advanced/A3-polyglot-system",
       "type": "code",
-      "reference_files": ["README.md", "docs/ARCHITECTURE.md", "docs/REPORT.md", "scripts/integration-test.sh"],
-      "required_files": ["fastapi-service/app/main.py", "node-worker/src/worker.js", "rust-engine/src/lib.rs"],
+      "reference_files": [
+        "README.md",
+        "docs/ARCHITECTURE.md",
+        "docs/REPORT.md",
+        "scripts/integration-test.sh"
+      ],
+      "required_files": [
+        "fastapi-service/app/main.py",
+        "node-worker/src/worker.js",
+        "rust-engine/src/lib.rs"
+      ],
       "verify_command": "bash advanced/A3-polyglot-system/scripts/integration-test.sh",
-      "compare_hint": "Run integration-test.sh; FastAPI 202 → queue → worker → Rust score."
+      "compare_hint": "Run integration-test.sh; FastAPI 202 \u2192 queue \u2192 worker \u2192 Rust score.",
+      "depends_on": [
+        "B4",
+        "B5",
+        "B6",
+        "I4"
+      ],
+      "blueprint": "eval_blueprints/A3_blueprint.md",
+      "skill_slug": "evil-ai-polyglot-system",
+      "primary_output": "advanced/A3-polyglot-system/fastapi-service/app/main.py"
     },
     {
       "id": "A4",
@@ -167,9 +364,23 @@
       "name": "Modernization",
       "folder": "advanced/A4-modernization",
       "type": "report",
-      "reference_files": ["README.md", "MODERNIZATION_REPORT.md", "PRIORITIZATION_MATRIX.md"],
-      "required_files": ["MODERNIZATION_REPORT.md", "PRIORITIZATION_MATRIX.md"],
-      "compare_hint": "Priorities in PRIORITIZATION_MATRIX.md are the reference ranking."
+      "reference_files": [
+        "README.md",
+        "MODERNIZATION_REPORT.md",
+        "PRIORITIZATION_MATRIX.md"
+      ],
+      "required_files": [
+        "MODERNIZATION_REPORT.md",
+        "PRIORITIZATION_MATRIX.md"
+      ],
+      "compare_hint": "Priorities in PRIORITIZATION_MATRIX.md are the reference ranking.",
+      "depends_on": [
+        "B1",
+        "B3"
+      ],
+      "blueprint": "eval_blueprints/A4_blueprint.md",
+      "skill_slug": "evil-ai-modernization",
+      "primary_output": "advanced/A4-modernization/MODERNIZATION_REPORT.md"
     },
     {
       "id": "A5",
@@ -177,9 +388,21 @@
       "name": "Agent Review",
       "folder": "advanced/A5-agent-review",
       "type": "report",
-      "reference_files": ["README.md", "REVIEW_REPORT.md", "FINDINGS_MATRIX.md", "VERIFICATION_PLAN.md"],
-      "required_files": ["REVIEW_REPORT.md", "FINDINGS_MATRIX.md"],
-      "compare_hint": "Findings should be categorized like FINDINGS_MATRIX.md."
+      "reference_files": [
+        "README.md",
+        "REVIEW_REPORT.md",
+        "FINDINGS_MATRIX.md",
+        "VERIFICATION_PLAN.md"
+      ],
+      "required_files": [
+        "REVIEW_REPORT.md",
+        "FINDINGS_MATRIX.md"
+      ],
+      "compare_hint": "Findings should be categorized like FINDINGS_MATRIX.md.",
+      "depends_on": [],
+      "blueprint": "eval_blueprints/A5_blueprint.md",
+      "skill_slug": "evil-ai-agent-review",
+      "primary_output": "advanced/A5-agent-review/REVIEW_REPORT.md"
     },
     {
       "id": "A6",
@@ -187,10 +410,22 @@
       "name": "Performance",
       "folder": "advanced/A6-performance",
       "type": "code",
-      "reference_files": ["README.md", "PERFORMANCE_REPORT.md", "run-benchmark.sh", "benchmark-results.csv"],
-      "required_files": ["PERFORMANCE_REPORT.md", "run-benchmark.sh"],
+      "reference_files": [
+        "README.md",
+        "PERFORMANCE_REPORT.md",
+        "run-benchmark.sh",
+        "benchmark-results.csv"
+      ],
+      "required_files": [
+        "PERFORMANCE_REPORT.md",
+        "run-benchmark.sh"
+      ],
       "verify_command": "BENCH_LINES=100000 BENCH_RUNS=2 bash advanced/A6-performance/run-benchmark.sh",
-      "compare_hint": "Reproduce benchmarks via run-benchmark.sh; compare to PERFORMANCE_REPORT.md."
+      "compare_hint": "Reproduce benchmarks via run-benchmark.sh; compare to PERFORMANCE_REPORT.md.",
+      "depends_on": [],
+      "blueprint": "eval_blueprints/A6_blueprint.md",
+      "skill_slug": "evil-ai-performance",
+      "primary_output": "advanced/A6-performance/PERFORMANCE_REPORT.md"
     },
     {
       "id": "D1",
@@ -198,11 +433,24 @@
       "name": "Terraform",
       "folder": "devops/D1-terraform",
       "type": "infra",
-      "reference_files": ["README.md", "docs/TERRAFORM_REPORT.md", "main.tf"],
-      "required_files": ["main.tf", "lambda/index.py"],
+      "reference_files": [
+        "README.md",
+        "docs/TERRAFORM_REPORT.md",
+        "main.tf"
+      ],
+      "required_files": [
+        "main.tf",
+        "lambda/index.py"
+      ],
       "verify_command": "cd devops/D1-terraform && mise exec -- terraform init -backend=false -input=false && mise exec -- terraform validate",
-      "verify_requires": ["terraform"],
-      "compare_hint": "terraform validate must pass; see TERRAFORM_REPORT.md."
+      "verify_requires": [
+        "terraform"
+      ],
+      "compare_hint": "terraform validate must pass; see TERRAFORM_REPORT.md.",
+      "depends_on": [],
+      "blueprint": "eval_blueprints/D1_blueprint.md",
+      "skill_slug": "evil-ai-terraform",
+      "primary_output": "devops/D1-terraform/main.tf"
     },
     {
       "id": "D2",
@@ -210,11 +458,26 @@
       "name": "Docker Compose",
       "folder": "devops/D2-docker-compose",
       "type": "infra",
-      "reference_files": ["README.md", "docs/STACK_REPORT.md", "docker-compose.yml"],
-      "required_files": ["docker-compose.yml", "scripts/e2e_test.sh"],
+      "reference_files": [
+        "README.md",
+        "docs/STACK_REPORT.md",
+        "docker-compose.yml"
+      ],
+      "required_files": [
+        "docker-compose.yml",
+        "scripts/e2e_test.sh"
+      ],
       "verify_command": "bash devops/D2-docker-compose/scripts/e2e_test.sh",
-      "verify_requires": ["docker"],
-      "compare_hint": "Run e2e_test.sh with Docker; API on port 8200."
+      "verify_requires": [
+        "docker"
+      ],
+      "compare_hint": "Run e2e_test.sh with Docker; API on port 8200.",
+      "depends_on": [
+        "I5"
+      ],
+      "blueprint": "eval_blueprints/D2_blueprint.md",
+      "skill_slug": "evil-ai-docker-compose",
+      "primary_output": "devops/D2-docker-compose/docker-compose.yml"
     },
     {
       "id": "D3",
@@ -222,10 +485,24 @@
       "name": "CI Pipeline",
       "folder": "devops/D3-ci-pipeline",
       "type": "infra",
-      "reference_files": ["README.md", "docs/PIPELINE_REPORT.md", "scripts/run-pipeline-local.sh"],
-      "required_files": ["docs/PIPELINE_REPORT.md", "scripts/run-pipeline-local.sh"],
+      "reference_files": [
+        "README.md",
+        "docs/PIPELINE_REPORT.md",
+        "scripts/run-pipeline-local.sh"
+      ],
+      "required_files": [
+        "docs/PIPELINE_REPORT.md",
+        "scripts/run-pipeline-local.sh"
+      ],
       "verify_command": "bash devops/D3-ci-pipeline/scripts/run-pipeline-local.sh",
-      "compare_hint": "Local pipeline mirrors GitHub Actions; see PIPELINE_REPORT.md."
+      "compare_hint": "Local pipeline mirrors GitHub Actions; see PIPELINE_REPORT.md.",
+      "depends_on": [
+        "B3",
+        "I5"
+      ],
+      "blueprint": "eval_blueprints/D3_blueprint.md",
+      "skill_slug": "evil-ai-ci-pipeline",
+      "primary_output": "devops/D3-ci-pipeline/docs/PIPELINE_REPORT.md"
     },
     {
       "id": "D4",
@@ -233,10 +510,23 @@
       "name": "Kubernetes",
       "folder": "devops/D4-kubernetes",
       "type": "infra",
-      "reference_files": ["README.md", "docs/K8S_REPORT.md", "k8s/deployment.yaml"],
-      "required_files": ["k8s/deployment.yaml", "scripts/validate-manifests.sh"],
+      "reference_files": [
+        "README.md",
+        "docs/K8S_REPORT.md",
+        "k8s/deployment.yaml"
+      ],
+      "required_files": [
+        "k8s/deployment.yaml",
+        "scripts/validate-manifests.sh"
+      ],
       "verify_command": "bash devops/D4-kubernetes/scripts/validate-manifests.sh",
-      "compare_hint": "validate-manifests.sh must pass; see K8S_REPORT.md."
+      "compare_hint": "validate-manifests.sh must pass; see K8S_REPORT.md.",
+      "depends_on": [
+        "I5"
+      ],
+      "blueprint": "eval_blueprints/D4_blueprint.md",
+      "skill_slug": "evil-ai-kubernetes",
+      "primary_output": "devops/D4-kubernetes/k8s/deployment.yaml"
     },
     {
       "id": "D5",
@@ -244,10 +534,22 @@
       "name": "Dev Environment",
       "folder": "devops/D5-dev-environment",
       "type": "infra",
-      "reference_files": ["README.md", "docs/DEV_ENVIRONMENT_REPORT.md", "docs/BOOTSTRAP_VERIFICATION.md"],
-      "required_files": ["README.md"],
+      "reference_files": [
+        "README.md",
+        "docs/DEV_ENVIRONMENT_REPORT.md",
+        "docs/BOOTSTRAP_VERIFICATION.md"
+      ],
+      "required_files": [
+        "README.md"
+      ],
       "verify_command": "make test",
-      "compare_hint": "make bootstrap from repo root; see D5 README and root Makefile."
+      "compare_hint": "make bootstrap from repo root; see D5 README and root Makefile.",
+      "depends_on": [
+        "B3"
+      ],
+      "blueprint": "eval_blueprints/D5_blueprint.md",
+      "skill_slug": "evil-ai-dev-environment",
+      "primary_output": "devops/D5-dev-environment/README.md"
     },
     {
       "id": "D6",
@@ -255,11 +557,55 @@
       "name": "Observability",
       "folder": "devops/D6-observability",
       "type": "infra",
-      "reference_files": ["README.md", "docs/OBSERVABILITY_REPORT.md", "docs/METRICS_REPORT.md", "docs/DASHBOARD_PANEL.json", "scripts/start-stack.sh"],
-      "required_files": ["docker-compose.yml", "service/app/main.py", "service/tests/test_metrics.py"],
+      "reference_files": [
+        "README.md",
+        "docs/OBSERVABILITY_REPORT.md",
+        "docs/METRICS_REPORT.md",
+        "docs/DASHBOARD_PANEL.json",
+        "scripts/start-stack.sh"
+      ],
+      "required_files": [
+        "docker-compose.yml",
+        "service/app/main.py",
+        "service/tests/test_metrics.py"
+      ],
       "verify_command": "cd devops/D6-observability/service && mise exec -- pytest -q",
-      "verify_requires": ["docker"],
-      "compare_hint": "pytest for service; full stack via start-stack.sh + verify_metrics.sh (Docker)."
+      "verify_requires": [
+        "docker"
+      ],
+      "compare_hint": "pytest for service; full stack via start-stack.sh + verify_metrics.sh (Docker).",
+      "depends_on": [
+        "I5"
+      ],
+      "blueprint": "eval_blueprints/D6_blueprint.md",
+      "skill_slug": "evil-ai-observability",
+      "primary_output": "devops/D6-observability/docker-compose.yml"
     }
+  ],
+  "pipeline_order": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "I1",
+    "I2",
+    "I3",
+    "I4",
+    "I5",
+    "I6",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D6"
   ]
 }

@@ -1,42 +1,32 @@
 # Agent Prompts — All 24 Tasks
 
-Copy-paste prompts for evaluating any task after clone. Works with **Evil-Ai repo files** and **any external API(s)** you register on the eval server — no default API is built in.
+Copy-paste prompts for each PML/OCL task. Start the portfolio with **`make eval-api`** or see **`docs/SETUP.md`**.
 
 ## Before you start
 
 ```bash
-git clone <repo-url> Evil-Ai
 cd Evil-Ai
-python3 scripts/eval/portfolio.py serve --port 8788
+make setup
+make eval-api    # http://127.0.0.1:8788 — Evil-Ai portfolio dashboard
+make install-cursor-skills   # optional: /evil-ai-* slash commands in Cursor
 ```
 
-Open **http://127.0.0.1:8788/** — dashboard shows **Agent work**, **Remote API** (optional), and **Score %** (repo + tests + agent output).
-
-**Using your own API?** Read [`EXTERNAL_EVAL.md`](EXTERNAL_EVAL.md) — live API compare is manual only; it does **not** change dashboard Score.
+Each task also has **`eval_blueprints/{ID}_blueprint.md`** listing required `.md` files.
 
 ---
 
-## Universal prompt — any external API + .md
-
-Copy this block when testing **your** API with any task prompt below:
+## Universal prompt — any target repo
 
 ```
-You are evaluating an Evil-Ai task using the eval API + my external running API.
+You are running Evil-Ai task {TASK_ID} on my repository.
 
-Eval server: http://127.0.0.1:8788
-My API: http://127.0.0.1:YOUR_PORT   (start your service first)
-
-Steps:
-1. POST http://127.0.0.1:8788/api/external/register  {"id":"my-dev-api","name":"My Project","api_base_url":"http://127.0.0.1:YOUR_PORT","default":true}
-2. GET http://127.0.0.1:8788/api/agent/guide/{TASK_ID}
-3. Read reference .md files from the guide; read the task prompt from docs/AGENT_PROMPTS.md
-4. curl my API endpoints and compare responses to what the .md expects
-5. POST http://127.0.0.1:8788/api/agent/submit  {"task_id":"{TASK_ID}","agent_name":"cursor","output_path":"<deliverable>","api_id":"my-dev-api"}
-6. If partial/mismatch, read related_md from the JSON response and fix
-7. Open http://127.0.0.1:8788/ dashboard — check Agent + API match columns
+1. Read eval_blueprints/{TASK_ID}_blueprint.md
+2. Read docs/AGENT_PROMPTS.md section {TASK_ID}
+3. Do the work — create the required .md files listed in the blueprint
+4. Run make eval to verify files exist
 ```
 
-Replace `{TASK_ID}` and `YOUR_PORT`. Then use a task-specific prompt below.
+Replace `{TASK_ID}`. Attach repo in Cursor with `@/path/to/repo` if analyzing another project.
 
 ---
 
@@ -84,7 +74,7 @@ Evaluate Evil-Ai task B1 (Repository Artifact Inventory).
 4. Scan the repo and ensure inventory.csv lists artifacts by category (controllers, services, tests, configs, docs) with correct paths. Update REPORT.md with counts and summary.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"B1","agent_name":"cursor","output_path":"beginner/B1-repo-artifact-inventory/REPORT.md"}
-6. Show verdict, match_score, and dashboard row for B1.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B2-api-endpoint-map/API_MAP.md
@@ -110,7 +100,7 @@ Evaluate Evil-Ai task B2 (API Endpoint Map).
 4. Scan HTTP routes in B4, B5, I4, A3, D2, D6 services. Update endpoints.csv and API_MAP.md so every route matches actual handlers.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"B2","agent_name":"cursor","output_path":"beginner/B2-api-endpoint-map/endpoints.csv"}
-6. Show verdict, match_score, and dashboard row for B2.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B4-fastapi-service/README.md
@@ -138,7 +128,7 @@ Evaluate Evil-Ai task B3 (Test Discovery).
 4. Run make test from repo root. Update TEST_REPORT.md with frameworks found (pytest, Jest, Cargo), test counts, and pass/fail summary.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"B3","agent_name":"cursor","output_path":"beginner/B3-test-discovery/TEST_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for B3.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B4-fastapi-service/tests/
@@ -166,7 +156,7 @@ Evaluate Evil-Ai task B4 (FastAPI Transaction Service).
 4. Ensure app/main.py, app/routes/transactions.py, and tests/test_transactions.py implement the in-memory transaction REST API per README. Run: cd beginner/B4-fastapi-service && mise exec -- pytest -q
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"B4","agent_name":"cursor","output_path":"beginner/B4-fastapi-service/REPORT.md"}
-6. Show verdict, match_score, and dashboard row for B4.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B2-api-endpoint-map/endpoints.csv
@@ -193,7 +183,7 @@ Evaluate Evil-Ai task B5 (Node.js Transaction API).
 4. Ensure src/app.js, src/routes/transactionRoutes.js, and tests/transactions.test.js mirror B4 endpoints. Run: cd beginner/B5-nodejs-api-cli && mise exec -- npm test
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"B5","agent_name":"cursor","output_path":"beginner/B5-nodejs-api-cli/REPORT.md"}
-6. Show verdict, match_score, and dashboard row for B5.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B2-api-endpoint-map/endpoints.csv
@@ -219,7 +209,7 @@ Evaluate Evil-Ai task B6 (Rust Log Analyzer CLI).
 4. Ensure src/main.rs, src/analyzer.rs, and tests/log_analyzer_test.rs count INFO/WARN/ERROR lines per README. Run: cd beginner/B6-rust-cli && mise exec -- cargo test -q
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"B6","agent_name":"cursor","output_path":"beginner/B6-rust-cli/REPORT.md"}
-6. Show verdict, match_score, and dashboard row for B6.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B3-test-discovery/TEST_REPORT.md
@@ -245,7 +235,7 @@ Evaluate Evil-Ai task I1 (ER Diagram).
 4. Document entities and relationships from B4, D2, and A3 data models. Update ER_REPORT.md and er-diagram.mmd.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"I1","agent_name":"cursor","output_path":"intermediate/I1-er-diagram/ER_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for I1.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B4-fastapi-service/app/models/
@@ -272,7 +262,7 @@ Evaluate Evil-Ai task I2 (End-to-End Trace).
 4. Document request flow across B4/B5 (or chosen service): client → API → handler → response. Update FLOW_TRACE.md and sequence-diagram.mmd.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"I2","agent_name":"cursor","output_path":"intermediate/I2-end-to-end-trace/FLOW_TRACE.md"}
-6. Show verdict, match_score, and dashboard row for I2.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B2-api-endpoint-map/API_MAP.md
@@ -299,7 +289,7 @@ Evaluate Evil-Ai task I3 (Safe Change).
 4. Assess a scoped change (e.g. adding a field to transaction DTO). Document scope, risks, rollback, and test plan in CHANGE_REPORT.md and risk-assessment.md.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"I3","agent_name":"cursor","output_path":"intermediate/I3-safe-change/CHANGE_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for I3.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B4-fastapi-service/REPORT.md
@@ -325,7 +315,7 @@ Evaluate Evil-Ai task I4 (FastAPI + Node Pair).
 4. Ensure FastAPI POST /convert and Node CLI client work. Run pytest in fastapi-service and npm test in node-client.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"I4","agent_name":"cursor","output_path":"intermediate/I4-fastapi-node-pair/docs/REPORT.md"}
-6. Show verdict, match_score, and dashboard row for I4.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B4-fastapi-service/README.md
@@ -352,7 +342,7 @@ Evaluate Evil-Ai task I5 (Dockerize).
 4. Document build/run steps. Verify docker build and container run per DOCKER_REPORT.md (Docker required).
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"I5","agent_name":"cursor","output_path":"intermediate/I5-dockerize/docs/DOCKER_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for I5.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - devops/D2-docker-compose/docs/STACK_REPORT.md
@@ -378,7 +368,7 @@ Evaluate Evil-Ai task I6 (Bug Diagnosis).
 4. Document bug symptoms, root cause, fix, and verification in the three report files following the repo structure.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"I6","agent_name":"cursor","output_path":"intermediate/I6-bug-diagnosis/ROOT_CAUSE_ANALYSIS.md"}
-6. Show verdict, match_score, and dashboard row for I6.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - intermediate/I3-safe-change/CHANGE_REPORT.md
@@ -404,7 +394,7 @@ Evaluate Evil-Ai task A1 (Parallel Planning).
 4. Ensure multi-lane parallel plan and per-agent prompts are complete for B4 extension work. Lane prompts live in agent-prompts.md.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"A1","agent_name":"cursor","output_path":"advanced/A1-parallel-plan/PARALLEL_EXECUTION_PLAN.md"}
-6. Show verdict, match_score, and dashboard row for A1.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - advanced/A1-parallel-plan/agent-prompts.md
@@ -431,7 +421,7 @@ Evaluate Evil-Ai task A2 (Parallel Worktrees).
 4. Document git worktree workflow: create worktrees, parallel branches, merge order, and conflicts in WORKTREE_EXECUTION_REPORT.md and merge-log.md.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"A2","agent_name":"cursor","output_path":"advanced/A2-parallel-worktrees/WORKTREE_EXECUTION_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for A2.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - advanced/A1-parallel-plan/branch-strategy.md
@@ -457,7 +447,7 @@ Evaluate Evil-Ai task A3 (Polyglot System).
 4. Ensure FastAPI → queue → Node worker → Rust scorer flow works. Run: bash advanced/A3-polyglot-system/scripts/integration-test.sh
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"A3","agent_name":"cursor","output_path":"advanced/A3-polyglot-system/docs/REPORT.md"}
-6. Show verdict, match_score, and dashboard row for A3.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - advanced/A3-polyglot-system/docs/ARCHITECTURE.md
@@ -484,7 +474,7 @@ Evaluate Evil-Ai task A4 (Modernization).
 4. Analyze legacy patterns across the repo. Update MODERNIZATION_REPORT.md and PRIORITIZATION_MATRIX.md with ranked upgrade items.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"A4","agent_name":"cursor","output_path":"advanced/A4-modernization/MODERNIZATION_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for A4.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - advanced/A4-modernization/PRIORITIZATION_MATRIX.md
@@ -511,7 +501,7 @@ Evaluate Evil-Ai task A5 (Agent Review).
 4. Perform structured code/agent review. Categorize findings in FINDINGS_MATRIX.md format. Summarize in REVIEW_REPORT.md.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"A5","agent_name":"cursor","output_path":"advanced/A5-agent-review/REVIEW_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for A5.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - advanced/A5-agent-review/FINDINGS_MATRIX.md
@@ -537,7 +527,7 @@ Evaluate Evil-Ai task A6 (Performance).
 4. Run benchmarks: BENCH_LINES=100000 BENCH_RUNS=2 bash advanced/A6-performance/run-benchmark.sh. Update PERFORMANCE_REPORT.md with results.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"A6","agent_name":"cursor","output_path":"advanced/A6-performance/PERFORMANCE_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for A6.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - advanced/A6-performance/benchmark-results.csv
@@ -563,7 +553,7 @@ Evaluate Evil-Ai task D1 (Terraform).
 4. Ensure main.tf and lambda/index.py are valid. Run: cd devops/D1-terraform && mise exec -- terraform init -backend=false -input=false && mise exec -- terraform validate
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"D1","agent_name":"cursor","output_path":"devops/D1-terraform/docs/TERRAFORM_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for D1.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - devops/D1-terraform/main.tf
@@ -589,7 +579,7 @@ Evaluate Evil-Ai task D2 (Docker Compose).
 4. Ensure multi-service stack (Postgres + API + worker) works. Run: bash devops/D2-docker-compose/scripts/e2e_test.sh (Docker required, API port 8200).
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"D2","agent_name":"cursor","output_path":"devops/D2-docker-compose/docs/STACK_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for D2.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - beginner/B2-api-endpoint-map/endpoints.csv
@@ -616,7 +606,7 @@ Evaluate Evil-Ai task D3 (CI Pipeline).
 4. Run local pipeline: bash devops/D3-ci-pipeline/scripts/run-pipeline-local.sh. Document lint, test, build stages in PIPELINE_REPORT.md.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"D3","agent_name":"cursor","output_path":"devops/D3-ci-pipeline/docs/PIPELINE_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for D3.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - devops/D5-dev-environment/docs/BOOTSTRAP_VERIFICATION.md
@@ -642,7 +632,7 @@ Evaluate Evil-Ai task D4 (Kubernetes).
 4. Validate manifests: bash devops/D4-kubernetes/scripts/validate-manifests.sh
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"D4","agent_name":"cursor","output_path":"devops/D4-kubernetes/docs/K8S_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for D4.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - devops/D2-docker-compose/docs/STACK_REPORT.md
@@ -668,7 +658,7 @@ Evaluate Evil-Ai task D5 (Dev Environment).
 4. Verify make bootstrap and make test work from repo root with mise-pinned runtimes. Document setup in DEV_ENVIRONMENT_REPORT.md.
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"D5","agent_name":"cursor","output_path":"devops/D5-dev-environment/docs/DEV_ENVIRONMENT_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for D5.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - devops/D5-dev-environment/docs/BOOTSTRAP_VERIFICATION.md
@@ -695,7 +685,7 @@ Evaluate Evil-Ai task D6 (Observability).
 4. Run service tests: cd devops/D6-observability/service && mise exec -- pytest -q. For full stack: ./scripts/start-stack.sh and ./scripts/verify_metrics.sh (Docker, Grafana on port 3002).
 5. POST http://127.0.0.1:8787/api/agent/submit with:
    {"task_id":"D6","agent_name":"cursor","output_path":"devops/D6-observability/docs/METRICS_REPORT.md"}
-6. Show verdict, match_score, and dashboard row for D6.
+6. Run `make eval` to confirm required files exist for this task.
 
 If mismatch, also read:
 - devops/D6-observability/docs/OBSERVABILITY_REPORT.md

@@ -2,7 +2,7 @@
 """
 Eval AI Agent — portfolio verification, agent compare API, live dashboard.
 
-After clone:  make eval-api  →  http://127.0.0.1:8787
+After clone:  make eval-api  →  http://127.0.0.1:8788
 
 Agents call:
   GET  /api/agent/guide/{TASK}
@@ -29,6 +29,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REGISTRY_PATH = ROOT / "docs" / "task-registry.json"
 STATUS_PATH = ROOT / "docs" / "eval-status.json"
 DASHBOARD_STATIC = Path(__file__).resolve().parent / "dashboard.html"
+FRONTEND_STATIC = DASHBOARD_STATIC  # alias — live UI is the eval dashboard
 EVAL_DIR = ROOT / ".eval"
 AGENT_RUNS_PATH = EVAL_DIR / "agent-runs.json"
 SUBMISSIONS_DIR = EVAL_DIR / "submissions"
@@ -570,6 +571,201 @@ def summarize_api_match(api_match: dict[str, Any] | None) -> dict[str, Any]:
     return {"matching": matching, "not_matching": not_matching, "summary": " | ".join(parts)}
 
 
+def _task_primary_md_path(task: dict[str, Any]) -> Path | None:
+    folder = ROOT / task["folder"]
+    for name in list(task.get("reference_files", [])) + list(task.get("required_files", [])):
+        path = folder / name
+        if path.exists() and path.suffix == ".md":
+            return path
+    readme = folder / "README.md"
+    return readme if readme.exists() else None
+
+
+def suggest_alternate_tasks(
+    current_id: str,
+    api_base_url: str,
+    registry: dict[str, Any],
+    current_api_match: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    """When current task poorly fits the user's API, rank other agent tasks by endpoint overlap."""
+    current_pct = round((current_api_match or {}).get("match_score", 0) * 100)
+    if current_pct >= 80:
+        return []
+
+    ranked: list[dict[str, Any]] = []
+    for other in registry.get("tasks", []):
+        if other["id"] == current_id:
+            continue
+        md_content, sources = collect_task_md_content(other)
+        if not md_content.strip():
+            continue
+        match = compare_api_to_md(md_content, api_base_url, task=other)
+        fit = round((match.get("match_score") or 0) * 100)
+        if fit <= current_pct:
+            continue
+        ranked.append(
+            {
+                "id": other["id"],
+                "name": other["name"],
+                "category": other.get("category"),
+                "fit_score": fit,
+                "verdict": match.get("verdict"),
+                "md_sources": sources[:3],
+                "reason": f"{fit}% endpoint match vs your API (better fit than {current_id}).",
+            }
+        )
+    ranked.sort(key=lambda x: x["fit_score"], reverse=True)
+    if ranked:
+        return ranked[:4]
+
+    # Fallback hints when nothing scores higher — common analysis tasks for unknown APIs
+    fallbacks = []
+    for fid in ("B2", "B1", "I2", "B3"):
+        other = task_by_id(registry, fid)
+        if other and other["id"] != current_id:
+            fallbacks.append(
+                {
+                    "id": other["id"],
+                    "name": other["name"],
+                    "category": other.get("category"),
+                    "fit_score": None,
+                    "verdict": None,
+                    "md_sources": [f"{other['folder']}/{other.get('reference_files', ['README.md'])[0]}"],
+                    "reason": f"Try {other['id']} — {other['name']} for mapping or documenting your API.",
+                }
+            )
+    return fallbacks[:3]
+
+
+def build_verification_note(
+    task: dict[str, Any],
+    *,
+    verdict: str | None,
+    has_api: bool,
+    alternate_tasks: list[dict[str, Any]],
+    matching: list[dict[str, Any]],
+    not_matching: list[dict[str, Any]],
+) -> str:
+    if not has_api:
+        return "Register your API in the panel above, then click Check to compare this task's .md files against it."
+    if verdict == "ok":
+        return (
+            f"Task {task['id']} ({task['name']}) fully matches your API — "
+            f"{len(matching)} endpoint(s) verified."
+        )
+    if verdict == "partial":
+        base = (
+            f"Task {task['id']} partially matches your API — "
+            f"{len(matching)} matching, {len(not_matching)} not matching."
+        )
+    else:
+        base = f"Task {task['id']} is not a complete match for your API."
+    if alternate_tasks:
+        alts = ", ".join(f"{a['id']} ({a['name']})" for a in alternate_tasks[:3])
+        return f"{base} This agent is not fully verifiable for your API — try: {alts}."
+    return f"{base} Consider B2 (API Endpoint Map) or B1 (Repository Inventory) for your API."
+
+
+def run_task_check(
+    task: dict[str, Any],
+    registry: dict[str, Any],
+    *,
+    api_base_url: str | None = None,
+    api_id: str | None = None,
+) -> dict[str, Any]:
+    """Dashboard check: compare task .md files vs registered API; score + alternate task hints."""
+    try:
+        orch_cfg = _orch().load_config()
+    except Exception:
+        orch_cfg = {}
+
+    url = resolve_api_base_url(
+        api_base_url=api_base_url,
+        api_id=api_id,
+        task_id=task["id"],
+        orch_config=orch_cfg,
+    )
+
+    md_result: dict[str, Any] | None = None
+    primary = _task_primary_md_path(task)
+    if primary:
+        md_result = score_agent_output(task, primary)
+
+    api_match: dict[str, Any] | None = None
+    md_sources: list[str] = []
+    if url:
+        md_content, md_sources = collect_task_md_content(task)
+        api_match = compare_api_to_md(md_content, url, task=task)
+
+    endpoint_summary = summarize_api_match(api_match)
+    matching = endpoint_summary["matching"]
+    not_matching = endpoint_summary["not_matching"]
+
+    alternate_tasks: list[dict[str, Any]] = []
+    if url and api_match and api_match.get("verdict") not in ("ok", "skipped"):
+        alternate_tasks = suggest_alternate_tasks(task["id"], url, registry, api_match)
+
+    if url and api_match and api_match.get("verdict") != "skipped":
+        verdict = api_match.get("verdict")
+        check_type = "api_analyze"
+        match_score = api_match.get("match_score")
+        message = api_match.get("message")
+    elif md_result:
+        verdict = md_result.get("verdict")
+        check_type = "repo_check"
+        match_score = md_result.get("match_score")
+        message = md_result.get("message")
+    else:
+        verdict = "error"
+        check_type = "repo_check"
+        match_score = 0.0
+        message = "No .md deliverable found for this task."
+
+    verification_note = build_verification_note(
+        task,
+        verdict=str(verdict),
+        has_api=bool(url),
+        alternate_tasks=alternate_tasks,
+        matching=matching,
+        not_matching=not_matching,
+    )
+
+    checked_at = datetime.now(timezone.utc).isoformat()
+    entry: dict[str, Any] = {
+        "task_id": task["id"],
+        "agent_name": "dashboard_check",
+        "submitted_at": checked_at,
+        "checked_at": checked_at,
+        "check_type": check_type,
+        "output_path": _rel_path(primary) if primary else None,
+        "md_verdict": md_result.get("verdict") if md_result else None,
+        "verdict": verdict,
+        "match_score": match_score,
+        "message": message,
+        "api_base_url": url,
+        "api_match": api_match or {"verdict": "skipped", "message": "No API registered."},
+        "matching_summary": endpoint_summary["summary"],
+        "matching_endpoints": matching,
+        "not_matching_endpoints": not_matching,
+        "alternate_tasks": alternate_tasks,
+        "verification_note": verification_note,
+        "md_sources": md_sources,
+    }
+    entry["completion_score"] = score_from_check(entry)
+    save_agent_run(entry)
+
+    evaluated = evaluate_task(task, agent_result=entry)
+    evaluated["check_result"] = {
+        "verdict": verdict,
+        "completion_score": entry["completion_score"],
+        "matching_endpoints": matching,
+        "not_matching_endpoints": not_matching,
+        "alternate_tasks": alternate_tasks,
+        "verification_note": verification_note,
+    }
+    return evaluated
+
+
 def resolve_task_remote(task_id: str, orch_config: dict[str, Any] | None = None) -> dict[str, Any]:
     """Per-task registered remote API (from task_api_map or default) — no live probe."""
     cfg = orch_config or _orch().load_config()
@@ -594,33 +790,32 @@ def resolve_task_remote(task_id: str, orch_config: dict[str, Any] | None = None)
     }
 
 
-def compute_task_score(
-    task: dict[str, Any],
-    *,
-    deliverables_ok: bool,
-    verified: bool,
-    agent_result: dict[str, Any] | None = None,
-) -> int:
-    """0–100 completion score: deliverables + tests + agent submit."""
-    if not deliverables_ok:
+def task_was_checked(agent_result: dict[str, Any] | None) -> bool:
+    return bool(agent_result and agent_result.get("checked_at"))
+
+
+def score_from_check(agent_result: dict[str, Any]) -> int:
+    """Derive 0–100 score from an explicit check record."""
+    if agent_result.get("completion_score") is not None:
+        return min(100, max(0, int(agent_result["completion_score"])))
+    check_type = agent_result.get("check_type")
+    if check_type == "api_analyze":
+        api = agent_result.get("api_match") or {}
+        ms = api.get("match_score")
+        if ms is not None:
+            return round(float(ms) * 100)
+    ms = agent_result.get("match_score")
+    if ms is not None:
+        return round(float(ms) * 100)
+    verdict = agent_result.get("md_verdict") or agent_result.get("verdict")
+    return {"ok": 100, "partial": 50, "mismatch": 15, "unreachable": 10}.get(str(verdict), 0)
+
+
+def compute_task_score(agent_result: dict[str, Any] | None = None) -> int:
+    """0 until POST /api/agent/submit or POST /api/external/analyze (with task_id)."""
+    if not task_was_checked(agent_result):
         return 0
-
-    score = 50
-
-    if task.get("verify_command"):
-        score += 35 if verified else 10
-    else:
-        score += 30
-
-    ar_v = (agent_result or {}).get("md_verdict") or (agent_result or {}).get("verdict")
-    if ar_v == "ok":
-        score += 15
-    elif ar_v == "partial":
-        score += 8
-    elif ar_v == "reference_only":
-        score += 5
-
-    return min(100, score)
+    return score_from_check(agent_result)
 
 
 def analyze_md_file(
@@ -766,39 +961,16 @@ def _suggestion_text(task: dict[str, Any]) -> str:
 
 
 def agent_guide(task: dict[str, Any]) -> dict[str, Any]:
-    folder = ROOT / task["folder"]
-    refs = [f"{task['folder']}/{r}" for r in task.get("reference_files", [])]
+    """Plain summary for a task (used by tools; dashboard shows this inline)."""
+    primary = task.get("required_files", task.get("reference_files", ["README.md"]))[0]
     return {
         "task_id": task["id"],
         "name": task["name"],
-        "category": task["category"],
         "folder": task["folder"],
-        "type": task["type"],
-        "objective": task.get("compare_hint", task["name"]),
-        "reference_files": refs,
-        "required_files": [f"{task['folder']}/{r}" for r in task.get("required_files", [])],
-        "agent_prompt_file": (
-            f"{task['folder']}/{task['agent_prompt_file']}" if task.get("agent_prompt_file") else None
-        ),
-        "verify_command": task.get("verify_command"),
-        "verify_requires": task.get("verify_requires", []),
-        "instructions": [
-            f"1. Read reference files in `{task['folder']}/` (especially {refs[0] if refs else 'README.md'}).",
-            f"2. Complete work for task {task['id']} in `{task['folder']}/` (or your external project).",
-            "3. POST to /api/agent/submit with task_id, output_path or content.",
-            "4. Optional: register Remote API via POST /api/external/register (display only — does not change score).",
-            "5. Open dashboard / — Score % = repo files + tests + agent output (not API probe).",
-        ],
-        "external_api": {
-            "analyze": "POST /api/external/analyze  {md_path, api_base_url, task_id?}  (manual check only)",
-            "set_target": "POST /api/external/target  {api_base_url, project_name?}",
-            "submit_example": {
-                "task_id": task["id"],
-                "agent_name": "cursor",
-                "output_path": f"{task['folder']}/{task.get('reference_files', ['README.md'])[0]}",
-            },
-        },
-        "related_md_on_mismatch": RELATED_MD.get(task["id"], []),
+        "what_to_do": task.get("compare_hint", task["name"]),
+        "files_to_create": [f"{task['folder']}/{r}" for r in task.get("required_files", [])],
+        "main_file": f"{task['folder']}/{primary}",
+        "cursor_prompt": f"Open docs/AGENT_PROMPTS.md and find section ## {task['id']} —",
     }
 
 
@@ -845,8 +1017,10 @@ def evaluate_task(
         "agent_prompt_file": (
             f"{task['folder']}/{task['agent_prompt_file']}" if task.get("agent_prompt_file") else None
         ),
+        "summary": task.get("compare_hint", task["name"]),
+        "required_files": [f"{task['folder']}/{r}" for r in task.get("required_files", [])],
     }
-    if agent_result:
+    if agent_result and task_was_checked(agent_result):
         out["agent_result"] = {
             "verdict": agent_result.get("verdict"),
             "match_score": agent_result.get("match_score"),
@@ -854,6 +1028,8 @@ def evaluate_task(
             "suggestion": agent_result.get("suggestion"),
             "agent_name": agent_result.get("agent_name"),
             "submitted_at": agent_result.get("submitted_at"),
+            "checked_at": agent_result.get("checked_at"),
+            "check_type": agent_result.get("check_type"),
             "output_path": agent_result.get("output_path"),
             "md_verdict": agent_result.get("md_verdict"),
             "api_match": agent_result.get("api_match"),
@@ -861,18 +1037,16 @@ def evaluate_task(
             "related_md": agent_result.get("related_md"),
             "combined_verdict": agent_result.get("combined_verdict"),
             "matching_summary": agent_result.get("matching_summary"),
-            "matching_endpoints": agent_result.get("matching_endpoints"),
-            "not_matching_endpoints": agent_result.get("not_matching_endpoints"),
+            "matching_endpoints": agent_result.get("matching_endpoints") or [],
+            "not_matching_endpoints": agent_result.get("not_matching_endpoints") or [],
+            "alternate_tasks": agent_result.get("alternate_tasks") or [],
+            "verification_note": agent_result.get("verification_note"),
+            "md_sources": agent_result.get("md_sources") or [],
         }
-    ar = agent_result
+    ar = agent_result if task_was_checked(agent_result) else None
     orch_cfg = _orch().load_config()
     remote = resolve_task_remote(task["id"], orch_cfg)
-    completion_score = compute_task_score(
-        task,
-        deliverables_ok=deliverables_ok,
-        verified=verified,
-        agent_result=ar,
-    )
+    completion_score = compute_task_score(agent_result=ar)
     out["remote_api"] = remote
     out["completion_score"] = completion_score
     return out
@@ -892,8 +1066,13 @@ def build_portfolio(*, run_tests: bool = False, run_docker: bool = False) -> dic
     deliverables_ok = sum(1 for r in results if r["deliverables_ok"])
     executable = sum(1 for r in results if r["executable"])
     verified = sum(1 for r in results if r.get("verified"))
-    agent_evaluated = sum(1 for r in results if r.get("agent_result", {}).get("verdict") not in (None, "reference_only"))
-    agent_ok = sum(1 for r in results if r.get("agent_result", {}).get("verdict") == "ok")
+    agent_evaluated = sum(1 for r in results if task_was_checked(r.get("agent_result")))
+    agent_ok = sum(
+        1
+        for r in results
+        if task_was_checked(r.get("agent_result"))
+        and (r.get("agent_result", {}).get("md_verdict") or r.get("agent_result", {}).get("verdict")) == "ok"
+    )
     complete_count = sum(1 for r in results if r.get("completion_score", 0) >= 80)
 
     return {
@@ -960,6 +1139,7 @@ def submit_agent_output(
     if related and md_result.get("verdict") != "ok":
         suggestion += " Related .md files: " + ", ".join(f"`{r}`" for r in related)
 
+    checked_at = datetime.now(timezone.utc).isoformat()
     result = {
         **md_result,
         "md_verdict": md_result.get("verdict"),
@@ -969,16 +1149,19 @@ def submit_agent_output(
         "api_base_url": base,
         "api_match": {
             "verdict": "skipped",
-            "message": "Score uses agent output only; API probe does not affect dashboard score.",
+            "message": "Agent submit checks .md vs repo only; use POST /api/external/analyze for live API.",
         },
         "related_md": related,
         "combined_verdict": md_result.get("verdict"),
         "suggestion": suggestion.strip(),
+        "check_type": "agent_submit",
+        "checked_at": checked_at,
     }
+    result["completion_score"] = score_from_check(result)
     entry = {
         "task_id": task["id"],
         "agent_name": agent_name or "unknown",
-        "submitted_at": datetime.now(timezone.utc).isoformat(),
+        "submitted_at": checked_at,
         "output_path": _rel_path(path),
         **result,
     }
@@ -986,59 +1169,182 @@ def submit_agent_output(
     return {"task": task["id"], "task_name": task["name"], "folder": task["folder"], **result}
 
 
+def save_api_check(
+    task: dict[str, Any],
+    md_path: Path,
+    analyze_result: dict[str, Any],
+) -> dict[str, Any]:
+    """Persist live API vs .md check so dashboard score updates for this task."""
+    api_match = analyze_result.get("api_match") or {}
+    checked_at = datetime.now(timezone.utc).isoformat()
+    entry: dict[str, Any] = {
+        "task_id": task["id"],
+        "agent_name": "api_analyze",
+        "submitted_at": checked_at,
+        "checked_at": checked_at,
+        "check_type": "api_analyze",
+        "output_path": _rel_path(md_path),
+        "verdict": api_match.get("verdict"),
+        "match_score": api_match.get("match_score"),
+        "message": api_match.get("message"),
+        "api_match": api_match,
+        "api_base_url": api_match.get("api_base_url"),
+        "related_md": analyze_result.get("related_md", []),
+    }
+    entry["completion_score"] = score_from_check(entry)
+    endpoint_summary = summarize_api_match(api_match)
+    entry["matching_summary"] = endpoint_summary["summary"]
+    entry["matching_endpoints"] = endpoint_summary["matching"]
+    entry["not_matching_endpoints"] = endpoint_summary["not_matching"]
+    if api_match.get("verdict") not in ("ok", "skipped") and api_match.get("api_base_url"):
+        registry = load_registry()
+        entry["alternate_tasks"] = suggest_alternate_tasks(
+            task["id"], api_match["api_base_url"], registry, api_match
+        )
+        entry["verification_note"] = build_verification_note(
+            task,
+            verdict=str(api_match.get("verdict")),
+            has_api=True,
+            alternate_tasks=entry["alternate_tasks"],
+            matching=entry["matching_endpoints"],
+            not_matching=entry["not_matching_endpoints"],
+        )
+    save_agent_run(entry)
+    return entry
+
+
+def run_pipeline_task_verify(
+    task: dict[str, Any],
+    *,
+    run_tests: bool = False,
+) -> dict[str, Any]:
+    """Verify one pipeline task: required files (+ optional verify_command)."""
+    deliverables_ok, missing = check_deliverables(task)
+    verified = False
+    verify_note = ""
+    if run_tests and task.get("verify_command"):
+        requires_ok = all(has_tool(r) for r in task.get("verify_requires", []))
+        if requires_ok or not task.get("verify_requires"):
+            verified, verify_note = run_verify_command(task)
+        else:
+            verify_note = f"skipped: needs {task.get('verify_requires')}"
+
+    primary = _task_primary_md_path(task)
+    if deliverables_ok and verified:
+        verdict, completion_score = "ok", 100
+        message = "Deliverables present and verify command passed."
+    elif deliverables_ok:
+        verdict, completion_score = "ok", 100
+        message = "All required deliverables present."
+    else:
+        verdict, completion_score = "mismatch", 0
+        message = f"Missing: {', '.join(missing)}"
+
+    checked_at = datetime.now(timezone.utc).isoformat()
+    entry: dict[str, Any] = {
+        "task_id": task["id"],
+        "agent_name": "pipeline_run",
+        "submitted_at": checked_at,
+        "checked_at": checked_at,
+        "check_type": "pipeline_verify",
+        "output_path": _rel_path(primary) if primary else None,
+        "verdict": verdict,
+        "md_verdict": verdict,
+        "match_score": 1.0 if deliverables_ok else 0.0,
+        "completion_score": completion_score,
+        "message": message,
+        "deliverables_ok": deliverables_ok,
+        "missing_files": missing,
+        "verified": verified,
+        "verify_note": verify_note,
+    }
+    save_agent_run(entry)
+    out = evaluate_task(task, agent_result=entry)
+    out["pipeline_status"] = verdict
+    return out
+
+
+def run_all_pipeline(*, run_tests: bool = False) -> dict[str, Any]:
+    registry = load_registry()
+    order = registry.get("pipeline_order") or [t["id"] for t in registry["tasks"]]
+    results: list[dict[str, Any]] = []
+    for tid in order:
+        task = task_by_id(registry, tid)
+        if task:
+            results.append(run_pipeline_task_verify(task, run_tests=run_tests))
+    payload = build_portfolio()
+    ok = sum(1 for r in results if r.get("deliverables_ok"))
+    verified = sum(1 for r in results if r.get("verified"))
+    return {
+        "run": "pipeline_all",
+        "total": len(results),
+        "deliverables_ok": ok,
+        "verified": verified,
+        "all_complete": ok == len(results),
+        "tasks": results,
+        "portfolio": payload,
+    }
+
+
+def build_pipeline_plan(target_repo: str | None = None) -> dict[str, Any]:
+    registry = load_registry()
+    order = registry.get("pipeline_order") or [t["id"] for t in registry["tasks"]]
+    by_id = {t["id"]: t for t in registry["tasks"]}
+    steps: list[dict[str, Any]] = []
+    for tid in order:
+        task = by_id.get(tid)
+        if not task:
+            continue
+        ok, missing = check_deliverables(task)
+        steps.append(
+            {
+                "id": task["id"],
+                "name": task["name"],
+                "category": task.get("category"),
+                "folder": task["folder"],
+                "depends_on": task.get("depends_on") or [],
+                "blueprint": task.get("blueprint", f"eval_blueprints/{tid}_blueprint.md"),
+                "primary_output": task.get("primary_output"),
+                "skill_slug": task.get("skill_slug"),
+                "required_files": [f"{task['folder']}/{r}" for r in task.get("required_files", [])],
+                "summary": task.get("compare_hint", task["name"]),
+                "deliverables_ok": ok,
+                "missing_files": missing,
+            }
+        )
+    root = Path(target_repo).resolve() if target_repo else ROOT
+    return {
+        "target_repo": str(root),
+        "repo_root": str(ROOT),
+        "total": len(steps),
+        "steps": steps,
+    }
+
+
 def api_docs() -> dict[str, Any]:
     return {
-        "title": "Eval AI Agent API",
-        "dashboard": "/",
+        "title": "Evil-Ai Portfolio API",
+        "ui": "/",
         "workflow": [
-            "1. git clone repo && cd Evil-Ai",
-            "2. python3 scripts/eval/portfolio.py serve --port 8788",
-            "3. AGENT: GET /api/agent/guide/{TASK} + docs/AGENT_PROMPTS.md → do work → POST /api/agent/submit",
-            "4. Optional: POST /api/external/register {id, api_base_url} for per-task Remote API column",
+            "1. make setup",
+            "2. make eval-api",
+            "3. Open dashboard / — 24-task grid with scores",
+            "4. GET /api/agent/guide/{id} → work in Cursor → POST /api/agent/submit",
+            "5. make run-all — verify all deliverables",
         ],
         "endpoints": [
             "GET  /",
             "GET  /api/health",
             "GET  /api/docs",
+            "GET  /api/pipeline/plan",
+            "POST /api/pipeline/run-all",
             "GET  /api/portfolio",
             "GET  /api/tasks",
             "GET  /api/tasks/{id}",
             "GET  /api/agent/guide/{id}",
-            "GET  /api/external/apis",
-            "GET  /api/external/target",
-            "POST /api/external/register",
-            "POST /api/external/target",
-            "POST /api/external/clear",
-            "DELETE /api/external/apis/{id}",
-            "POST /api/external/analyze",
             "POST /api/agent/submit",
-            "POST /api/agent/compare/{id}",
             "POST /api/portfolio/refresh",
-            "GET  /api/orchestrator/config",
-            "POST /api/orchestrator/config",
-            "GET  /api/metrics",
         ],
-        "submit_example": {
-            "task_id": "B3",
-            "agent_name": "cursor",
-            "output_path": "beginner/B3-test-discovery/TEST_REPORT.md",
-        },
-        "analyze_example": {
-            "md_path": "docs/AGENT_PROMPTS.md",
-            "api_base_url": "http://127.0.0.1:3000",
-            "task_id": "B3",
-        },
-        "docs_files": ["docs/AGENT_API.md", "docs/EXTERNAL_EVAL.md", "docs/AGENT_USAGE.md", "docs/AGENT_PROMPTS.md"],
-        "register_api_example": {"id": "my-dev-api", "name": "My Dev API", "api_base_url": "http://127.0.0.1:9000"},
-        "multi_api_config_example": {
-            "apis": [
-                {"id": "home-api", "name": "Home API", "api_base_url": "http://127.0.0.1:9000"},
-                {"id": "billing-api", "name": "Billing API", "api_base_url": "http://127.0.0.1:9001"},
-            ],
-            "default_api_id": "home-api",
-            "task_api_map": {"B2": "home-api", "B3": "billing-api"},
-            "use_api_for_all_tasks": False,
-        },
     }
 
 
@@ -1104,10 +1410,25 @@ def cmd_orch_config(args: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_dashboard(_: argparse.Namespace) -> int:
-    print("Live dashboard is served by: make eval-api")
-    print("Static template: scripts/eval/dashboard.html")
-    print("Open: http://127.0.0.1:8788/")
+def cmd_run_all(args: argparse.Namespace) -> int:
+    payload = run_all_pipeline(run_tests=getattr(args, "run_tests", False))
+    STATUS_PATH.write_text(json.dumps(payload["portfolio"], indent=2) + "\n", encoding="utf-8")
+    s = payload["portfolio"]["summary"]
+    print(json.dumps({
+        "total": payload["total"],
+        "deliverables_ok": payload["deliverables_ok"],
+        "verified": payload["verified"],
+        "all_complete": payload["all_complete"],
+        "complete_count": s.get("complete_count"),
+    }, indent=2))
+    for r in payload["tasks"]:
+        if not r.get("deliverables_ok"):
+            print(f"  FAIL {r['id']}: {r.get('missing_files')}")
+    return 0 if payload["all_complete"] else 1
+
+
+def cmd_pipeline(_: argparse.Namespace) -> int:
+    print(json.dumps(build_pipeline_plan(), indent=2))
     return 0
 
 
@@ -1183,6 +1504,11 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
         if path.path == "/api/docs":
             self._json(200, api_docs())
             return
+        if path.path == "/api/pipeline/plan":
+            target = qs.get("target", [""])[0].strip()
+            self._json(200, build_pipeline_plan(target or None))
+            return
+
         if path.path == "/api/portfolio":
             run_tests = qs.get("run_tests", ["0"])[0] in ("1", "true", "yes")
             payload = build_portfolio(run_tests=run_tests, run_docker=run_tests)
@@ -1246,6 +1572,57 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
             payload = build_portfolio()
             STATUS_PATH.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
             self._json(200, payload)
+            return
+
+        if path.path == "/api/pipeline/run-all":
+            try:
+                body = self._read_json_body()
+                run_tests = body.get("run_tests") in (True, "true", "1", 1)
+                payload = run_all_pipeline(run_tests=run_tests)
+                STATUS_PATH.write_text(
+                    json.dumps(payload["portfolio"], indent=2) + "\n", encoding="utf-8"
+                )
+                self._json(200, payload)
+            except Exception as exc:
+                self._json(500, {"error": str(exc)})
+            return
+
+        if path.path == "/api/check-all":
+            try:
+                body = self._read_json_body()
+                results = []
+                for task in self.registry["tasks"]:
+                    results.append(
+                        run_task_check(
+                            task,
+                            self.registry,
+                            api_base_url=body.get("api_base_url"),
+                            api_id=body.get("api_id"),
+                        )
+                    )
+                payload = build_portfolio()
+                self._json(200, {"checked": len(results), "tasks": results, "portfolio": payload})
+            except Exception as exc:
+                self._json(500, {"error": str(exc)})
+            return
+
+        m_check = re.match(r"^/api/tasks/([A-Za-z0-9]+)/check$", path.path)
+        if m_check:
+            task = task_by_id(self.registry, m_check.group(1))
+            if not task:
+                self._json(404, {"error": "unknown task"})
+                return
+            try:
+                body = self._read_json_body()
+                result = run_task_check(
+                    task,
+                    self.registry,
+                    api_base_url=body.get("api_base_url"),
+                    api_id=body.get("api_id"),
+                )
+                self._json(200, result)
+            except Exception as exc:
+                self._json(500, {"error": str(exc)})
             return
 
         if path.path == "/api/agent/submit":
@@ -1339,6 +1716,12 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
                         "partial",
                         result.get("api_match", {}).get("verdict"),
                     )
+                if task and url:
+                    saved = save_api_check(task, md_p, result)
+                    result["task_id"] = task["id"]
+                    result["check_type"] = saved["check_type"]
+                    result["checked_at"] = saved["checked_at"]
+                    result["completion_score"] = saved["completion_score"]
                 self._json(200, result)
             except json.JSONDecodeError as exc:
                 self._json(400, {"error": str(exc)})
@@ -1399,13 +1782,12 @@ def cmd_serve(args: argparse.Namespace) -> int:
     build_portfolio()  # warm cache / create status file
     server = HTTPServer((args.host, args.port), EvalAPIHandler)
     base = f"http://{args.host}:{args.port}"
-    print(f"\nEval AI Agent — live eval service")
-    print(f"  Dashboard:       {base}/")
-    print(f"  External analyze:  POST {base}/api/external/analyze")
-    print(f"  Set your API:      POST {base}/api/external/target")
-    print(f"  Agent submit:      POST {base}/api/agent/submit")
-    print(f"  Portfolio JSON:    {base}/api/portfolio")
-    print(f"  Docs:              docs/AGENT_USAGE.md\n")
+    print(f"\nEvil-Ai portfolio")
+    print(f"  Live dashboard:  {base}/")
+    print(f"  Portfolio API:   {base}/api/portfolio")
+    print(f"  Agent guide:     {base}/api/agent/guide/B1")
+    print(f"  Verify files:    make eval")
+    print(f"  Stop server:     make eval-stop\n")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -1427,10 +1809,10 @@ def main() -> int:
     p_compare.add_argument("--agent-name", default="cli")
     p_compare.add_argument("--api-base-url", help="Your running API e.g. http://127.0.0.1:3000")
 
-    sub.add_parser("dashboard", help="Print dashboard URL (use serve)")
-    sub.add_parser("metrics", help="Prometheus metrics")
-
-    p_serve = sub.add_parser("serve", help="Live eval API + dashboard")
+    sub.add_parser("pipeline", help="Print pipeline plan JSON")
+    p_run_all = sub.add_parser("run-all", help="Verify all 24 pipeline tasks")
+    p_run_all.add_argument("--run-tests", action="store_true")
+    p_serve = sub.add_parser("serve", help="Evil-Ai portfolio — live eval API + dashboard")
     p_serve.add_argument("--host", default="127.0.0.1")
     p_serve.add_argument("--port", type=int, default=8788)
 
@@ -1443,7 +1825,8 @@ def main() -> int:
     handlers = {
         "verify": cmd_verify,
         "compare": cmd_compare,
-        "dashboard": cmd_dashboard,
+        "pipeline": cmd_pipeline,
+        "run-all": cmd_run_all,
         "metrics": cmd_metrics,
         "serve": cmd_serve,
         "orch-config": cmd_orch_config,
