@@ -69,8 +69,8 @@ Eval-ai-agent/
 | [`docs/TASK_REGISTRY.md`](docs/TASK_REGISTRY.md) | Status of all 24 tasks (B1–D6) |
 | [`docs/TASK_MAPPING.md`](docs/TASK_MAPPING.md) | Task ID → name, purpose, folder |
 | [`docs/AGENT_PROMPTS.md`](docs/AGENT_PROMPTS.md) | **Copy-paste prompts for all 24 tasks** |
-| [`docs/PM4_JIRA_SUBTASK_PROMPTS.md`](docs/PM4_JIRA_SUBTASK_PROMPTS.md) | **PM4-6626 Jira subtasks + all 24 prompts in one file** |
-| [`docs/JIRA_TASK_MAP.md`](docs/JIRA_TASK_MAP.md) | Jira subtask → folder → deliverable mapping |
+| [`docs/PM4_JIRA_SUBTASK_PROMPTS.md`](docs/PM4_JIRA_SUBTASK_PROMPTS.md) | **All 24 prompts + Jira links (PM4-6626 subtasks)** |
+| [`docs/JIRA_TASK_MAP.md`](docs/JIRA_TASK_MAP.md) | Task ID → Jira key → folder → deliverable |
 | [`docs/AGENT_API.md`](docs/AGENT_API.md) | **Clone + agent eval API** (guide, submit, live dashboard) |
 | [`docs/AGENT_USAGE.md`](docs/AGENT_USAGE.md) | How to use Cursor/agents + verify work |
 | [`docs/DASHBOARD_VISION.md`](docs/DASHBOARD_VISION.md) | Eval dashboard design + implemented tooling |
