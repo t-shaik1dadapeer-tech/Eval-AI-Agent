@@ -107,3 +107,136 @@ formatError,Utility / Helper classes,intermediate/I4-fastapi-node-pair/node-clie
 formatSuccess,Utility / Helper classes,intermediate/I4-fastapi-node-pair/node-client/src/client.js,CLI/client helper (formatSuccess),node:http,Confirmed
 getBaseUrl,Utility / Helper classes,intermediate/I4-fastapi-node-pair/node-client/src/client.js,CLI/client helper (getBaseUrl),node:http,Confirmed
 validateCreateTransaction,Validators,beginner/B5-nodejs-api-cli/src/middleware/validateTransaction.js,Request validator (validateCreateTransaction),express,Confirmed
+ci,Configuration,.github/workflows/ci.yml,"Build, runtime, or infrastructure configuration",—,Confirmed
+d3-ci,Configuration,.github/workflows/d3-ci.yml,"Build, runtime, or infrastructure configuration",—,Confirmed
+Makefile,Configuration,Makefile,"Build, runtime, or infrastructure configuration",—,Confirmed
+README,Documentation,README.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,advanced/A1-parallel-plan/README.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,advanced/A2-parallel-worktrees/README.md,Task or project documentation / diagram,—,Confirmed
+WORKTREE_EXECUTION_REPORT,Documentation,advanced/A2-parallel-worktrees/WORKTREE_EXECUTION_REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,advanced/A3-polyglot-system/README.md,Task or project documentation / diagram,—,Confirmed
+ARCHITECTURE,Documentation,advanced/A3-polyglot-system/docs/ARCHITECTURE.md,Task or project documentation / diagram,—,Confirmed
+DATA_CONTRACT,Documentation,advanced/A3-polyglot-system/docs/DATA_CONTRACT.md,Task or project documentation / diagram,—,Confirmed
+REPORT,Documentation,advanced/A3-polyglot-system/docs/REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,advanced/A3-polyglot-system/fastapi-service/README.md,Task or project documentation / diagram,—,Confirmed
+requirements,Configuration,advanced/A3-polyglot-system/fastapi-service/requirements.txt,"Build, runtime, or infrastructure configuration",—,Confirmed
+conftest,Tests,advanced/A3-polyglot-system/fastapi-service/tests/conftest.py,Automated test file (.py),—,Confirmed
+test_transactions,Tests,advanced/A3-polyglot-system/fastapi-service/tests/test_transactions.py,Automated test file (.py),—,Confirmed
+README,Documentation,advanced/A3-polyglot-system/node-worker/README.md,Task or project documentation / diagram,—,Confirmed
+package,Configuration,advanced/A3-polyglot-system/node-worker/package.json,"Build, runtime, or infrastructure configuration",—,Confirmed
+worker.test,Tests,advanced/A3-polyglot-system/node-worker/tests/worker.test.js,Automated test file (.js),—,Confirmed
+Cargo,Configuration,advanced/A3-polyglot-system/rust-engine/Cargo.toml,"Build, runtime, or infrastructure configuration",—,Confirmed
+README,Documentation,advanced/A3-polyglot-system/rust-engine/README.md,Task or project documentation / diagram,—,Confirmed
+scoring_test,Tests,advanced/A3-polyglot-system/rust-engine/tests/scoring_test.rs,Automated test file (.rs),—,Confirmed
+MODERNIZATION_REPORT,Documentation,advanced/A4-modernization/MODERNIZATION_REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,advanced/A4-modernization/README.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,advanced/A5-agent-review/README.md,Task or project documentation / diagram,—,Confirmed
+REVIEW_REPORT,Documentation,advanced/A5-agent-review/REVIEW_REPORT.md,Task or project documentation / diagram,—,Confirmed
+PERFORMANCE_REPORT,Documentation,advanced/A6-performance/PERFORMANCE_REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,advanced/A6-performance/README.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,beginner/B1-repo-artifact-inventory/README.md,Task or project documentation / diagram,—,Confirmed
+REPORT,Documentation,beginner/B1-repo-artifact-inventory/REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,beginner/B2-api-endpoint-map/README.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,beginner/B3-test-discovery/README.md,Task or project documentation / diagram,—,Confirmed
+TEST_REPORT,Documentation,beginner/B3-test-discovery/TEST_REPORT.md,Task or project documentation / diagram,—,Confirmed
+Dockerfile,Configuration,beginner/B4-fastapi-service/Dockerfile,"Build, runtime, or infrastructure configuration",—,Confirmed
+README,Documentation,beginner/B4-fastapi-service/README.md,Task or project documentation / diagram,—,Confirmed
+REPORT,Documentation,beginner/B4-fastapi-service/REPORT.md,Task or project documentation / diagram,—,Confirmed
+pyproject,Configuration,beginner/B4-fastapi-service/pyproject.toml,"Build, runtime, or infrastructure configuration",—,Confirmed
+requirements,Configuration,beginner/B4-fastapi-service/requirements.txt,"Build, runtime, or infrastructure configuration",—,Confirmed
+__init__,Tests,beginner/B4-fastapi-service/tests/__init__.py,Automated test file (.py),—,Confirmed
+conftest,Tests,beginner/B4-fastapi-service/tests/conftest.py,Automated test file (.py),—,Confirmed
+test_transaction_lookup,Tests,beginner/B4-fastapi-service/tests/test_transaction_lookup.py,Automated test file (.py),—,Confirmed
+test_transactions,Tests,beginner/B4-fastapi-service/tests/test_transactions.py,Automated test file (.py),—,Confirmed
+README,Documentation,beginner/B5-nodejs-api-cli/README.md,Task or project documentation / diagram,—,Confirmed
+REPORT,Documentation,beginner/B5-nodejs-api-cli/REPORT.md,Task or project documentation / diagram,—,Confirmed
+package,Configuration,beginner/B5-nodejs-api-cli/package.json,"Build, runtime, or infrastructure configuration",—,Confirmed
+cli.test,Tests,beginner/B5-nodejs-api-cli/tests/cli.test.js,Automated test file (.js),—,Confirmed
+transactions.test,Tests,beginner/B5-nodejs-api-cli/tests/transactions.test.js,Automated test file (.js),—,Confirmed
+Cargo,Configuration,beginner/B6-rust-cli/Cargo.toml,"Build, runtime, or infrastructure configuration",—,Confirmed
+README,Documentation,beginner/B6-rust-cli/README.md,Task or project documentation / diagram,—,Confirmed
+REPORT,Documentation,beginner/B6-rust-cli/REPORT.md,Task or project documentation / diagram,—,Confirmed
+log_analyzer_test,Tests,beginner/B6-rust-cli/tests/log_analyzer_test.rs,Automated test file (.rs),—,Confirmed
+README,Documentation,devops/D1-terraform/README.md,Task or project documentation / diagram,—,Confirmed
+backend,Configuration,devops/D1-terraform/backend.tf,"Build, runtime, or infrastructure configuration",—,Confirmed
+TERRAFORM_REPORT,Documentation,devops/D1-terraform/docs/TERRAFORM_REPORT.md,Task or project documentation / diagram,—,Confirmed
+main,Configuration,devops/D1-terraform/main.tf,"Build, runtime, or infrastructure configuration",—,Confirmed
+outputs,Configuration,devops/D1-terraform/outputs.tf,"Build, runtime, or infrastructure configuration",—,Confirmed
+providers,Configuration,devops/D1-terraform/providers.tf,"Build, runtime, or infrastructure configuration",—,Confirmed
+variables,Configuration,devops/D1-terraform/variables.tf,"Build, runtime, or infrastructure configuration",—,Confirmed
+README,Documentation,devops/D2-docker-compose/README.md,Task or project documentation / diagram,—,Confirmed
+Dockerfile,Configuration,devops/D2-docker-compose/api/Dockerfile,"Build, runtime, or infrastructure configuration",—,Confirmed
+requirements,Configuration,devops/D2-docker-compose/api/requirements.txt,"Build, runtime, or infrastructure configuration",—,Confirmed
+docker-compose,Configuration,devops/D2-docker-compose/docker-compose.yml,"Build, runtime, or infrastructure configuration",—,Confirmed
+STACK_REPORT,Documentation,devops/D2-docker-compose/docs/STACK_REPORT.md,Task or project documentation / diagram,—,Confirmed
+Dockerfile,Configuration,devops/D2-docker-compose/worker/Dockerfile,"Build, runtime, or infrastructure configuration",—,Confirmed
+package,Configuration,devops/D2-docker-compose/worker/package.json,"Build, runtime, or infrastructure configuration",—,Confirmed
+ci,Configuration,devops/D3-ci-pipeline/.github/workflows/ci.yml,"Build, runtime, or infrastructure configuration",—,Confirmed
+README,Documentation,devops/D3-ci-pipeline/README.md,Task or project documentation / diagram,—,Confirmed
+FAILING_RUN,Documentation,devops/D3-ci-pipeline/docs/FAILING_RUN.md,Task or project documentation / diagram,—,Confirmed
+PASSING_RUN,Documentation,devops/D3-ci-pipeline/docs/PASSING_RUN.md,Task or project documentation / diagram,—,Confirmed
+PIPELINE_REPORT,Documentation,devops/D3-ci-pipeline/docs/PIPELINE_REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,devops/D4-kubernetes/README.md,Task or project documentation / diagram,—,Confirmed
+K8S_REPORT,Documentation,devops/D4-kubernetes/docs/K8S_REPORT.md,Task or project documentation / diagram,—,Confirmed
+VALIDATION_REPORT,Documentation,devops/D4-kubernetes/docs/VALIDATION_REPORT.md,Task or project documentation / diagram,—,Confirmed
+configmap,Configuration,devops/D4-kubernetes/k8s/configmap.yaml,"Build, runtime, or infrastructure configuration",—,Confirmed
+deployment,Configuration,devops/D4-kubernetes/k8s/deployment.yaml,"Build, runtime, or infrastructure configuration",—,Confirmed
+ingress,Configuration,devops/D4-kubernetes/k8s/ingress.yaml,"Build, runtime, or infrastructure configuration",—,Confirmed
+namespace,Configuration,devops/D4-kubernetes/k8s/namespace.yaml,"Build, runtime, or infrastructure configuration",—,Confirmed
+service,Configuration,devops/D4-kubernetes/k8s/service.yaml,"Build, runtime, or infrastructure configuration",—,Confirmed
+README,Documentation,devops/D5-dev-environment/README.md,Task or project documentation / diagram,—,Confirmed
+BOOTSTRAP_VERIFICATION,Documentation,devops/D5-dev-environment/docs/BOOTSTRAP_VERIFICATION.md,Task or project documentation / diagram,—,Confirmed
+DEPENDENCY_INVENTORY,Documentation,devops/D5-dev-environment/docs/DEPENDENCY_INVENTORY.md,Task or project documentation / diagram,—,Confirmed
+DEV_ENVIRONMENT_REPORT,Documentation,devops/D5-dev-environment/docs/DEV_ENVIRONMENT_REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,devops/D6-observability/README.md,Task or project documentation / diagram,—,Confirmed
+docker-compose,Configuration,devops/D6-observability/docker-compose.yml,"Build, runtime, or infrastructure configuration",—,Confirmed
+METRICS_REPORT,Documentation,devops/D6-observability/docs/METRICS_REPORT.md,Task or project documentation / diagram,—,Confirmed
+OBSERVABILITY_REPORT,Documentation,devops/D6-observability/docs/OBSERVABILITY_REPORT.md,Task or project documentation / diagram,—,Confirmed
+ai-powered-kyc-platform-api,Configuration,devops/D6-observability/monitoring/grafana/dashboards/ai-powered-kyc-platform-api.json,"Build, runtime, or infrastructure configuration",—,Confirmed
+api-observability,Configuration,devops/D6-observability/monitoring/grafana/dashboards/api-observability.json,"Build, runtime, or infrastructure configuration",—,Confirmed
+dashboard,Configuration,devops/D6-observability/monitoring/grafana/provisioning/dashboards/dashboard.yml,"Build, runtime, or infrastructure configuration",—,Confirmed
+kyc-prometheus,Configuration,devops/D6-observability/monitoring/grafana/provisioning/datasources/kyc-prometheus.yml,"Build, runtime, or infrastructure configuration",—,Confirmed
+prometheus,Configuration,devops/D6-observability/monitoring/grafana/provisioning/datasources/prometheus.yml,"Build, runtime, or infrastructure configuration",—,Confirmed
+prometheus,Configuration,devops/D6-observability/monitoring/prometheus/prometheus.yml,"Build, runtime, or infrastructure configuration",—,Confirmed
+Dockerfile,Configuration,devops/D6-observability/service/Dockerfile,"Build, runtime, or infrastructure configuration",—,Confirmed
+requirements,Configuration,devops/D6-observability/service/requirements.txt,"Build, runtime, or infrastructure configuration",—,Confirmed
+__init__,Tests,devops/D6-observability/service/tests/__init__.py,Automated test file (.py),—,Confirmed
+conftest,Tests,devops/D6-observability/service/tests/conftest.py,Automated test file (.py),—,Confirmed
+test_metrics,Tests,devops/D6-observability/service/tests/test_metrics.py,Automated test file (.py),—,Confirmed
+test_transaction_lookup,Tests,devops/D6-observability/service/tests/test_transaction_lookup.py,Automated test file (.py),—,Confirmed
+test_transactions,Tests,devops/D6-observability/service/tests/test_transactions.py,Automated test file (.py),—,Confirmed
+AGENT_API,Documentation,docs/AGENT_API.md,Task or project documentation / diagram,—,Confirmed
+AGENT_PROMPTS,Documentation,docs/AGENT_PROMPTS.md,Task or project documentation / diagram,—,Confirmed
+AGENT_USAGE,Documentation,docs/AGENT_USAGE.md,Task or project documentation / diagram,—,Confirmed
+DASHBOARD_VISION,Documentation,docs/DASHBOARD_VISION.md,Task or project documentation / diagram,—,Confirmed
+EXTERNAL_EVAL,Documentation,docs/EXTERNAL_EVAL.md,Task or project documentation / diagram,—,Confirmed
+ORCHESTRATOR,Documentation,docs/ORCHESTRATOR.md,Task or project documentation / diagram,—,Confirmed
+ORCHESTRATOR_DESIGN,Documentation,docs/ORCHESTRATOR_DESIGN.md,Task or project documentation / diagram,—,Confirmed
+PML_VERIFICATION,Documentation,docs/PML_VERIFICATION.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,docs/README.md,Task or project documentation / diagram,—,Confirmed
+TASK_MAPPING,Documentation,docs/TASK_MAPPING.md,Task or project documentation / diagram,—,Confirmed
+TASK_REGISTRY,Documentation,docs/TASK_REGISTRY.md,Task or project documentation / diagram,—,Confirmed
+ER_REPORT,Documentation,intermediate/I1-er-diagram/ER_REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,intermediate/I1-er-diagram/README.md,Task or project documentation / diagram,—,Confirmed
+er-diagram,Documentation,intermediate/I1-er-diagram/er-diagram.mmd,Task or project documentation / diagram,—,Confirmed
+README,Documentation,intermediate/I2-end-to-end-trace/README.md,Task or project documentation / diagram,—,Confirmed
+sequence-diagram,Documentation,intermediate/I2-end-to-end-trace/sequence-diagram.mmd,Task or project documentation / diagram,—,Confirmed
+CHANGE_REPORT,Documentation,intermediate/I3-safe-change/CHANGE_REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,intermediate/I3-safe-change/README.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,intermediate/I4-fastapi-node-pair/README.md,Task or project documentation / diagram,—,Confirmed
+REPORT,Documentation,intermediate/I4-fastapi-node-pair/docs/REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,intermediate/I4-fastapi-node-pair/fastapi-service/README.md,Task or project documentation / diagram,—,Confirmed
+pytest,Configuration,intermediate/I4-fastapi-node-pair/fastapi-service/pytest.ini,"Build, runtime, or infrastructure configuration",—,Confirmed
+requirements,Configuration,intermediate/I4-fastapi-node-pair/fastapi-service/requirements.txt,"Build, runtime, or infrastructure configuration",—,Confirmed
+conftest,Tests,intermediate/I4-fastapi-node-pair/fastapi-service/tests/conftest.py,Automated test file (.py),—,Confirmed
+test_convert,Tests,intermediate/I4-fastapi-node-pair/fastapi-service/tests/test_convert.py,Automated test file (.py),—,Confirmed
+README,Documentation,intermediate/I4-fastapi-node-pair/node-client/README.md,Task or project documentation / diagram,—,Confirmed
+package,Configuration,intermediate/I4-fastapi-node-pair/node-client/package.json,"Build, runtime, or infrastructure configuration",—,Confirmed
+client.test,Tests,intermediate/I4-fastapi-node-pair/node-client/tests/client.test.js,Automated test file (.js),—,Confirmed
+Dockerfile,Configuration,intermediate/I5-dockerize/Dockerfile,"Build, runtime, or infrastructure configuration",—,Confirmed
+README,Documentation,intermediate/I5-dockerize/README.md,Task or project documentation / diagram,—,Confirmed
+DOCKER_REPORT,Documentation,intermediate/I5-dockerize/docs/DOCKER_REPORT.md,Task or project documentation / diagram,—,Confirmed
+BUG_REPORT,Documentation,intermediate/I6-bug-diagnosis/BUG_REPORT.md,Task or project documentation / diagram,—,Confirmed
+README,Documentation,intermediate/I6-bug-diagnosis/README.md,Task or project documentation / diagram,—,Confirmed
+mise,Configuration,mise.toml,"Build, runtime, or infrastructure configuration",—,Confirmed
+getTransactionById,Controllers,beginner/B5-nodejs-api-cli/src/controllers/transactionController.js,Express controller (getTransactionById),express,Confirmed

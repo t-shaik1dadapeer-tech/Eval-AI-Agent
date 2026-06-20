@@ -1,11 +1,11 @@
 %% ER Diagram — Evil-Ai Repository
-%% I1 scan result: 0 database entities, 0 relationships
-%%
-%% No erDiagram entity or relationship blocks are rendered because the
-%% repository contains no ORM-mapped entities, DDL, or migration-defined tables.
-%%
-%% Application data (B4 FastAPI, B5 Node.js) uses in-memory storage only.
-%% Evidence: beginner/B4-fastapi-service/app/services/transaction_service.py
-%%          beginner/B5-nodejs-api-cli/src/services/transactionService.js
+%% I1 scan: one DDL-defined table (D2); B4/B5 in-memory only (excluded from ER)
 
 erDiagram
+    transactions {
+        SERIAL id PK
+        VARCHAR transaction_id UK
+        NUMERIC amount
+        VARCHAR status
+        TIMESTAMPTZ created_at
+    }

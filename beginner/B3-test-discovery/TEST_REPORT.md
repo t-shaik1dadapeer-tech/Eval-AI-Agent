@@ -18,8 +18,8 @@ The repository contains **multiple test frameworks** across Python, Node.js, and
 |--------|-------|
 | Test frameworks detected | **3** (pytest, Jest, Cargo test) |
 | Test source files | **11** |
-| Test cases run (`make test`) | **47** |
-| Test cases passed | **47** |
+| Test cases run (`make test`) | **51** |
+| Test cases passed | **51** |
 | Test cases failed | **0** |
 | **Result** | **PASS** |
 | Confidence level | **Confirmed** |
@@ -82,7 +82,7 @@ make test
 
 | Project | Command | Tests | Result |
 |---------|---------|------:|--------|
-| B5 API | `npm test` | 5 | PASS |
+| B5 API | `npm test` | 9 | PASS |
 | I4 node-client | `npm test` | 5 | PASS |
 | A3 node-worker | `npm test` | 2 | PASS |
 
@@ -123,6 +123,7 @@ pytest -v
 | `test_transactions.py` | `beginner/B4-fastapi-service/tests/` | pytest | Transaction API |
 | `test_transaction_lookup.py` | `beginner/B4-fastapi-service/tests/` | pytest | GET by ID |
 | `transactions.test.js` | `beginner/B5-nodejs-api-cli/tests/` | Jest | Transaction API |
+| `cli.test.js` | `beginner/B5-nodejs-api-cli/tests/` | Jest | CLI client |
 | `log_analyzer_test.rs` | `beginner/B6-rust-cli/tests/` | Cargo | Log analyzer |
 | `test_convert.py` | `intermediate/I4-fastapi-node-pair/fastapi-service/tests/` | pytest | Currency API |
 | `client.test.js` | `intermediate/I4-fastapi-node-pair/node-client/tests/` | Jest | CLI client |
@@ -158,7 +159,7 @@ pytest -v
 | Metric | Value |
 |--------|------:|
 | Frameworks | pytest, Jest, Cargo |
-| `make test` cases run | 47 |
+| `make test` cases run | 51 |
 | `make test` pass rate | 100% |
 | D6 additional pytest cases | 9 |
 | **Overall automated result** | **PASS** |

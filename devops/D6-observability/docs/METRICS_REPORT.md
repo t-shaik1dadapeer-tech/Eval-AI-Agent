@@ -46,6 +46,21 @@ API_BASE=http://127.0.0.1:18000 ./scripts/verify_metrics.sh
 
 ---
 
+# Dashboard panel (PML rubric)
+
+Static panel export: `docs/DASHBOARD_PANEL.json` (Request Rate — `sum(rate(http_requests_total[1m]))`).
+
+Live query when stack is running:
+
+```bash
+bash devops/D6-observability/scripts/export-dashboard-panel.sh
+# writes docs/DASHBOARD_PANEL_LIVE.json (gitignored if generated locally)
+```
+
+Provisioned dashboard: `monitoring/grafana/dashboards/api-observability.json`
+
+---
+
 # Prometheus Verification
 
 **Configuration:** `monitoring/prometheus/prometheus.yml` scrapes `api:8000/metrics` every 5s.

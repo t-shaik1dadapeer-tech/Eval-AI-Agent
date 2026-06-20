@@ -9,8 +9,8 @@ Central index for the 24-task Eval AI Agent portfolio. Task **deliverables** (co
 | [TASK_REGISTRY.md](TASK_REGISTRY.md) | Master table: all tasks and current status |
 | [TASK_MAPPING.md](TASK_MAPPING.md) | Task ID → purpose and folder path |
 | [task-registry.json](task-registry.json) | Machine-readable registry (verify, compare API) |
-| [`ORCHESTRATOR.md`](ORCHESTRATOR.md) | **24 live bots** — single task or all-24 run |
-| [`EXTERNAL_EVAL.md`](EXTERNAL_EVAL.md) | **Any external API + .md compare + dashboard** |
+| [`ORCHESTRATOR.md`](ORCHESTRATOR.md) | Optional per-task API config |
+| [`EXTERNAL_EVAL.md`](EXTERNAL_EVAL.md) | External API + agent submit |
 | [`AGENT_PROMPTS.md`](AGENT_PROMPTS.md) | **Copy-paste prompts for all 24 tasks** |
 | [`AGENT_API.md`](AGENT_API.md) | **Clone + agent eval API** (guide, submit, dashboard) |
 | [AGENT_USAGE.md](AGENT_USAGE.md) | Agent tools, workflow, verification commands |
@@ -21,8 +21,7 @@ Central index for the 24-task Eval AI Agent portfolio. Task **deliverables** (co
 
 ```bash
 make eval-api          # START THIS — http://127.0.0.1:8788 live dashboard
-make eval-bot TASK=B3  # single bot
-make eval-bots-all     # all 24 bots
+# Task agent: GET /api/agent/guide/{TASK} + AGENT_PROMPTS.md + POST /api/agent/submit
 ```
 
 | For | Use |

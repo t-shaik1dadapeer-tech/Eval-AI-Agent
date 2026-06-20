@@ -327,9 +327,30 @@ def parse_md_api_expectations(content: str, api_base_url: str | None = None) -> 
     seen: set[tuple[str, str]] = set()
     endpoints: list[dict[str, Any]] = []
 
+    def _is_likely_api_path(path: str) -> bool:
+        if re.search(r"/Users/|/home/|/var/|/tmp/|/private/", path, re.IGNORECASE):
+            return False
+        segments = [s for s in path.split("/") if s]
+        if len(segments) > 8:
+            return False
+        for seg in segments:
+            if seg.startswith("{") and seg.endswith("}"):
+                continue
+            if "." in seg and not seg.startswith("."):
+                return False
+            if seg and seg[0].isupper() and not seg.isupper():
+                return False
+        return True
+
     def add(method: str, path: str, source: str) -> None:
         path = path.split("?")[0].strip()
-        if not path.startswith("/") or "*" in path or ".." in path or len(path) > 120:
+        if (
+            not path.startswith("/")
+            or "*" in path
+            or ".." in path
+            or len(path) > 120
+            or not _is_likely_api_path(path)
+        ):
             return
         key = (method.upper(), path)
         if key in seen:
@@ -372,7 +393,7 @@ def probe_http_endpoint(
     api_base_url: str,
     method: str,
     path: str,
-    timeout: float = 5.0,
+    timeout: float = 2.0,
 ) -> dict[str, Any]:
     base = api_base_url.rstrip("/") + "/"
     url = urljoin(base, path.lstrip("/"))
@@ -405,6 +426,15 @@ def probe_http_endpoint(
             "status": None,
             "ok": False,
             "error": str(exc.reason),
+        }
+    except Exception as exc:  # noqa: BLE001 — timeout, connection reset, etc.
+        return {
+            "url": url,
+            "method": method.upper(),
+            "path": path,
+            "status": None,
+            "ok": False,
+            "error": str(exc),
         }
 
 
@@ -469,6 +499,128 @@ def compare_api_to_md(
         "md_endpoints_found": len(parse_md_api_expectations(md_content, api_base_url)),
         "missing_in_api": missing_in_api,
     }
+
+
+def collect_task_md_content(task: dict[str, Any], extra_path: str | Path | None = None) -> tuple[str, list[str]]:
+    """Gather .md text from task references for API expectation parsing."""
+    folder = ROOT / task["folder"]
+    chunks: list[str] = []
+    sources: list[str] = []
+    seen: set[str] = set()
+
+    def add_path(path: Path) -> None:
+        if not path.exists() or path.suffix != ".md":
+            return
+        rel = _rel_path(path)
+        if rel in seen:
+            return
+        seen.add(rel)
+        chunks.append(path.read_text(encoding="utf-8", errors="replace"))
+        sources.append(rel)
+
+    for name in list(task.get("reference_files", [])) + list(task.get("required_files", [])):
+        add_path(folder / name)
+    for rel in RELATED_MD.get(task["id"], []):
+        add_path(ROOT / rel)
+    if extra_path:
+        p = Path(extra_path)
+        if not p.is_absolute():
+            p = (ROOT / p).resolve()
+        add_path(p)
+    return "\n\n".join(chunks), sources
+
+
+def summarize_api_match(api_match: dict[str, Any] | None) -> dict[str, Any]:
+    if not api_match or api_match.get("verdict") == "skipped":
+        return {
+            "matching": [],
+            "not_matching": [],
+            "summary": (api_match or {}).get("message", "No API comparison run."),
+        }
+    matching: list[dict[str, Any]] = []
+    not_matching: list[dict[str, Any]] = []
+    for probe in api_match.get("probes") or []:
+        item = {
+            "method": probe.get("method", "GET"),
+            "path": probe.get("path"),
+            "status": probe.get("status"),
+            "ok": probe.get("ok"),
+            "error": probe.get("error"),
+        }
+        if probe.get("ok"):
+            matching.append(item)
+        else:
+            not_matching.append(item)
+    parts: list[str] = []
+    if matching:
+        parts.append(
+            "Matching on your API: "
+            + ", ".join(f"{m['method']} {m['path']} ({m['status']})" for m in matching[:12])
+        )
+    if not_matching:
+        parts.append(
+            "Not matching: "
+            + ", ".join(
+                f"{n['method']} {n['path']} ({n.get('status') or n.get('error') or '?'})"
+                for n in not_matching[:12]
+            )
+        )
+    if not parts:
+        parts.append(api_match.get("message", ""))
+    return {"matching": matching, "not_matching": not_matching, "summary": " | ".join(parts)}
+
+
+def resolve_task_remote(task_id: str, orch_config: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Per-task registered remote API (from task_api_map or default) — no live probe."""
+    cfg = orch_config or _orch().load_config()
+    url = resolve_api_base_url(task_id=task_id, orch_config=cfg)
+    api_id = cfg.get("task_api_map", {}).get(task_id.upper())
+    if not api_id and cfg.get("use_api_for_all_tasks"):
+        api_id = cfg.get("default_api_id")
+    if not api_id and url:
+        for api in load_external_apis().get("apis", []):
+            if api.get("api_base_url") == url:
+                api_id = api.get("id")
+                break
+    if not api_id and not url and cfg.get("default_api_id"):
+        found = get_external_api(cfg["default_api_id"])
+        if found and not cfg.get("task_api_map"):
+            api_id = found.get("id")
+            url = found.get("api_base_url")
+    return {
+        "api_id": api_id,
+        "api_base_url": url,
+        "registered": bool(url),
+    }
+
+
+def compute_task_score(
+    task: dict[str, Any],
+    *,
+    deliverables_ok: bool,
+    verified: bool,
+    agent_result: dict[str, Any] | None = None,
+) -> int:
+    """0–100 completion score: deliverables + tests + agent submit."""
+    if not deliverables_ok:
+        return 0
+
+    score = 50
+
+    if task.get("verify_command"):
+        score += 35 if verified else 10
+    else:
+        score += 30
+
+    ar_v = (agent_result or {}).get("md_verdict") or (agent_result or {}).get("verdict")
+    if ar_v == "ok":
+        score += 15
+    elif ar_v == "partial":
+        score += 8
+    elif ar_v == "reference_only":
+        score += 5
+
+    return min(100, score)
 
 
 def analyze_md_file(
@@ -634,17 +786,16 @@ def agent_guide(task: dict[str, Any]) -> dict[str, Any]:
             f"1. Read reference files in `{task['folder']}/` (especially {refs[0] if refs else 'README.md'}).",
             f"2. Complete work for task {task['id']} in `{task['folder']}/` (or your external project).",
             "3. POST to /api/agent/submit with task_id, output_path or content.",
-            "4. Optional: add api_base_url (your running API, e.g. http://127.0.0.1:3000) to compare .md vs live API.",
-            "5. Open dashboard / to see agent + API match columns.",
+            "4. Optional: register Remote API via POST /api/external/register (display only — does not change score).",
+            "5. Open dashboard / — Score % = repo files + tests + agent output (not API probe).",
         ],
         "external_api": {
-            "analyze": "POST /api/external/analyze  {md_path, api_base_url, task_id?}",
+            "analyze": "POST /api/external/analyze  {md_path, api_base_url, task_id?}  (manual check only)",
             "set_target": "POST /api/external/target  {api_base_url, project_name?}",
-            "submit_with_api": {
+            "submit_example": {
                 "task_id": task["id"],
                 "agent_name": "cursor",
                 "output_path": f"{task['folder']}/{task.get('reference_files', ['README.md'])[0]}",
-                "api_base_url": "http://127.0.0.1:YOUR_PORT",
             },
         },
         "related_md_on_mismatch": RELATED_MD.get(task["id"], []),
@@ -709,10 +860,21 @@ def evaluate_task(
             "api_base_url": agent_result.get("api_base_url"),
             "related_md": agent_result.get("related_md"),
             "combined_verdict": agent_result.get("combined_verdict"),
+            "matching_summary": agent_result.get("matching_summary"),
+            "matching_endpoints": agent_result.get("matching_endpoints"),
+            "not_matching_endpoints": agent_result.get("not_matching_endpoints"),
         }
-    bot = _orch().bot_status_for_task(task["id"])
-    if bot:
-        out["bot"] = bot
+    ar = agent_result
+    orch_cfg = _orch().load_config()
+    remote = resolve_task_remote(task["id"], orch_cfg)
+    completion_score = compute_task_score(
+        task,
+        deliverables_ok=deliverables_ok,
+        verified=verified,
+        agent_result=ar,
+    )
+    out["remote_api"] = remote
+    out["completion_score"] = completion_score
     return out
 
 
@@ -729,15 +891,10 @@ def build_portfolio(*, run_tests: bool = False, run_docker: bool = False) -> dic
     total = len(results)
     deliverables_ok = sum(1 for r in results if r["deliverables_ok"])
     executable = sum(1 for r in results if r["executable"])
-    verified = sum(1 for r in results if r["verified"])
+    verified = sum(1 for r in results if r.get("verified"))
     agent_evaluated = sum(1 for r in results if r.get("agent_result", {}).get("verdict") not in (None, "reference_only"))
     agent_ok = sum(1 for r in results if r.get("agent_result", {}).get("verdict") == "ok")
-    api_checked = sum(
-        1
-        for r in results
-        if ((r.get("agent_result") or {}).get("api_match") or {}).get("verdict") not in (None, "skipped")
-    )
-    api_ok = sum(1 for r in results if ((r.get("agent_result") or {}).get("api_match") or {}).get("verdict") == "ok")
+    complete_count = sum(1 for r in results if r.get("completion_score", 0) >= 80)
 
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -752,8 +909,7 @@ def build_portfolio(*, run_tests: bool = False, run_docker: bool = False) -> dic
             "verified": verified,
             "agent_evaluated": agent_evaluated,
             "agent_ok": agent_ok,
-            "api_checked": api_checked,
-            "api_ok": api_ok,
+            "complete_count": complete_count,
             "completion_pct": round(100 * deliverables_ok / total, 1),
         },
         "tasks": results,
@@ -784,6 +940,7 @@ def submit_agent_output(
     md_path: str | None = None,
     api_id: str | None = None,
 ) -> dict[str, Any]:
+    """Score agent deliverable against repo references. API registration does not affect verdict/score."""
     path = resolve_output_path(task, output_path, content)
     md_result = score_agent_output(task, path)
 
@@ -798,51 +955,24 @@ def submit_agent_output(
         orch_config=orch_cfg,
     )
 
-    api_result: dict[str, Any] | None = None
-    md_for_api = resolve_md_path(md_path, task)
-    if base:
-        chunks: list[str] = []
-        if md_for_api and md_for_api.exists():
-            chunks.append(md_for_api.read_text(encoding="utf-8", errors="replace"))
-        if path.exists() and path.suffix == ".md":
-            chunks.append(path.read_text(encoding="utf-8", errors="replace"))
-        folder = ROOT / task["folder"]
-        for ref in task.get("reference_files", []):
-            if ref.endswith(".md"):
-                rp = folder / ref
-                if rp.exists():
-                    chunks.append(rp.read_text(encoding="utf-8", errors="replace"))
-        merged_md = "\n\n".join(chunks) if chunks else ""
-        if merged_md.strip():
-            api_result = compare_api_to_md(merged_md, base.rstrip("/"), task=task)
-        else:
-            api_result = {
-                "verdict": "skipped",
-                "message": "No .md content found to compare against API.",
-                "api_base_url": base,
-            }
-
-    combined = combine_verdicts(md_result, api_result)
-    related = related_suggestions(
-        task,
-        md_result.get("verdict", "mismatch"),
-        api_result.get("verdict") if api_result else None,
-    )
+    related = related_suggestions(task, md_result.get("verdict", "mismatch"), None)
     suggestion = md_result.get("suggestion", "")
-    if related and combined["verdict"] != "ok":
+    if related and md_result.get("verdict") != "ok":
         suggestion += " Related .md files: " + ", ".join(f"`{r}`" for r in related)
 
     result = {
         **md_result,
         "md_verdict": md_result.get("verdict"),
-        "md_match_score": md_result.get("match_score"),
-        "verdict": combined["verdict"],
-        "match_score": combined["match_score"],
-        "message": combined["message"],
-        "api_match": api_result,
+        "verdict": md_result.get("verdict"),
+        "match_score": md_result.get("match_score"),
+        "message": md_result.get("message"),
         "api_base_url": base,
+        "api_match": {
+            "verdict": "skipped",
+            "message": "Score uses agent output only; API probe does not affect dashboard score.",
+        },
         "related_md": related,
-        "combined_verdict": combined["verdict"],
+        "combined_verdict": md_result.get("verdict"),
         "suggestion": suggestion.strip(),
     }
     entry = {
@@ -863,14 +993,8 @@ def api_docs() -> dict[str, Any]:
         "workflow": [
             "1. git clone repo && cd Evil-Ai",
             "2. python3 scripts/eval/portfolio.py serve --port 8788",
-            "3. Start YOUR API (any project) e.g. http://127.0.0.1:3000",
-            "4. POST /api/external/target  {api_base_url}  — save your API for this session",
-            "5. GET /api/agent/guide/{TASK}  — read reference .md before working",
-            "6. POST /api/agent/submit  — include api_base_url to compare .md + live API",
-            "7. POST /api/external/analyze  — analyze any .md file vs your API",
-            "8. Open /  — dashboard shows agent eval + API match + related .md suggestions",
-            "9. POST /api/orchestrator/run  {task_id} or {mode:all}  — run verify bots",
-            "10. GET /api/orchestrator/status  — bot run state for all 24",
+            "3. AGENT: GET /api/agent/guide/{TASK} + docs/AGENT_PROMPTS.md → do work → POST /api/agent/submit",
+            "4. Optional: POST /api/external/register {id, api_base_url} for per-task Remote API column",
         ],
         "endpoints": [
             "GET  /",
@@ -890,26 +1014,21 @@ def api_docs() -> dict[str, Any]:
             "POST /api/agent/submit",
             "POST /api/agent/compare/{id}",
             "POST /api/portfolio/refresh",
-            "GET  /api/orchestrator/status",
             "GET  /api/orchestrator/config",
             "POST /api/orchestrator/config",
-            "POST /api/orchestrator/run",
             "GET  /api/metrics",
         ],
         "submit_example": {
             "task_id": "B3",
             "agent_name": "cursor",
             "output_path": "beginner/B3-test-discovery/TEST_REPORT.md",
-            "api_base_url": "http://127.0.0.1:3000",
         },
         "analyze_example": {
             "md_path": "docs/AGENT_PROMPTS.md",
             "api_base_url": "http://127.0.0.1:3000",
             "task_id": "B3",
         },
-        "docs_files": ["docs/AGENT_API.md", "docs/EXTERNAL_EVAL.md", "docs/ORCHESTRATOR.md", "docs/AGENT_PROMPTS.md"],
-        "orchestrator_run_single": {"task_id": "B3", "api_id": "my-dev-api"},
-        "orchestrator_run_all": {"mode": "all", "default_api_id": "my-dev-api"},
+        "docs_files": ["docs/AGENT_API.md", "docs/EXTERNAL_EVAL.md", "docs/AGENT_USAGE.md", "docs/AGENT_PROMPTS.md"],
         "register_api_example": {"id": "my-dev-api", "name": "My Dev API", "api_base_url": "http://127.0.0.1:9000"},
         "multi_api_config_example": {
             "apis": [
@@ -955,38 +1074,7 @@ def cmd_compare(args: argparse.Namespace) -> int:
     return 0 if out.get("verdict") in ("ok", "reference_only") else 1
 
 
-def cmd_bot(args: argparse.Namespace) -> int:
-    orch = _orch()
-    overrides: dict[str, Any] = {}
-    if getattr(args, "api_id", None):
-        overrides["api_id"] = args.api_id
-    if getattr(args, "api_base_url", None):
-        overrides["api_base_url"] = args.api_base_url
-    if getattr(args, "run_tests", False):
-        overrides["run_tests"] = True
-    result = orch.run_orchestrator(task_id=args.task_id, config_overrides=overrides or None)
-    print(json.dumps(result, indent=2))
-    return 0 if result["summary"].get("failed", 0) == 0 else 1
-
-
-def cmd_bots_all(args: argparse.Namespace) -> int:
-    orch = _orch()
-    overrides: dict[str, Any] = {}
-    if getattr(args, "api_id", None):
-        overrides["default_api_id"] = args.api_id
-        overrides["use_api_for_all_tasks"] = True
-    if getattr(args, "api_base_url", None):
-        overrides["api_base_url"] = args.api_base_url
-    if getattr(args, "run_tests", False):
-        overrides["run_tests"] = True
-    result = orch.run_orchestrator(mode="all", config_overrides=overrides or None)
-    print(json.dumps(result, indent=2))
-    s = result["summary"]
-    print(f"\nBots done: {s['done']}/{s['total']}  verdict_ok: {s['verdict_ok']}")
-    return 0 if s.get("failed", 0) == 0 else 1
-
-
-def cmd_orchestrator_config(args: argparse.Namespace) -> int:
+def cmd_orch_config(args: argparse.Namespace) -> int:
     orch = _orch()
     if args.api_base_url or args.api_id:
         payload: dict[str, Any] = {}
@@ -1265,43 +1353,6 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
                 self._json(400, {"error": str(exc)})
             return
 
-        if path.path == "/api/orchestrator/run":
-            try:
-                body = self._read_json_body()
-                overrides: dict[str, Any] = {}
-                if body.get("api_base_url"):
-                    overrides["api_base_url"] = body["api_base_url"]
-                if body.get("project_name"):
-                    overrides["project_name"] = body["project_name"]
-                if "run_tests" in body:
-                    overrides["run_tests"] = bool(body["run_tests"])
-                if body.get("output_map"):
-                    overrides["output_map"] = body["output_map"]
-                if body.get("task_api_map"):
-                    overrides["task_api_map"] = body["task_api_map"]
-                if body.get("default_api_id"):
-                    overrides["default_api_id"] = body["default_api_id"]
-                if body.get("apis"):
-                    overrides["apis"] = body["apis"]
-                if body.get("api_id"):
-                    overrides["api_id"] = body["api_id"]
-                if body.get("api_base_url"):
-                    overrides["api_base_url"] = body["api_base_url"]
-                if body.get("mode") == "all":
-                    result = _orch().run_orchestrator(mode="all", config_overrides=overrides or None)
-                elif body.get("task_id"):
-                    result = _orch().run_orchestrator(
-                        task_id=body["task_id"],
-                        config_overrides=overrides or None,
-                    )
-                else:
-                    self._json(400, {"error": "Provide task_id or mode=all", "examples": api_docs()["orchestrator_run_all"]})
-                    return
-                self._json(200, result)
-            except (json.JSONDecodeError, ValueError) as exc:
-                self._json(400, {"error": str(exc)})
-            return
-
         m = re.match(r"^/api/agent/compare/([A-Za-z0-9]+)$", path.path)
         if m:
             task = task_by_id(self.registry, m.group(1))
@@ -1329,7 +1380,7 @@ class EvalAPIHandler(BaseHTTPRequestHandler):
                 self._json(400, {"error": str(exc)})
             return
 
-        self._json(404, {"error": "POST /api/agent/submit, /api/orchestrator/run, /api/external/register"})
+        self._json(404, {"error": "POST /api/agent/submit, /api/external/register"})
 
     def do_DELETE(self) -> None:  # noqa: N802
         path = urlparse(self.path)
@@ -1352,11 +1403,9 @@ def cmd_serve(args: argparse.Namespace) -> int:
     print(f"  Dashboard:       {base}/")
     print(f"  External analyze:  POST {base}/api/external/analyze")
     print(f"  Set your API:      POST {base}/api/external/target")
-    print(f"  Agent submit:      POST {base}/api/agent/submit  (+ api_base_url)")
+    print(f"  Agent submit:      POST {base}/api/agent/submit")
     print(f"  Portfolio JSON:    {base}/api/portfolio")
-    print(f"  Orchestrator:    POST {base}/api/orchestrator/run")
-    print(f"  Bot status:      {base}/api/orchestrator/status")
-    print(f"  Docs:              docs/ORCHESTRATOR.md\n")
+    print(f"  Docs:              docs/AGENT_USAGE.md\n")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -1385,18 +1434,7 @@ def main() -> int:
     p_serve.add_argument("--host", default="127.0.0.1")
     p_serve.add_argument("--port", type=int, default=8788)
 
-    p_bot = sub.add_parser("bot", help="Run orchestrator bot for one task")
-    p_bot.add_argument("task_id")
-    p_bot.add_argument("--api-id", help="Registered API id from /api/external/register")
-    p_bot.add_argument("--api-base-url", help="One-off API URL (not saved)")
-    p_bot.add_argument("--run-tests", action="store_true")
-
-    p_all = sub.add_parser("bots-all", help="Run orchestrator bots for all 24 tasks")
-    p_all.add_argument("--api-id", help="Use this registered API for all tasks")
-    p_all.add_argument("--api-base-url", help="One-off API URL for all tasks")
-    p_all.add_argument("--run-tests", action="store_true")
-
-    p_ocfg = sub.add_parser("orch-config", help="Show or set orchestrator config")
+    p_ocfg = sub.add_parser("orch-config", help="Show or set eval config (API map)")
     p_ocfg.add_argument("--api-id", help="Register/update API id")
     p_ocfg.add_argument("--api-base-url", help="API base URL to register")
     p_ocfg.add_argument("--project-name", help="Display name for registered API")
@@ -1408,9 +1446,7 @@ def main() -> int:
         "dashboard": cmd_dashboard,
         "metrics": cmd_metrics,
         "serve": cmd_serve,
-        "bot": cmd_bot,
-        "bots-all": cmd_bots_all,
-        "orch-config": cmd_orchestrator_config,
+        "orch-config": cmd_orch_config,
     }
     return handlers[args.command](args)
 

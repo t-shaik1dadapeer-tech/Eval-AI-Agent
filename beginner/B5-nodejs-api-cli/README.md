@@ -18,6 +18,8 @@ B5-nodejs-api-cli/
 ├── src/
 │   ├── app.js
 │   ├── server.js
+│   ├── cli.js
+│   ├── client.js
 │   ├── routes/
 │   │   └── transactionRoutes.js
 │   ├── controllers/
@@ -30,7 +32,8 @@ B5-nodejs-api-cli/
 │       ├── validateTransaction.js
 │       └── errorHandler.js
 ├── tests/
-│   └── transactions.test.js
+│   ├── transactions.test.js
+│   └── cli.test.js
 ├── package.json
 ├── README.md
 └── .gitignore
@@ -57,7 +60,20 @@ Server starts at `http://127.0.0.1:3001` (port 3001 avoids conflict with D6 Graf
 npm test
 ```
 
-Expected: **5 passed**.
+Expected: **9 passed** (6 API + 3 CLI client tests).
+
+## CLI client
+
+With the API running (`npm start` in another terminal):
+
+```bash
+npm run cli -- create credit 100 "Salary"
+npm run cli -- list
+npm run cli -- balance
+npm run cli -- get <transaction-id>
+```
+
+Environment: `B5_API_BASE=http://127.0.0.1:3001` (default).
 
 ## API endpoints
 
@@ -65,6 +81,7 @@ Expected: **5 passed**.
 |--------|------|-------------|
 | `POST` | `/transactions` | Create a transaction |
 | `GET` | `/transactions` | List all transactions |
+| `GET` | `/transactions/:id` | Get one transaction by ID |
 | `GET` | `/balance` | Current balance + count |
 | `GET` | `/health` | Health check |
 

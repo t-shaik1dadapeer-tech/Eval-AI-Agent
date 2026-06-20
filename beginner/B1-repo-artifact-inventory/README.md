@@ -9,7 +9,7 @@ Scan the repository and classify application artifacts (controllers, services, m
 # Deliverables
 
 - `REPORT.md` — executive summary, methodology, counts by category
-- `inventory.csv` — machine-readable artifact list (108 rows)
+- `inventory.csv` — machine-readable artifact list (242 rows)
 
 # Status
 

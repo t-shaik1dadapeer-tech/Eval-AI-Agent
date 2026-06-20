@@ -50,17 +50,17 @@ curl http://127.0.0.1:8788/api/external/apis
 
 curl -X POST http://127.0.0.1:8788/api/agent/submit \
   -H 'Content-Type: application/json' \
-  -d '{"task_id":"B3","output_path":"beginner/B3-test-discovery/TEST_REPORT.md","api_id":"my-dev-api"}'
+  -d '{"task_id":"B3","output_path":"beginner/B3-test-discovery/TEST_REPORT.md"}'
 ```
 
-Submit body accepts `api_id` (registered) or `api_base_url` (one-off). Optional `md_path`.
+Submit compares agent output to repo references only. For live API vs `.md`, use **POST /api/external/analyze** (see [`EXTERNAL_EVAL.md`](EXTERNAL_EVAL.md)).
 
 ---
 
 **By file path** (agent saved a report in the repo):
 
 ```bash
-curl -X POST http://127.0.0.1:8787/api/agent/submit \
+curl -X POST http://127.0.0.1:8788/api/agent/submit \
   -H 'Content-Type: application/json' \
   -d '{
     "task_id": "I2",
@@ -72,7 +72,7 @@ curl -X POST http://127.0.0.1:8787/api/agent/submit \
 **By inline content** (agent pasted markdown):
 
 ```bash
-curl -X POST http://127.0.0.1:8787/api/agent/submit \
+curl -X POST http://127.0.0.1:8788/api/agent/submit \
   -H 'Content-Type: application/json' \
   -d '{
     "task_id": "B2",
@@ -95,8 +95,8 @@ Response:
 
 ### 4. View portfolio on dashboard
 
-- **http://127.0.0.1:8787/** — live UI (auto-refresh)
-- **http://127.0.0.1:8787/api/portfolio** — JSON for all 24 tasks + agent results
+- **http://127.0.0.1:8788/** — live UI (auto-refresh)
+- **http://127.0.0.1:8788/api/portfolio** — JSON for all 24 tasks + agent results
 
 ---
 

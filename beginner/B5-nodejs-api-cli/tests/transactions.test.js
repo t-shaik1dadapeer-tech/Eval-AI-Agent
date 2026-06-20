@@ -38,6 +38,21 @@ describe('Transaction API', () => {
     expect(response.body[1].type).toBe('debit');
   });
 
+  test('get transaction by id', async () => {
+    const request = require('supertest')(app);
+
+    const created = await request
+      .post('/transactions')
+      .send({ type: 'credit', amount: 42, description: 'Lookup test' })
+      .expect(201);
+
+    const found = await request.get(`/transactions/${created.body.id}`).expect(200);
+    expect(found.body.id).toBe(created.body.id);
+    expect(found.body.amount).toBe(42);
+
+    await request.get('/transactions/00000000-0000-4000-8000-000000000000').expect(404);
+  });
+
   test('calculate balance', async () => {
     const request = require('supertest')(app);
 

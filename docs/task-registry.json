@@ -115,6 +115,7 @@
       "type": "infra",
       "reference_files": ["README.md", "docs/DOCKER_REPORT.md", "Dockerfile"],
       "required_files": ["Dockerfile", "docs/DOCKER_REPORT.md"],
+      "verify_command": "bash intermediate/I5-dockerize/scripts/verify-docker.sh",
       "verify_requires": ["docker"],
       "compare_hint": "See DOCKER_REPORT.md for build/run instructions."
     },
@@ -254,7 +255,7 @@
       "name": "Observability",
       "folder": "devops/D6-observability",
       "type": "infra",
-      "reference_files": ["README.md", "docs/OBSERVABILITY_REPORT.md", "docs/METRICS_REPORT.md", "scripts/start-stack.sh"],
+      "reference_files": ["README.md", "docs/OBSERVABILITY_REPORT.md", "docs/METRICS_REPORT.md", "docs/DASHBOARD_PANEL.json", "scripts/start-stack.sh"],
       "required_files": ["docker-compose.yml", "service/app/main.py", "service/tests/test_metrics.py"],
       "verify_command": "cd devops/D6-observability/service && mise exec -- pytest -q",
       "verify_requires": ["docker"],

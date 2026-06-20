@@ -10,6 +10,15 @@ function getTransactions(req, res) {
   res.status(200).json(transactions);
 }
 
+function getTransactionById(req, res) {
+  const transaction = transactionService.getTransactionById(req.params.id);
+  if (!transaction) {
+    res.status(404).json({ error: 'Transaction not found' });
+    return;
+  }
+  res.status(200).json(transaction);
+}
+
 function getBalance(req, res) {
   const balance = transactionService.getBalance();
   res.status(200).json(balance);
@@ -18,5 +27,6 @@ function getBalance(req, res) {
 module.exports = {
   createTransaction,
   getTransactions,
+  getTransactionById,
   getBalance,
 };

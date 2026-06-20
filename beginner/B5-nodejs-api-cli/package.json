@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
+    "cli": "node src/cli.js",
     "test": "jest --runInBand"
   },
   "keywords": ["express", "transactions", "api"],

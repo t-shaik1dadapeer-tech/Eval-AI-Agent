@@ -14,9 +14,9 @@
 | **Containerized application** | `POST /convert`, `GET /health`, `GET /docs` |
 | **Dockerfile** | `intermediate/I5-dockerize/Dockerfile` |
 | **Image name** | `eval-service` |
-| **Docker build/run** | **Not executed** — Docker CLI not installed in agent environment |
-| **Service verification** | **Pass** — local uvicorn + curl (same `uvicorn` CMD as container) |
-| **Overall result** | **Artifacts complete; runtime verified locally; Docker commands documented** |
+| **Docker build/run** | **Verified** — `bash intermediate/I5-dockerize/scripts/verify-docker.sh` |
+| **Service verification** | **Pass** — container health + `/docs` curl |
+| **Overall result** | **PASS** |
 
 ---
 

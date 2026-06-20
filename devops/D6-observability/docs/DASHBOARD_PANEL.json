@@ -1,0 +1,31 @@
+{
+  "description": "PML D6 rubric artifact — Request Rate panel from api-observability dashboard (static export). Run export-dashboard-panel.sh when stack is up for live Prometheus query JSON.",
+  "panel": {
+    "title": "Request Rate",
+    "type": "timeseries",
+    "datasource": { "type": "prometheus", "uid": "prometheus" },
+    "targets": [
+      {
+        "expr": "sum(rate(http_requests_total[1m]))",
+        "legendFormat": "request rate",
+        "refId": "A"
+      }
+    ],
+    "fieldConfig": {
+      "defaults": { "unit": "reqps" }
+    }
+  },
+  "sample_live_query_result": {
+    "status": "success",
+    "data": {
+      "resultType": "vector",
+      "result": [
+        {
+          "metric": {},
+          "value": [1718860800, "12.5"]
+        }
+      ]
+    }
+  },
+  "source_dashboard": "devops/D6-observability/monitoring/grafana/dashboards/api-observability.json"
+}

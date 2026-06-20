@@ -9,14 +9,14 @@
 
 ## Executive Summary
 
-A production-quality FastAPI transaction service was built from scratch with layered architecture (routes → service → in-memory store), Pydantic validation, structured error handling, and pytest coverage. All **5 tests passed**. Live API verification via `curl` confirmed correct behavior for create, list, balance, and validation endpoints.
+A production-quality FastAPI transaction service was built from scratch with layered architecture (routes → service → in-memory store), Pydantic validation, structured error handling, and pytest coverage. All **8 tests passed** (5 transaction + 3 lookup). Live API verification via `curl` confirmed correct behavior for create, list, get-by-id, balance, and validation endpoints.
 
 | Metric | Result |
 |--------|--------|
-| Tests run | 5 |
-| Passed | 5 |
+| Tests run | 8 |
+| Passed | 8 |
 | Failed | 0 |
-| API endpoints verified | 3 (+ health) |
+| API endpoints verified | 4 (+ health) |
 | **Overall result** | **PASS** |
 
 ---

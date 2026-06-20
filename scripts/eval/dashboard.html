@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Eval AI Agent — Live Portfolio</title>
+  <title>Eval AI Agent — 24 Tasks</title>
   <style>
-    :root { --bg: #0f172a; --panel: #1e293b; --border: #334155; --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8; }
+    :root { --bg: #0f172a; --panel: #1e293b; --border: #334155; --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8; --agent: #a78bfa; }
     * { box-sizing: border-box; }
     body { font-family: system-ui, sans-serif; margin: 0; background: var(--bg); color: var(--text); }
     header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); }
@@ -22,60 +22,35 @@
     .badge { display: inline-block; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.75rem; color: #fff; }
     .ok { background: #22c55e; } .partial { background: #eab308; color: #000; }
     .mismatch { background: #ef4444; } .none { background: #64748b; }
-    .unreachable { background: #f97316; }
-    .running { background: #3b82f6; }
-    .done { background: #22c55e; }
-    .failed { background: #ef4444; }
-    .skipped { background: #64748b; }
     .completed { background: #3b82f6; } .incomplete { background: #ef4444; }
     code { font-size: 0.8em; word-break: break-all; }
     .toolbar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
     button { background: var(--accent); color: #0f172a; border: none; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
     button.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); }
-    button.danger { background: #7f1d1d; color: #fecaca; border: 1px solid #991b1b; }
-    button:disabled { opacity: 0.5; cursor: wait; }
     #err, #msg { margin-bottom: 1rem; }
     #err { color: #f87171; }
     #msg { color: #86efac; }
-    .agent-box, .api-box { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-top: 1.5rem; }
-    .agent-box h2, .api-box h2 { margin: 0 0 0.5rem; font-size: 1rem; }
-    .agent-box pre { background: #0f172a; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; white-space: pre-wrap; }
-    #external-api { color: var(--muted); margin-bottom: 0.75rem; line-height: 1.5; }
-    input, select { background: #0f172a; border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.6rem; border-radius: 6px; min-width: 140px; }
-    .api-list { margin: 0.75rem 0; font-size: 0.85rem; }
-    .api-list li { margin: 0.35rem 0; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-    .api-list .default-tag { color: var(--accent); font-size: 0.75rem; }
+    .help-box { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+    .help-box h2 { margin: 0 0 0.5rem; font-size: 1rem; }
+    .help-box pre { background: #0f172a; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; white-space: pre-wrap; margin: 0; }
+    .remote-cell { font-size: 0.78rem; color: var(--muted); max-width: 200px; word-break: break-all; line-height: 1.35; }
+    .score-cell { font-weight: 700; font-size: 0.9rem; }
+    .score-high { color: #22c55e; } .score-mid { color: #eab308; } .score-low { color: #f87171; }
+    a.guide { color: var(--agent); font-weight: 600; text-decoration: none; }
+    a.guide:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Eval AI Agent — 24 Task Portfolio</h1>
-    <p class="sub">Register your dev APIs when ready · map tasks to APIs · run bots single or all-24</p>
+    <h1>Eval AI Agent — 24 Tasks</h1>
+    <p class="sub">Each row is one agent task (B1–D6) · Use Cursor + guide + AGENT_PROMPTS.md</p>
   </header>
   <main>
     <div id="err"></div>
     <div id="msg"></div>
-    <div id="external-api" class="sub"></div>
-
-    <div class="api-box">
-      <h2>External APIs (register after your services are running)</h2>
-      <p class="sub">No default API is stored. Add one or more APIs, then map tasks in orchestrator config.</p>
-      <div class="toolbar">
-        <input id="reg-id" placeholder="id e.g. home-api" title="Unique API id"/>
-        <input id="reg-name" placeholder="Display name" title="Human-readable name"/>
-        <input id="reg-url" placeholder="http://127.0.0.1:9000" title="Base URL" style="min-width:220px"/>
-        <label class="sub"><input type="checkbox" id="reg-default" checked/> default</label>
-        <button onclick="registerApi()">Register API</button>
-        <button class="secondary" onclick="setDefaultFromSelect()">Set default</button>
-        <select id="default-api-select"><option value="">— default API —</option></select>
-        <button class="danger secondary" onclick="clearAllApis()">Clear all</button>
-      </div>
-      <ul class="api-list" id="api-list"></ul>
-    </div>
 
     <div class="toolbar">
       <button onclick="refresh(false)">Refresh</button>
-      <button onclick="runAllBots()">Run all 24 bots</button>
       <button class="secondary" onclick="location.href='/api/docs'">API docs</button>
       <span class="sub" id="updated"></span>
     </div>
@@ -83,31 +58,26 @@
     <table>
       <thead>
         <tr>
-          <th>ID</th><th>Task</th><th>Track</th><th>Repo</th><th>Bot</th>
-          <th>Agent</th><th>API</th><th>Score</th><th>Action</th>
+          <th>Task</th><th>Name</th><th>Track</th><th>Repo</th>
+          <th>Agent work</th><th>Remote API</th><th title="Repo files + tests + agent submit — not API">Score</th><th>Action</th>
         </tr>
       </thead>
       <tbody id="rows"></tbody>
     </table>
-    <div class="agent-box">
-      <h2>Orchestrator</h2>
+    <div class="help-box">
+      <h2>Agent workflow</h2>
       <pre id="agent-help">Loading…</pre>
     </div>
   </main>
   <script>
-    let portfolioData = null;
-
     function badge(cls, text) {
       return `<span class="badge ${cls}">${text}</span>`;
     }
 
     function statusBadge(v) {
       if (!v) return badge('none', '—');
-      if (v === 'ok' || v === 'done') return badge('ok', v);
-      if (v === 'partial' || v === 'running') return badge(v === 'running' ? 'running' : 'partial', v);
-      if (v === 'unreachable') return badge('unreachable', v);
-      if (v === 'skipped') return badge('skipped', v);
-      if (v === 'failed') return badge('failed', v);
+      if (v === 'ok') return badge('ok', v);
+      if (v === 'partial' || v === 'reference_only') return badge('partial', v);
       return badge('mismatch', v);
     }
 
@@ -117,158 +87,58 @@
         const r = await fetch(`/api/portfolio${runTests ? '?run_tests=1' : ''}`);
         const data = await r.json();
         if (!r.ok) throw new Error(data.error || r.statusText);
-        portfolioData = data;
         render(data);
       } catch (e) {
         document.getElementById('err').textContent = 'Cannot load: ' + e.message + ' — run: make eval-api';
       }
     }
 
-    function apisFromData(data) {
-      return (data.external_apis && data.external_apis.apis) || [];
+    function scoreClass(n) {
+      if (n >= 80) return 'score-high';
+      if (n >= 50) return 'score-mid';
+      return 'score-low';
     }
 
-    function defaultApiId(data) {
-      const orch = data.orchestrator?.config || {};
-      return orch.default_api_id || data.external_apis?.default_api_id || '';
+    function formatRemote(remote) {
+      if (!remote || !remote.registered) return badge('none', 'not set');
+      const label = remote.api_id || 'default';
+      const url = remote.api_base_url || '';
+      return `<span class="remote-cell" title="${url}">${label}<br><code>${url.replace(/^https?:\/\//, '')}</code></span>`;
     }
 
-    function renderApiList(data) {
-      const apis = apisFromData(data);
-      const defId = defaultApiId(data);
-      const sel = document.getElementById('default-api-select');
-      sel.innerHTML = '<option value="">— default API —</option>' +
-        apis.map(a => `<option value="${a.id}" ${a.id === defId ? 'selected' : ''}>${a.name} (${a.id})</option>`).join('');
-      document.getElementById('api-list').innerHTML = apis.length
-        ? apis.map(a => `<li>
-            <code>${a.id}</code> — ${a.name} — <code>${a.api_base_url}</code>
-            ${a.id === defId ? '<span class="default-tag">default</span>' : ''}
-            <button class="secondary" style="padding:0.2rem 0.5rem;font-size:0.75rem" onclick="removeApi('${a.id}')">remove</button>
-          </li>`).join('')
-        : '<li class="sub">No APIs registered yet.</li>';
-      const map = data.orchestrator?.config?.task_api_map || {};
-      const mapTxt = Object.keys(map).length
-        ? 'Task map: ' + Object.entries(map).map(([t, id]) => `${t}→${id}`).join(', ')
-        : 'No task→API map yet (use POST /api/orchestrator/config with task_api_map).';
-      document.getElementById('external-api').innerHTML = apis.length
-        ? `${apis.length} registered API(s). ${mapTxt}`
-        : 'Register APIs above when your dev services are ready. Eval works on repo files without any API.';
-    }
-
-    async function registerApi() {
-      const id = document.getElementById('reg-id').value.trim();
-      const name = document.getElementById('reg-name').value.trim() || id;
-      const url = document.getElementById('reg-url').value.trim();
-      if (!id || !url) {
-        document.getElementById('err').textContent = 'API id and URL required';
-        return;
-      }
-      const r = await fetch('/api/external/register', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({id, name, api_base_url: url, default: document.getElementById('reg-default').checked})
-      });
-      const d = await r.json();
-      if (!r.ok) { document.getElementById('err').textContent = d.error || r.statusText; return; }
-      document.getElementById('msg').textContent = 'Registered: ' + id;
-      refresh(false);
-    }
-
-    async function removeApi(id) {
-      const r = await fetch('/api/external/apis/' + encodeURIComponent(id), {method: 'DELETE'});
-      const d = await r.json();
-      if (!r.ok) { document.getElementById('err').textContent = d.error || r.statusText; return; }
-      document.getElementById('msg').textContent = 'Removed: ' + id;
-      refresh(false);
-    }
-
-    async function clearAllApis() {
-      if (!confirm('Remove all registered APIs?')) return;
-      await fetch('/api/external/clear', {method: 'POST'});
-      document.getElementById('msg').textContent = 'All APIs cleared';
-      refresh(false);
-    }
-
-    async function setDefaultFromSelect() {
-      const id = document.getElementById('default-api-select').value;
-      if (!id) return;
-      await fetch('/api/orchestrator/config', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({default_api_id: id})
-      });
-      document.getElementById('msg').textContent = 'Default API: ' + id;
-      refresh(false);
-    }
-
-    function runBody(taskId) {
-      const body = taskId ? {task_id: taskId} : {mode: 'all'};
-      const defId = document.getElementById('default-api-select').value || defaultApiId(portfolioData || {});
-      if (defId) body.default_api_id = defId;
-      return body;
-    }
-
-    async function runBot(taskId) {
-      document.getElementById('msg').textContent = 'Running bot ' + taskId + '…';
-      const r = await fetch('/api/orchestrator/run', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(runBody(taskId))
-      });
-      const d = await r.json();
-      if (!r.ok) { document.getElementById('err').textContent = d.error || r.statusText; return; }
-      document.getElementById('msg').textContent = 'Bot ' + taskId + ' done — verdict: ' + (d.results[0]?.verdict || d.results[0]?.status);
-      refresh(false);
-    }
-
-    async function runAllBots() {
-      document.getElementById('msg').textContent = 'Running all 24 bots (may take a minute)…';
-      const r = await fetch('/api/orchestrator/run', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(runBody(null))
-      });
-      const d = await r.json();
-      if (!r.ok) { document.getElementById('err').textContent = d.error || r.statusText; return; }
-      const s = d.summary;
-      document.getElementById('msg').textContent = `All bots: ${s.done}/${s.total} done, ${s.verdict_ok} ok`;
-      refresh(false);
+    function taskScore(t, ar) {
+      if (t.completion_score != null) return t.completion_score;
+      if (ar && ar.completion_score != null) return ar.completion_score;
+      if (t.deliverables_ok && t.verified) return 85;
+      if (t.deliverables_ok) return 65;
+      return 0;
     }
 
     function render(data) {
       const s = data.summary;
-      const orch = data.orchestrator || {};
-      renderApiList(data);
       document.getElementById('updated').textContent = 'Updated: ' + (data.generated_at || '');
-      const runSum = orch.current_run?.summary;
       document.getElementById('cards').innerHTML = `
         <div class="card"><div class="num">${s.total}</div><div class="lbl">Tasks</div></div>
-        <div class="card"><div class="num">${s.agent_evaluated || 0}</div><div class="lbl">Agent compared</div></div>
+        <div class="card"><div class="num">${s.complete_count ?? 0}</div><div class="lbl">Complete (≥80)</div></div>
         <div class="card"><div class="num">${s.agent_ok || 0}</div><div class="lbl">Agent OK</div></div>
-        <div class="card"><div class="num">${s.api_ok || 0}</div><div class="lbl">API OK</div></div>
-        <div class="card"><div class="num">${runSum ? runSum.done + '/' + runSum.total : '—'}</div><div class="lbl">Last bot run</div></div>
-        <div class="card"><div class="num">${s.completion_pct}%</div><div class="lbl">Repo done</div></div>
+        <div class="card"><div class="num">${s.agent_evaluated || 0}</div><div class="lbl">Submitted</div></div>
+        <div class="card"><div class="num">${s.verified ?? 0}</div><div class="lbl">Tests verified</div></div>
+        <div class="card"><div class="num">${s.completion_pct}%</div><div class="lbl">Repo ready</div></div>
       `;
-      const bots = orch.bots || {};
       document.getElementById('rows').innerHTML = data.tasks.map(t => {
         const repo = t.deliverables_ok ? badge('completed', 'ready') : badge('incomplete', 'missing');
         const ar = t.agent_result || {};
-        const bot = bots[t.id] || t.bot || {};
-        const api = ar.api_match || {};
-        const score = ar.match_score != null ? ar.match_score : (bot.match_score != null ? bot.match_score : '—');
+        const agentV = ar.md_verdict || ar.verdict;
+        const score = taskScore(t, ar);
         return `<tr>
           <td><strong>${t.id}</strong></td>
           <td>${t.name}</td>
           <td>${t.category}</td>
           <td>${repo}</td>
-          <td>${statusBadge(bot.status)}</td>
-          <td>${statusBadge(ar.verdict)}</td>
-          <td>${statusBadge(typeof api === 'object' ? api.verdict : api)}</td>
-          <td>${score}</td>
-          <td>
-            <a href="/api/agent/guide/${t.id}" target="_blank" style="color:var(--accent)">guide</a>
-            · <a href="#" onclick="runBot('${t.id}');return false" style="color:var(--accent)">run bot</a>
-          </td>
+          <td>${statusBadge(agentV)}</td>
+          <td>${formatRemote(t.remote_api)}</td>
+          <td class="score-cell ${scoreClass(score)}">${score}%</td>
+          <td><a class="guide" href="/api/agent/guide/${t.id}" target="_blank">guide</a></td>
         </tr>`;
       }).join('');
     }
@@ -277,12 +147,13 @@
       const r = await fetch('/api/docs');
       const d = await r.json();
       document.getElementById('agent-help').textContent = [
-        'Register API:  POST /api/external/register  {"id":"home-api","name":"Home API","api_base_url":"http://127.0.0.1:9000","default":true}',
-        'Multi map:   POST /api/orchestrator/config  {"task_api_map":{"B2":"home-api","B3":"billing-api"},"default_api_id":"home-api"}',
-        'Single bot:  POST /api/orchestrator/run  {"task_id":"B3","api_id":"home-api"}',
-        'All 24:      POST /api/orchestrator/run  {"mode":"all"}  (uses task_api_map + default)',
-        'List APIs:   GET  /api/external/apis',
-        'Clear APIs:  POST /api/external/clear',
+        '1. Click guide (or GET /api/agent/guide/B1)',
+        '2. Copy prompt from docs/AGENT_PROMPTS.md',
+        '3. Do the work in Cursor',
+        '4. POST /api/agent/submit  {task_id, agent_name, output_path}',
+        '',
+        'Score % = repo ready + tests + agent output (NOT live API probe).',
+        'Remote API column = optional link only (POST /api/external/register).',
         '',
         ...(d.workflow || [])
       ].join('\n');

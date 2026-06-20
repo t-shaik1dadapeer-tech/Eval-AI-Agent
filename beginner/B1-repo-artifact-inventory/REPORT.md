@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-A complete recursive scan of the `Evil-Ai` repository found **108 classified application artifacts** across **61 non-test source files** (Python, JavaScript, Rust). The repo is a **multi-track exercise monorepo** with implementations in `beginner/`, `intermediate/`, `advanced/`, and `devops/` task folders.
+A complete recursive scan of the `Evil-Ai` repository found **242 classified artifacts** (108 application code symbols + 134 test/config/documentation files) across Python, JavaScript, and Rust tracks. The repo is a **multi-track exercise monorepo** with implementations in `beginner/`, `intermediate/`, `advanced/`, and `devops/` task folders.
 
 Primary stacks: **FastAPI** (transaction and currency APIs), **Express** (Node.js REST API and workers), and **Rust** (CLI log analyzer and risk-scoring engine). No Java, Go, Kotlin, or C# application code was detected. **Zero interfaces** (no `interface` keyword in TypeScript/Java or Rust traits declared as interfaces).
 
@@ -27,7 +27,7 @@ Primary stacks: **FastAPI** (transaction and currency APIs), **Express** (Node.j
 | Validators | 1 |
 | Classes | 1 |
 | Interfaces | 0 |
-| **Total classified artifacts** | **108** |
+| **Total classified artifacts** | **242** |
 
 **Conclusion:** The repository has evolved from scaffold-only to a polyglot exercise codebase. Transaction-domain patterns repeat across B4/B5/D2/D6/A3 with in-memory, PostgreSQL, and file-queue persistence variants. See `inventory.csv` for the full machine-readable export.
 
@@ -78,10 +78,12 @@ Each subfolder is a self-contained task. Put all deliverables (reports, code, co
 | 2 | Application source glob (`*.py`, `*.js`, `*.rs`) excl. tests | **61** files |
 | 3 | Total source incl. tests | **81** files |
 | 4 | Pattern extraction | Classes, structs, enums, route handlers, services, middleware, validators, DAO functions, workers |
-| 5 | Categorization | 12 taxonomy buckets per B1 spec |
-| 6 | Export | `inventory.csv` (108 data rows) |
+| 5 | Categorization | 15 taxonomy buckets (incl. Tests, Configuration, Documentation) |
+| 6 | Export | `inventory.csv` (242 data rows) |
 
-**Exclusions:** Test files (`tests/`, `*_test.py`, `*.test.js`, `conftest.py`), CI fixtures (`broken_*.py`), dependency trees (`node_modules/`, `.venv/`, `target/`).
+**Inclusions (2026-06-20 refresh):** Test files, build/config manifests, and task documentation per PML repo-discovery scope. Re-run: `python3 scripts/b1-refresh-inventory.py`.
+
+**Exclusions:** Dependency trees (`node_modules/`, `.venv/`, `target/`), cache dirs (`.pytest_cache/`).
 
 ---
 
@@ -101,7 +103,10 @@ Each subfolder is a self-contained task. Put all deliverables (reports, code, co
 | Utility / Helper classes | 25 | Queue I/O, CLI client, log analysis, exceptions |
 | Middleware / Filters | 3 | B5 error handlers, D6 `ObservabilityMiddleware` |
 | Validators | 1 | B5 `validateCreateTransaction` |
-| **Total** | **108** | |
+| Tests | 19 | pytest, Jest, Cargo test files |
+| Configuration | 41 | Makefile, mise, package.json, Docker, CI, K8s, Terraform |
+| Documentation | 73 | README, REPORT, diagrams, agent docs |
+| **Total** | **242** | |
 
 ### Artifacts by track (source files with implementations)
 
@@ -173,7 +178,7 @@ No JPA `@Repository`, Spring Data, or ORM entity mappings were found (consistent
 
 5. **Documentation-heavy tracks.** Many tasks (B2, B3, I1–I3, A1–A2, A4–A6, D3–D5) contain reports and plans without additional application source code beyond markdown.
 
-6. **Build/CI present.** Root `.github/workflows/ci.yml`, `Makefile`, `mise.toml`, Terraform (`devops/D1-terraform/`), Kubernetes manifests (`devops/D4-kubernetes/`), and Docker Compose files exist but are infrastructure/config — outside the B1 application-artifact taxonomy.
+6. **Build/CI in inventory.** Root `.github/workflows/`, `Makefile`, `mise.toml`, Terraform, K8s, and Docker Compose are now classified under **Configuration** (2026-06-20 refresh).
 
 ---
 
@@ -196,7 +201,7 @@ No JPA `@Repository`, Spring Data, or ORM entity mappings were found (consistent
 | Total files scanned (excl. deps) | 240 |
 | Application source files (excl. tests) | 61 |
 | Total directories (excl. `.git/`, deps) | 181 |
-| **Total classified artifacts** | **108** |
+| **Total classified artifacts** | **242** |
 | **Total controllers** | **23** |
 | **Total services** | **14** |
 | **Total repositories / DAOs** | **6** |
@@ -213,6 +218,6 @@ No JPA `@Repository`, Spring Data, or ORM entity mappings were found (consistent
 
 ## Appendix — Machine-Readable Export
 
-Full artifact listing: **`inventory.csv`** (108 rows + header).
+Full artifact listing: **`inventory.csv`** (242 rows + header).
 
 Columns: `Name`, `Category`, `File Path`, `Purpose`, `Key Dependencies`, `Confidence Level`.

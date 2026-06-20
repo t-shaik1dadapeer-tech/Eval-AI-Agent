@@ -1,1 +1,2 @@
 Entity Name,Table Name,Source File,Primary Key,Purpose,Columns,Foreign Keys,Constraints,Confidence
+transactions,transactions,devops/D2-docker-compose/database/init.sql,id,Persisted transaction records for D2 compose stack,"id SERIAL, transaction_id VARCHAR(64) UNIQUE, amount NUMERIC(12,2), status VARCHAR(20), created_at TIMESTAMPTZ",none,"amount > 0; status DEFAULT PENDING",Confirmed

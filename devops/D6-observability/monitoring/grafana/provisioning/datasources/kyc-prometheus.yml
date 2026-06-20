@@ -1,0 +1,12 @@
+apiVersion: 1
+
+datasources:
+  - name: KYC Platform Prometheus
+    uid: kyc-prometheus
+    type: prometheus
+    access: proxy
+    url: http://host.docker.internal:9191
+    isDefault: false
+    editable: true
+    jsonData:
+      httpMethod: POST

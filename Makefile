@@ -5,7 +5,7 @@ SHELL := /bin/bash
 ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 export PATH := $(HOME)/.local/bin:$(PATH)
 
-.PHONY: help bootstrap install install-mise test lint clean verify versions eval eval-dashboard eval-api eval-stop eval-compare eval-metrics eval-bot eval-bots-all eval-orch-config
+.PHONY: help bootstrap install install-mise test lint clean verify versions eval eval-full eval-dashboard eval-api eval-stop eval-compare eval-metrics eval-orch-config eval-reset-config
 
 help: ## Show targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -36,6 +36,9 @@ verify: bootstrap ## Alias for bootstrap (install + test)
 eval: ## Verify all 24 task deliverables (writes docs/eval-status.json)
 	@python3 "$(ROOT)/scripts/eval/portfolio.py" verify
 
+eval-full: ## Deliverables + run verify_command for all tasks (needs Docker)
+	@python3 "$(ROOT)/scripts/eval/portfolio.py" verify --run-tests --run-docker
+
 eval-dashboard: ## Print live dashboard URL (run make eval-api)
 	@python3 "$(ROOT)/scripts/eval/portfolio.py" dashboard
 
@@ -45,22 +48,18 @@ eval-api: ## Start live eval API + dashboard http://127.0.0.1:8788
 eval-stop: ## Stop eval server on port 8788 (if running)
 	@lsof -ti :8788 | xargs kill 2>/dev/null || echo "No process on 8788"
 
-eval-compare: ## Compare agent output: make eval-compare TASK=I2 AGENT_OUTPUT=./out.md API_BASE_URL=http://127.0.0.1:3000
+eval-compare: ## Compare agent output: make eval-compare TASK=I2 AGENT_OUTPUT=./out.md
 	@test -n "$(TASK)" || (echo "Usage: make eval-compare TASK=B2 AGENT_OUTPUT=./file.md" && exit 1)
 	@python3 "$(ROOT)/scripts/eval/portfolio.py" compare "$(TASK)" $(if $(AGENT_OUTPUT),--agent-output "$(AGENT_OUTPUT)",) --agent-name "$(or $(AGENT_NAME),manual)" $(if $(API_BASE_URL),--api-base-url "$(API_BASE_URL)",)
 
 eval-metrics: eval ## Prometheus metrics for eval portfolio (Grafana text format)
 	@python3 "$(ROOT)/scripts/eval/portfolio.py" metrics
 
-eval-bot: ## Run one orchestrator bot: make eval-bot TASK=B3 API_ID=my-dev-api
-	@test -n "$(TASK)" || (echo "Usage: make eval-bot TASK=B3 [API_ID=...] [API_BASE_URL=...]" && exit 1)
-	@python3 "$(ROOT)/scripts/eval/portfolio.py" bot "$(TASK)" $(if $(API_ID),--api-id "$(API_ID)",) $(if $(API_BASE_URL),--api-base-url "$(API_BASE_URL)",) $(if $(RUN_TESTS),--run-tests,)
-
-eval-bots-all: ## Run all 24 orchestrator bots
-	@python3 "$(ROOT)/scripts/eval/portfolio.py" bots-all $(if $(API_ID),--api-id "$(API_ID)",) $(if $(API_BASE_URL),--api-base-url "$(API_BASE_URL)",) $(if $(RUN_TESTS),--run-tests,)
-
-eval-orch-config: ## Register API + show config: make eval-orch-config API_ID=my-api API_BASE_URL=http://127.0.0.1:9000
+eval-orch-config: ## Register API + eval config: make eval-orch-config API_ID=my-api API_BASE_URL=http://127.0.0.1:8090
 	@python3 "$(ROOT)/scripts/eval/portfolio.py" orch-config $(if $(API_ID),--api-id "$(API_ID)",) $(if $(API_BASE_URL),--api-base-url "$(API_BASE_URL)",) $(if $(PROJECT_NAME),--project-name "$(PROJECT_NAME)",)
+
+eval-reset-config: ## Reset .eval/eval-config.json
+	@bash "$(ROOT)/scripts/eval/reset-orchestrator-config.sh"
 
 versions: ## Print pinned and active tool versions
 	@command -v mise >/dev/null 2>&1 && mise current || echo "mise not installed"

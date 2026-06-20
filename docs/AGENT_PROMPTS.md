@@ -10,9 +10,9 @@ cd Evil-Ai
 python3 scripts/eval/portfolio.py serve --port 8788
 ```
 
-Open **http://127.0.0.1:8788/** — dashboard shows agent + **API match** columns.
+Open **http://127.0.0.1:8788/** — dashboard shows **Agent work**, **Remote API** (optional), and **Score %** (repo + tests + agent output).
 
-**Using your own API?** Read [`EXTERNAL_EVAL.md`](EXTERNAL_EVAL.md) first.
+**Using your own API?** Read [`EXTERNAL_EVAL.md`](EXTERNAL_EVAL.md) — live API compare is manual only; it does **not** change dashboard Score.
 
 ---
 

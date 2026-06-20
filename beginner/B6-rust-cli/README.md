@@ -88,7 +88,7 @@ Exit code: `1`
 cargo test
 ```
 
-Expected: **12 passed** (6 unit tests in `analyzer.rs`, 6 integration tests).
+Expected: **17 passed** (9 unit tests in `analyzer.rs`, 8 integration tests in `tests/`).
 
 ## Example log file
 

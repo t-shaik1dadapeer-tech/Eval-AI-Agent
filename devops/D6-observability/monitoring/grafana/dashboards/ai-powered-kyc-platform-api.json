@@ -1,0 +1,284 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "kyc-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total[1m]))",
+          "legendFormat": "requests/sec",
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        }
+      ],
+      "title": "HTTP Request Rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "kyc-prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 2,
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total{status=~\"5..\"}[5m]))",
+          "legendFormat": "5xx/sec",
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        }
+      ],
+      "title": "HTTP Error Rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "kyc-prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 3,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))",
+          "legendFormat": "p95",
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        }
+      ],
+      "title": "API Latency p95",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "kyc-prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 7
+      },
+      "id": 4,
+      "targets": [
+        {
+          "expr": "sum(rate(customers_created_total[5m])) by (status)",
+          "legendFormat": "{{status}}",
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        }
+      ],
+      "title": "Customer Creation Rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "kyc-prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 7
+      },
+      "id": 5,
+      "targets": [
+        {
+          "expr": "sum(rate(kyc_submissions_total[5m])) by (status)",
+          "legendFormat": "{{status}}",
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        }
+      ],
+      "title": "KYC Submissions",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "kyc-prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 7
+      },
+      "id": 6,
+      "targets": [
+        {
+          "expr": "kyc_submissions_active",
+          "legendFormat": "verified count",
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        }
+      ],
+      "title": "Active KYC (verified proxy)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "kyc-prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "id": 7,
+      "targets": [
+        {
+          "expr": "sum(rate(pan_verifications_total[5m])) by (status)",
+          "legendFormat": "PAN {{status}}",
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        },
+        {
+          "expr": "sum(rate(bank_verifications_total[5m])) by (status)",
+          "legendFormat": "Bank {{status}}",
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        }
+      ],
+      "title": "Verification Throughput",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "kyc-prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 8,
+      "targets": [
+        {
+          "expr": "sum(rate(risk_assessments_total[5m])) by (band)",
+          "legendFormat": "{{band}}",
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        }
+      ],
+      "title": "Risk Assessments by Band",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "kyc-prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 9,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(risk_score_histogram_bucket[5m])) by (le, band))",
+          "legendFormat": "p50 {{band}}",
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(risk_score_histogram_bucket[5m])) by (le, band))",
+          "legendFormat": "p95 {{band}}",
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "kyc-prometheus"
+          }
+        }
+      ],
+      "title": "Risk Score Distribution",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": [
+    "d6",
+    "kyc-platform",
+    "onboarding-api",
+    "ai-powered"
+  ],
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "title": "AI-Powered KYC Platform API",
+  "uid": "ai-powered-kyc-platform-api",
+  "version": 3
+}

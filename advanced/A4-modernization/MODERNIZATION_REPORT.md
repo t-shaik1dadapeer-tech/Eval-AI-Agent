@@ -8,7 +8,7 @@
 
 # Executive Summary
 
-The repository is a **multi-track evaluation scaffold** (beginner, intermediate, advanced, devops) with **working polyglot services** (Python FastAPI, Node.js, Rust) but **no automated CI/CD**. Tests exist per service but run only manually. This assessment identified **8 modernization opportunities**; **Priority 1 — add a GitHub Actions CI workflow** — was implemented as a minimal, low-risk, high-value first step. Local verification via `scripts/ci-verify.sh` passed all **47 tests** across 8 service directories (exit code `0`).
+The repository is a **multi-track evaluation scaffold** (beginner, intermediate, advanced, devops) with **working polyglot services** (Python FastAPI, Node.js, Rust) and **automated CI/CD** via GitHub Actions (`.github/workflows/ci.yml`, `devops/D3-ci-pipeline/`). Tests run via root `make test` / `scripts/ci-verify.sh`. The **devops track (D1–D6)** is fully implemented — Terraform, Docker Compose stack, CI pipeline, Kubernetes manifests, bootstrap Makefile/mise, and Prometheus/Grafana observability. This assessment identified **8 modernization opportunities**; **Priority 1 — add a GitHub Actions CI workflow** — was implemented as a minimal, low-risk, high-value first step. Local verification via `scripts/ci-verify.sh` passed all tests across service directories (exit code `0`).
 
 ---
 
@@ -16,13 +16,13 @@ The repository is a **multi-track evaluation scaffold** (beginner, intermediate,
 
 | Attribute | Evidence |
 |-----------|----------|
-| **Type** | Hands-on AI agent evaluation exercises |
-| **Languages** | Python, JavaScript, Rust |
-| **Services with tests** | B4, B5, B6, I4 (×2), A3 (×3) |
-| **CI/CD** | None — no `.github/` directory |
-| **Containerization** | Single Dockerfile (`intermediate/I5-dockerize/Dockerfile`) |
-| **DevOps track** | Placeholder only (`devops/D1`–`D6` contain `.gitkeep`) |
-| **Root docs** | `README.md` — structure and per-folder workflow only |
+| **Type** | Hands-on AI agent evaluation exercises (24 PML/OCL tasks) |
+| **Languages** | Python, JavaScript, Rust, HCL (Terraform) |
+| **Services with tests** | B4, B5, B6, I4 (×2), A3 (×3), D6 service |
+| **CI/CD** | `.github/workflows/ci.yml`; local mirror `devops/D3-ci-pipeline/scripts/run-pipeline-local.sh` |
+| **Containerization** | I5 Dockerfile; D2 multi-service compose; D6 observability stack |
+| **DevOps track** | D1 Terraform, D2 compose+e2e, D3 CI, D4 K8s, D5 bootstrap, D6 metrics |
+| **Root docs** | `README.md`, `docs/TASK_REGISTRY.md`, `docs/PML_VERIFICATION.md` |
 
 No `pom.xml`, `build.gradle`, or monorepo build tool exists. Each task folder is self-contained.
 
@@ -34,11 +34,11 @@ No `pom.xml`, `build.gradle`, or monorepo build tool exists. Each task folder is
 
 | Field | Detail |
 |-------|--------|
-| **Description** | No GitHub Actions, Jenkins, or other CI configuration exists |
-| **Evidence** | `ls .github` → directory not found; `devops/D3-ci-pipeline/.gitkeep` is empty placeholder |
-| **File path** | Missing: `.github/workflows/`; `devops/D3-ci-pipeline/.gitkeep` |
-| **Impact** | Regressions undetected until manual test runs; no PR gate |
-| **Risk of inaction** | High — polyglot codebase grows without safety net |
+| **Description** | ~~No GitHub Actions~~ **Resolved:** root CI workflow and D3 local pipeline mirror exist |
+| **Evidence** | `.github/workflows/ci.yml`; `devops/D3-ci-pipeline/scripts/run-pipeline-local.sh` |
+| **File path** | `.github/workflows/ci.yml`, `devops/D3-ci-pipeline/` |
+| **Impact** | PR gate available; `make test` runs full suite locally |
+| **Risk of inaction** | Low — maintain workflow as new tasks are added |
 
 ## F2 — Manual-only test execution
 

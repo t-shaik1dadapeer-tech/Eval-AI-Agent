@@ -23,6 +23,10 @@ class TransactionService {
     return [...this._transactions];
   }
 
+  getTransactionById(id) {
+    return this._transactions.find((transaction) => transaction.id === id) ?? null;
+  }
+
   getBalance() {
     const balance = this._transactions.reduce((total, transaction) => {
       if (transaction.type === TRANSACTION_TYPES.CREDIT) {

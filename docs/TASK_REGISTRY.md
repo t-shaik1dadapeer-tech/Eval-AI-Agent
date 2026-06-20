@@ -6,7 +6,7 @@ Master index of all 24 evaluation tasks in this repository. Status reflects the 
 | ------------ | ---- | ----------------------------------- | ------------- | --------------------------------------------- |
 | Beginner     | B1   | `beginner/B1-repo-artifact-inventory/` | Completed     | `REPORT.md`, `inventory.csv`                  |
 | Beginner     | B2   | `beginner/B2-api-endpoint-map/`        | Completed     | `API_MAP.md`, `endpoints.csv` (25 routes)     |
-| Beginner     | B3   | `beginner/B3-test-discovery/`          | Completed     | `TEST_REPORT.md` (`make test` — 47 pass)      |
+| Beginner     | B3   | `beginner/B3-test-discovery/`          | Completed     | `TEST_REPORT.md` (`make test` — 51 pass)      |
 | Beginner     | B4   | `beginner/B4-fastapi-service/`         | Completed     | FastAPI service, tests, `REPORT.md`           |
 | Beginner     | B5   | `beginner/B5-nodejs-api-cli/`          | Completed     | Express API, tests, `REPORT.md`               |
 | Beginner     | B6   | `beginner/B6-rust-cli/`                | Completed     | Rust CLI, tests, `REPORT.md`                  |
@@ -35,6 +35,8 @@ Master index of all 24 evaluation tasks in this repository. Status reflects the 
 | ------------- | ----: |
 | Completed     |    24 |
 | Needs refresh |     0 |
+
+See [`PML_VERIFICATION.md`](PML_VERIFICATION.md) for rubric audit against PML/OCL eval document.
 | Planned       |     0 |
 
 ## Verification entry point

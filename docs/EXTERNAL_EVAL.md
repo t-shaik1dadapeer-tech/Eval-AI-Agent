@@ -89,7 +89,7 @@ The eval server:
 
 ---
 
-## Step 4 — Submit agent work (.md output + API check)
+## Step 4 — Submit agent work (.md output)
 
 Paste a prompt from [`AGENT_PROMPTS.md`](AGENT_PROMPTS.md) in Cursor, then submit:
 
@@ -99,20 +99,19 @@ curl -X POST http://127.0.0.1:8788/api/agent/submit \
   -d '{
     "task_id": "B3",
     "agent_name": "cursor",
-    "output_path": "beginner/B3-test-discovery/TEST_REPORT.md",
-    "api_id": "my-dev-api"
+    "output_path": "beginner/B3-test-discovery/TEST_REPORT.md"
   }'
 ```
 
-Use `api_base_url` instead of `api_id` for a one-off URL (not saved).
+Submit scores **agent `.md` vs repo reference files only**. Optional `api_id` / `api_base_url` on submit are ignored for scoring (stored for display if provided).
 
 Response includes:
 
 | Field | Meaning |
 |-------|---------|
 | `md_verdict` | Agent `.md` vs repo reference files |
-| `api_match` | Live API vs endpoints found in `.md` |
-| `verdict` | Combined score |
+| `verdict` | Same as `md_verdict` (no API blend on submit) |
+| `api_match` | Always `skipped` on submit — use `/api/external/analyze` for live API check |
 | `related_md` | Other task `.md` files to read if mismatch |
 
 ---
@@ -123,11 +122,12 @@ Response includes:
 
 | Column | Meaning |
 |--------|---------|
-| **Agent** | `.md` / deliverable compare |
-| **API match** | Your running API vs `.md` expectations |
-| **Related .md** | Suggested files from other tasks when fail |
+| **Repo** | Required deliverable files present |
+| **Agent work** | Latest agent submit verdict (`ok` / `partial` / …) |
+| **Remote API** | Optional registered URL (display only) |
+| **Score** | Repo ready + tests + agent output — **not** live API probe |
 
-Register APIs in the dashboard panel when your dev work is complete.
+Use **POST /api/external/analyze** when you want a separate live API vs `.md` check.
 
 ---
 
@@ -169,7 +169,7 @@ Each path is called on **your** resolved API URL. Score = endpoints returning 2x
 
 ```bash
 make eval-compare TASK=B3 AGENT_OUTPUT=./out.md API_BASE_URL=http://127.0.0.1:9000
-make eval-bot TASK=B3 API_ID=my-dev-api
+make eval-orch-config API_ID=my-dev-api API_BASE_URL=http://127.0.0.1:9000
 ```
 
 ---
@@ -178,4 +178,4 @@ make eval-bot TASK=B3 API_ID=my-dev-api
 
 - [`AGENT_PROMPTS.md`](AGENT_PROMPTS.md) — copy-paste prompts for all 24 tasks
 - [`AGENT_API.md`](AGENT_API.md) — full HTTP API reference
-- [`ORCHESTRATOR.md`](ORCHESTRATOR.md) — multi-API bot runs
+- [`ORCHESTRATOR.md`](ORCHESTRATOR.md) — per-task API config

@@ -9,6 +9,7 @@ GET,/,REST,Express app,root handler,,JSON (service info),Public,beginner/B5-node
 GET,/health,REST,Express app,health handler,,JSON (status),Public,beginner/B5-nodejs-api-cli/src/app.js,Confirmed
 POST,/transactions,REST,transactionRoutes,createTransaction,JSON body (validated),JSON transaction,Public,beginner/B5-nodejs-api-cli/src/routes/transactionRoutes.js,Confirmed
 GET,/transactions,REST,transactionRoutes,getTransactions,,JSON array,Public,beginner/B5-nodejs-api-cli/src/routes/transactionRoutes.js,Confirmed
+GET,/transactions/{id},REST,transactionRoutes,getTransactionById,path id,JSON transaction,Public,beginner/B5-nodejs-api-cli/src/routes/transactionRoutes.js,Confirmed
 GET,/balance,REST,transactionRoutes,getBalance,,JSON balance,Public,beginner/B5-nodejs-api-cli/src/routes/transactionRoutes.js,Confirmed
 GET,/health,REST,FastAPI app,health_check,,dict (status),Public,intermediate/I4-fastapi-node-pair/fastapi-service/app/main.py,Confirmed
 POST,/convert,REST,convert router,convert_currency,ConvertRequest,ConvertResponse,Public,intermediate/I4-fastapi-node-pair/fastapi-service/app/routes/convert.py,Confirmed

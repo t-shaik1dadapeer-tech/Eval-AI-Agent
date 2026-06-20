@@ -1,7 +1,7 @@
 # I1 — ER Diagram From Repository
 
 **Repository:** `Evil-Ai` (Eval AI Agent)  
-**Scan date:** 2026-06-17  
+**Scan date:** 2026-06-20 (refreshed — includes D2 DDL)  
 **Task output:** `intermediate/I1-er-diagram/`  
 **Evidence policy:** Repository source files only — no invented tables or relationships
 
@@ -9,21 +9,38 @@
 
 # Executive Summary
 
-A full recursive scan of the `Evil-Ai` repository found **zero database-backed entities**, **zero tables**, and **zero entity relationships** suitable for an ER diagram.
-
-The repository contains three implemented application modules (B4 FastAPI, B5 Node.js, B6 Rust CLI). B4 and B5 define **in-memory** transaction structures — not ORM entities, not SQL tables, and not migration-defined schemas. No JPA/Hibernate mappings, SQL migrations (Flyway/Liquibase), DDL scripts, or database repository/DAO classes were found.
+A full recursive scan of the `Evil-Ai` repository found **one DDL-defined table** (`transactions` in D2 Docker Compose) and **zero ORM-mapped entity relationships**. B4 and B5 use in-memory transaction structures — excluded from the ER model per evidence policy.
 
 | Metric | Count |
 |--------|------:|
-| **Total entities (database-backed)** | **0** |
-| **Total tables** | **0** |
+| **Total tables (DDL/migration)** | **1** |
+| **Total entities (database-backed)** | **1** |
 | **Total relationships** | **0** |
-| **Explicit relationships** | **0** |
-| **Inferred relationships** | **0** |
+| **In-memory app structures (excluded)** | 4 |
 
-**Conclusion:** An ER model cannot be constructed from persisted schema evidence in this repository. `entities.csv`, `relationships.csv`, and `er-diagram.mmd` reflect this empty result. Re-run I1 after database schema, ORM entities, or migration files are added.
+**Conclusion:** ER model covers `devops/D2-docker-compose/database/init.sql`. Re-run I1 when additional migrations or ORM entities are added.
 
 ---
+
+# D2 — `transactions` table (PostgreSQL)
+
+| Column | Type | Constraints | Source |
+|--------|------|-------------|--------|
+| `id` | `SERIAL` | PRIMARY KEY | `devops/D2-docker-compose/database/init.sql` L2 |
+| `transaction_id` | `VARCHAR(64)` | UNIQUE NOT NULL | L3 |
+| `amount` | `NUMERIC(12,2)` | NOT NULL, CHECK `> 0` | L4 |
+| `status` | `VARCHAR(20)` | NOT NULL DEFAULT `'PENDING'` | L5 |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL DEFAULT `NOW()` | L6 |
+
+Index: `idx_transactions_status` on `(status)` — L9.
+
+See `er-diagram.mmd` and `entities.csv` for machine-readable exports.
+
+---
+
+# Prior scan note (2026-06-17)
+
+The initial I1 pass reported zero tables because the scan predated full D2 implementation. The section below documents excluded in-memory structures.
 
 # Scan Methodology
 
