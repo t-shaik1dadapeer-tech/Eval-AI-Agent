@@ -72,6 +72,7 @@ curl -X POST http://127.0.0.1:8788/api/agent/submit \
 
 ## Related docs
 
+- [`PM4_JIRA_SUBTASK_PROMPTS.md`](PM4_JIRA_SUBTASK_PROMPTS.md) — **all 24 Jira subtasks + copy-paste prompts**
 - [`AGENT_PROMPTS.md`](AGENT_PROMPTS.md) — copy-paste prompt per task
 - [`AGENT_API.md`](AGENT_API.md) — eval server API reference
 - [`EVIL_AI_TASK_NOTES.pdf`](EVIL_AI_TASK_NOTES.pdf) — printable 24-task cheat sheet
