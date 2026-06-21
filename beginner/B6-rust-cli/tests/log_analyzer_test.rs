@@ -39,8 +39,8 @@ fn missing_file() {
 #[test]
 fn empty_file() {
     let manifest_dir = env!("CARGO_MANIFEST_DIR");
-    let path = PathBuf::from(manifest_dir).join("logs/empty.log");
-    let content = read_log_file(&path).expect("empty.log should be readable");
+    let path = PathBuf::from(manifest_dir).join("tests/fixtures/empty.txt");
+    let content = read_log_file(&path).expect("empty fixture should be readable");
     let counts = count_log_levels(&content);
     assert_eq!(counts.total(), 0);
     assert_eq!(
