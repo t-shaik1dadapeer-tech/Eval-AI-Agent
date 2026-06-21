@@ -85,7 +85,91 @@ make eval              # verify deliverables
 make eval-compare TASK=B2 AGENT_OUTPUT=./out.csv
 ```
 
-See [`docs/AGENT_PROMPTS.md`](docs/AGENT_PROMPTS.md) for copy-paste prompts per task, or [`docs/AGENT_API.md`](docs/AGENT_API.md) for the clone workflow any agent should follow.
+See [`docs/AGENT_PROMPTS.md`](docs/AGENT_PROMPTS.md) for copy-paste prompts per task, or [`docs/AGENT_API.md`](docs/AGENT_API.md) for the full API reference.
+
+## Eval API usage (after clone)
+
+Start the server once, then use the HTTP API or dashboard. Base URL: **http://127.0.0.1:8788**
+
+```bash
+make eval-api    # keep this terminal open
+```
+
+### Procedure for reviewers / agents
+
+| Step | Action | Command or URL |
+|------|--------|----------------|
+| 1 | Start eval server | `make eval-api` |
+| 2 | Open live dashboard | http://127.0.0.1:8788 |
+| 3 | Health check | `curl http://127.0.0.1:8788/api/health` |
+| 4 | Get task instructions | `curl http://127.0.0.1:8788/api/agent/guide/B4` |
+| 5 | Do work in task folder | e.g. `beginner/B4-fastapi-service/` |
+| 6 | Submit deliverable | `POST /api/agent/submit` (see below) |
+| 7 | View all 24 task results | `curl http://127.0.0.1:8788/api/portfolio` |
+
+Replace `B4` with any task ID: `B1`–`B6`, `I1`–`I6`, `A1`–`A6`, `D1`–`D6`.
+
+### Get task guide (step 4)
+
+```bash
+curl http://127.0.0.1:8788/api/agent/guide/B4
+```
+
+Returns `objective`, `reference_files`, `required_files`, `compare_hint`, and optional `verify_command`.
+
+### Submit work (step 6)
+
+**By file path** (report or code already saved in the repo):
+
+```bash
+curl -X POST http://127.0.0.1:8788/api/agent/submit \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "task_id": "B2",
+    "agent_name": "cursor",
+    "output_path": "beginner/B2-api-endpoint-map/API_MAP.md"
+  }'
+```
+
+**By inline markdown** (agent pasted content):
+
+```bash
+curl -X POST http://127.0.0.1:8788/api/agent/submit \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "task_id": "I2",
+    "agent_name": "claude",
+    "content": "# Flow trace\n..."
+  }'
+```
+
+Response fields: `verdict` (`ok` | `partial` | `mismatch`), `match_score`, `reference_files`, `suggestion`.
+
+### Main endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/` | Live dashboard (HTML) |
+| GET | `/api/health` | Server health check |
+| GET | `/api/docs` | Workflow + endpoint list |
+| GET | `/api/portfolio` | All 24 tasks + scores (JSON) |
+| GET | `/api/tasks` | Task registry |
+| GET | `/api/tasks/{id}` | One task status |
+| GET | `/api/agent/guide/{id}` | Task instructions (read first) |
+| POST | `/api/agent/submit` | Submit output for comparison |
+| POST | `/api/portfolio/refresh` | Re-scan repo deliverables |
+
+### CLI equivalents (no curl)
+
+```bash
+make eval                              # verify all deliverables
+make eval-compare TASK=B2              # show reference files for B2
+make eval-compare TASK=B2 AGENT_OUTPUT=./out.md
+```
+
+Prompts per task (including Jira PM4-6626 links): [`docs/PM4_JIRA_SUBTASK_PROMPTS.md`](docs/PM4_JIRA_SUBTASK_PROMPTS.md).
+
+External live API vs `.md` comparison: [`docs/EXTERNAL_EVAL.md`](docs/EXTERNAL_EVAL.md) (`POST /api/external/register`, `POST /api/external/analyze`).
 
 ## Tracks
 
