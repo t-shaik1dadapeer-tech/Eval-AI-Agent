@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Evil-Ai — 24 Task Pipeline</title>
+  <title>Eval-Ai — 24 Task Pipeline</title>
   <style>
     :root { --bg:#0f172a; --panel:#1e293b; --border:#334155; --text:#e2e8f0; --muted:#94a3b8; --accent:#38bdf8; --ok:#22c55e; }
     * { box-sizing:border-box; }
@@ -36,7 +36,7 @@
 </head>
 <body>
   <header>
-    <h1>Evil-Ai — 24 Task Pipeline</h1>
+    <h1>Eval-Ai — 24 Task Pipeline</h1>
     <p class="sub">Walk through all PML agent tasks in order. Do each step in Cursor, then mark done. No scores — just files and blueprints.</p>
   </header>
   <main>
@@ -48,7 +48,7 @@
     <div id="view-pipeline">
       <div class="panel">
         <label>Target repository path (for Cursor — use @path in chat)</label>
-        <input type="text" id="target" placeholder="/Users/you/projects/Evil-Ai"/>
+        <input type="text" id="target" placeholder="/Users/you/projects/Eval-Ai"/>
         <button onclick="loadPlan()">Load pipeline</button>
         <button class="secondary" onclick="verifyAll()">Verify all 24</button>
         <button class="secondary" onclick="resetProgress()">Reset progress</button>
@@ -63,7 +63,7 @@
     </div>
   </main>
   <script>
-    const STORAGE_KEY = 'evil-ai-pipeline-done';
+    const STORAGE_KEY = 'eval-ai-pipeline-done';
     let plan = null;
     let doneSet = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
 

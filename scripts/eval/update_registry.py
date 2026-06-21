@@ -36,30 +36,30 @@ DEPENDS: dict[str, list[str]] = {
 }
 
 SKILL_SLUG: dict[str, str] = {
-    "B1": "evil-ai-repo-inventory",
-    "B2": "evil-ai-api-endpoint-map",
-    "B3": "evil-ai-test-discovery",
-    "B4": "evil-ai-fastapi-service",
-    "B5": "evil-ai-nodejs-api",
-    "B6": "evil-ai-rust-cli",
-    "I1": "evil-ai-er-diagram",
-    "I2": "evil-ai-flow-trace",
-    "I3": "evil-ai-safe-change",
-    "I4": "evil-ai-fastapi-node-pair",
-    "I5": "evil-ai-dockerize",
-    "I6": "evil-ai-bug-diagnosis",
-    "A1": "evil-ai-parallel-plan",
-    "A2": "evil-ai-parallel-worktrees",
-    "A3": "evil-ai-polyglot-system",
-    "A4": "evil-ai-modernization",
-    "A5": "evil-ai-agent-review",
-    "A6": "evil-ai-performance",
-    "D1": "evil-ai-terraform",
-    "D2": "evil-ai-docker-compose",
-    "D3": "evil-ai-ci-pipeline",
-    "D4": "evil-ai-kubernetes",
-    "D5": "evil-ai-dev-environment",
-    "D6": "evil-ai-observability",
+    "B1": "eval-ai-repo-inventory",
+    "B2": "eval-ai-api-endpoint-map",
+    "B3": "eval-ai-test-discovery",
+    "B4": "eval-ai-fastapi-service",
+    "B5": "eval-ai-nodejs-api",
+    "B6": "eval-ai-rust-cli",
+    "I1": "eval-ai-er-diagram",
+    "I2": "eval-ai-flow-trace",
+    "I3": "eval-ai-safe-change",
+    "I4": "eval-ai-fastapi-node-pair",
+    "I5": "eval-ai-dockerize",
+    "I6": "eval-ai-bug-diagnosis",
+    "A1": "eval-ai-parallel-plan",
+    "A2": "eval-ai-parallel-worktrees",
+    "A3": "eval-ai-polyglot-system",
+    "A4": "eval-ai-modernization",
+    "A5": "eval-ai-agent-review",
+    "A6": "eval-ai-performance",
+    "D1": "eval-ai-terraform",
+    "D2": "eval-ai-docker-compose",
+    "D3": "eval-ai-ci-pipeline",
+    "D4": "eval-ai-kubernetes",
+    "D5": "eval-ai-dev-environment",
+    "D6": "eval-ai-observability",
 }
 
 
@@ -79,7 +79,7 @@ def main() -> None:
         tid = task["id"]
         task["depends_on"] = DEPENDS.get(tid, [])
         task["blueprint"] = f"eval_blueprints/{tid}_blueprint.md"
-        task["skill_slug"] = SKILL_SLUG.get(tid, f"evil-ai-{tid.lower()}")
+        task["skill_slug"] = SKILL_SLUG.get(tid, f"eval-ai-{tid.lower()}")
         task["primary_output"] = primary_output(task)
     data["pipeline_order"] = [
         "B1", "B2", "B3", "B4", "B5", "B6",

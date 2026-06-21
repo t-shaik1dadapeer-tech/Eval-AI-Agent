@@ -23,7 +23,7 @@ None — start here
 
 Open **docs/AGENT_PROMPTS.md** → section **## D1 —**
 
-Or run slash command: `/evil-ai-terraform`
+Or run slash command: `/eval-ai-terraform`
 
 ## Verify (optional)
 

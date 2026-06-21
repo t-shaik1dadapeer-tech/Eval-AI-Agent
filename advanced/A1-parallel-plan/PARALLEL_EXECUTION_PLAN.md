@@ -1,6 +1,6 @@
 # A1 — Multi-Worktree Parallel Execution Plan
 
-**Repository:** `Evil-Ai`  
+**Repository:** `Eval-Ai`  
 **Task output:** `advanced/A1-parallel-plan/`  
 **Date:** 2026-06-17  
 **Type:** Executable plan (no implementation in A1)
@@ -245,20 +245,20 @@ curl http://localhost:8000/balance
 git checkout -b feature/A1-parent main
 
 # Lane 1
-git worktree add ../Evil-Ai-A1-data feature/A1-data
-# Agent works in ../Evil-Ai-A1-data
+git worktree add ../Eval-Ai-A1-data feature/A1-data
+# Agent works in ../Eval-Ai-A1-data
 
 # Lane 2
-git worktree add ../Evil-Ai-A1-service feature/A1-service
+git worktree add ../Eval-Ai-A1-service feature/A1-service
 
 # Lane 3
-git worktree add ../Evil-Ai-A1-api feature/A1-api
+git worktree add ../Eval-Ai-A1-api feature/A1-api
 
 # Lane 4
-git worktree add ../Evil-Ai-A1-quality feature/A1-quality
+git worktree add ../Eval-Ai-A1-quality feature/A1-quality
 
 # After all lanes merge to parent
-git worktree remove ../Evil-Ai-A1-data
+git worktree remove ../Eval-Ai-A1-data
 # ... repeat for each worktree
 ```
 

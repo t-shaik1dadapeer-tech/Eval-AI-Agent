@@ -23,7 +23,7 @@ I5
 
 Open **docs/AGENT_PROMPTS.md** → section **## D2 —**
 
-Or run slash command: `/evil-ai-docker-compose`
+Or run slash command: `/eval-ai-docker-compose`
 
 ## Verify (optional)
 

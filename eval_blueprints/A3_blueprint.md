@@ -25,7 +25,7 @@ B4, B5, B6, I4
 
 Open **docs/AGENT_PROMPTS.md** → section **## A3 —**
 
-Or run slash command: `/evil-ai-polyglot-system`
+Or run slash command: `/eval-ai-polyglot-system`
 
 ## Verify (optional)
 

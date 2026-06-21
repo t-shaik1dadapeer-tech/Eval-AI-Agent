@@ -5,10 +5,10 @@ Copy-paste prompts for each PML/OCL task. Start the portfolio with **`make eval-
 ## Before you start
 
 ```bash
-cd Evil-Ai
+cd Eval-Ai
 make setup
-make eval-api    # http://127.0.0.1:8788 — Evil-Ai portfolio dashboard
-make install-cursor-skills   # optional: /evil-ai-* slash commands in Cursor
+make eval-api    # http://127.0.0.1:8788 — Eval-Ai portfolio dashboard
+make install-cursor-skills   # optional: /eval-ai-* slash commands in Cursor
 ```
 
 Each task also has **`eval_blueprints/{ID}_blueprint.md`** listing required `.md` files.
@@ -18,7 +18,7 @@ Each task also has **`eval_blueprints/{ID}_blueprint.md`** listing required `.md
 ## Universal prompt — any target repo
 
 ```
-You are running Evil-Ai task {TASK_ID} on my repository.
+You are running Eval-Ai task {TASK_ID} on my repository.
 
 1. Read eval_blueprints/{TASK_ID}_blueprint.md
 2. Read docs/AGENT_PROMPTS.md section {TASK_ID}
@@ -35,7 +35,7 @@ Replace `{TASK_ID}`. Attach repo in Cursor with `@/path/to/repo` if analyzing an
 Copy everything inside the block below for a full portfolio run:
 
 ```
-You are evaluating the Evil-Ai portfolio (24 tasks: B1–B6, I1–I6, A1–A6, D1–D6).
+You are evaluating the Eval-Ai portfolio (24 tasks: B1–B6, I1–I6, A1–A6, D1–D6).
 
 Setup:
 1. From repo root run: make eval-api (if not already running).
@@ -66,7 +66,7 @@ Final report:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task B1 (Repository Artifact Inventory).
+Evaluate Eval-Ai task B1 (Repository Artifact Inventory).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/B1
@@ -92,7 +92,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task B2 (API Endpoint Map).
+Evaluate Eval-Ai task B2 (API Endpoint Map).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/B2
@@ -120,7 +120,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task B3 (Test Discovery).
+Evaluate Eval-Ai task B3 (Test Discovery).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/B3
@@ -148,7 +148,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task B4 (FastAPI Transaction Service).
+Evaluate Eval-Ai task B4 (FastAPI Transaction Service).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/B4
@@ -175,7 +175,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task B5 (Node.js Transaction API).
+Evaluate Eval-Ai task B5 (Node.js Transaction API).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/B5
@@ -201,7 +201,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task B6 (Rust Log Analyzer CLI).
+Evaluate Eval-Ai task B6 (Rust Log Analyzer CLI).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/B6
@@ -227,7 +227,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task I1 (ER Diagram).
+Evaluate Eval-Ai task I1 (ER Diagram).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/I1
@@ -254,7 +254,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task I2 (End-to-End Trace).
+Evaluate Eval-Ai task I2 (End-to-End Trace).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/I2
@@ -281,7 +281,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task I3 (Safe Change).
+Evaluate Eval-Ai task I3 (Safe Change).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/I3
@@ -307,7 +307,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task I4 (FastAPI + Node Pair).
+Evaluate Eval-Ai task I4 (FastAPI + Node Pair).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/I4
@@ -334,7 +334,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task I5 (Dockerize).
+Evaluate Eval-Ai task I5 (Dockerize).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/I5
@@ -360,7 +360,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task I6 (Bug Diagnosis).
+Evaluate Eval-Ai task I6 (Bug Diagnosis).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/I6
@@ -386,7 +386,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task A1 (Parallel Planning).
+Evaluate Eval-Ai task A1 (Parallel Planning).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/A1
@@ -413,7 +413,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task A2 (Parallel Worktrees).
+Evaluate Eval-Ai task A2 (Parallel Worktrees).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/A2
@@ -439,7 +439,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task A3 (Polyglot System).
+Evaluate Eval-Ai task A3 (Polyglot System).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/A3
@@ -466,7 +466,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task A4 (Modernization).
+Evaluate Eval-Ai task A4 (Modernization).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/A4
@@ -493,7 +493,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task A5 (Agent Review).
+Evaluate Eval-Ai task A5 (Agent Review).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/A5
@@ -519,7 +519,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task A6 (Performance).
+Evaluate Eval-Ai task A6 (Performance).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/A6
@@ -545,7 +545,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task D1 (Terraform).
+Evaluate Eval-Ai task D1 (Terraform).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/D1
@@ -571,7 +571,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task D2 (Docker Compose).
+Evaluate Eval-Ai task D2 (Docker Compose).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/D2
@@ -598,7 +598,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task D3 (CI Pipeline).
+Evaluate Eval-Ai task D3 (CI Pipeline).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/D3
@@ -624,7 +624,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task D4 (Kubernetes).
+Evaluate Eval-Ai task D4 (Kubernetes).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/D4
@@ -650,7 +650,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task D5 (Dev Environment).
+Evaluate Eval-Ai task D5 (Dev Environment).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/D5
@@ -677,7 +677,7 @@ If mismatch, also read:
 ### Copy-paste prompt
 
 ```
-Evaluate Evil-Ai task D6 (Observability).
+Evaluate Eval-Ai task D6 (Observability).
 
 1. Run make eval-api if not running. Open http://127.0.0.1:8787/
 2. GET http://127.0.0.1:8787/api/agent/guide/D6

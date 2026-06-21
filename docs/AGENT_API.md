@@ -5,8 +5,8 @@ Use this after cloning the repo so any AI agent can discover tasks, get referenc
 ## Quick start (any clone)
 
 ```bash
-git clone <repo-url> Evil-Ai
-cd Evil-Ai
+git clone <repo-url> Eval-Ai
+cd Eval-Ai
 make bootstrap          # optional: install + run tests
 make eval-api           # starts http://127.0.0.1:8788
 ```

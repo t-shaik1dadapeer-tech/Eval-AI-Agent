@@ -1,4 +1,4 @@
-# Push Evil-Ai to GitHub
+# Push Eval-Ai to GitHub
 
 **Target repo:** [t-shaik1dadapeer-tech/Eval-AI-Agent](https://github.com/t-shaik1dadapeer-tech/Eval-AI-Agent)
 
@@ -14,7 +14,7 @@ HTTPS: https://github.com/t-shaik1dadapeer-tech/Eval-AI-Agent.git
 ## Quick push (after auth)
 
 ```bash
-cd /Users/shaikdadapeer/Evil-Ai
+cd /Users/shaikdadapeer/Eval-Ai
 
 # Option A — GitHub CLI
 gh auth login
@@ -39,7 +39,7 @@ git clone git@github.com:t-shaik1dadapeer-tech/Eval-AI-Agent.git
 ## Token push (office laptop)
 
 ```bash
-cd /Users/shaikdadapeer/Evil-Ai
+cd /Users/shaikdadapeer/Eval-Ai
 GITHUB_TOKEN=ghp_YOUR_TOKEN bash scripts/push-with-token.sh
 ```
 

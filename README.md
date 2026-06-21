@@ -80,7 +80,7 @@ Eval-ai-agent/
 ## Eval portfolio (24 tasks)
 
 ```bash
-make eval-api          # Evil-Ai portfolio — live dashboard + agent API → http://127.0.0.1:8788
+make eval-api          # Eval-Ai portfolio — live dashboard + agent API → http://127.0.0.1:8788
 make eval              # verify deliverables
 make eval-compare TASK=B2 AGENT_OUTPUT=./out.csv
 ```

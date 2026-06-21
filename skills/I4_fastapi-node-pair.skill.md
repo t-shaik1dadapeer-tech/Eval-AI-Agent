@@ -1,11 +1,11 @@
 ---
-name: evil-ai-fastapi-node-pair
-description: Evil-Ai PML task I4 — FastAPI + Node Pair
+name: eval-ai-fastapi-node-pair
+description: Eval-Ai PML task I4 — FastAPI + Node Pair
 ---
 
 # I4 — FastAPI + Node Pair
 
-You are running Evil-Ai eval task **I4** on the target repository.
+You are running Eval-Ai eval task **I4** on the target repository.
 
 ## Objective
 

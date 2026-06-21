@@ -1,6 +1,6 @@
 # I6 — Bug Report
 
-**Repository:** `Evil-Ai`  
+**Repository:** `Eval-Ai`  
 **Branch:** `bugfix/I6-diagnosis-fix`  
 **Component:** B6 Rust Log Analyzer  
 **Date:** 2026-06-17

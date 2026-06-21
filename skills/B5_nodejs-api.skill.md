@@ -1,11 +1,11 @@
 ---
-name: evil-ai-nodejs-api
-description: Evil-Ai PML task B5 — Node.js Transaction API
+name: eval-ai-nodejs-api
+description: Eval-Ai PML task B5 — Node.js Transaction API
 ---
 
 # B5 — Node.js Transaction API
 
-You are running Evil-Ai eval task **B5** on the target repository.
+You are running Eval-Ai eval task **B5** on the target repository.
 
 ## Objective
 

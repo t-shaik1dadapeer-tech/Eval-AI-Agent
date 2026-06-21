@@ -1,11 +1,11 @@
 ---
-name: evil-ai-observability
-description: Evil-Ai PML task D6 — Observability
+name: eval-ai-observability
+description: Eval-Ai PML task D6 — Observability
 ---
 
 # D6 — Observability
 
-You are running Evil-Ai eval task **D6** on the target repository.
+You are running Eval-Ai eval task **D6** on the target repository.
 
 ## Objective
 

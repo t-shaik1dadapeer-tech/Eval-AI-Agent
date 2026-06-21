@@ -22,7 +22,7 @@ B3
 
 Open **docs/AGENT_PROMPTS.md** → section **## D5 —**
 
-Or run slash command: `/evil-ai-dev-environment`
+Or run slash command: `/eval-ai-dev-environment`
 
 ## Verify (optional)
 

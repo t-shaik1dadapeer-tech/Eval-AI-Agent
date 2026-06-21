@@ -1,6 +1,6 @@
 # A2 — Worktree Execution Report
 
-**Repository:** `Evil-Ai`  
+**Repository:** `Eval-Ai`  
 **Task output:** `advanced/A2-parallel-worktrees/`  
 **Date:** 2026-06-17  
 **Integration branch:** `feature/A2-main`
@@ -45,12 +45,12 @@ No shared files between lanes. Lane 2 tests validate Lane 1 behavior after merge
 ## Commands executed
 
 ```bash
-cd /Users/shaikdadapeer/Evil-Ai
+cd /Users/shaikdadapeer/Eval-Ai
 git checkout -b feature/A2-main main
 git branch feature/A2-lane1 feature/A2-main
 git branch feature/A2-lane2 feature/A2-main
-git worktree add ../Evil-Ai-A2-lane1 feature/A2-lane1
-git worktree add ../Evil-Ai-A2-lane2 feature/A2-lane2
+git worktree add ../Eval-Ai-A2-lane1 feature/A2-lane1
+git worktree add ../Eval-Ai-A2-lane2 feature/A2-lane2
 git worktree list
 ```
 
@@ -62,9 +62,9 @@ Preparing worktree (checking out 'feature/A2-lane1')
 HEAD is now at 9565fdb A1: Multi-worktree parallel execution plan
 Preparing worktree (checking out 'feature/A2-lane2')
 HEAD is now at 9565fdb A1: Multi-worktree parallel execution plan
-/Users/shaikdadapeer/Evil-Ai           9565fdb [feature/A2-main]
-/Users/shaikdadapeer/Evil-Ai-A2-lane1  9565fdb [feature/A2-lane1]
-/Users/shaikdadapeer/Evil-Ai-A2-lane2  9565fdb [feature/A2-lane2]
+/Users/shaikdadapeer/Eval-Ai           9565fdb [feature/A2-main]
+/Users/shaikdadapeer/Eval-Ai-A2-lane1  9565fdb [feature/A2-lane1]
+/Users/shaikdadapeer/Eval-Ai-A2-lane2  9565fdb [feature/A2-lane2]
 ```
 
 ## Branch names
@@ -79,9 +79,9 @@ HEAD is now at 9565fdb A1: Multi-worktree parallel execution plan
 
 | Path | Branch |
 |------|--------|
-| `/Users/shaikdadapeer/Evil-Ai` | `feature/A2-main` |
-| `/Users/shaikdadapeer/Evil-Ai-A2-lane1` | `feature/A2-lane1` |
-| `/Users/shaikdadapeer/Evil-Ai-A2-lane2` | `feature/A2-lane2` |
+| `/Users/shaikdadapeer/Eval-Ai` | `feature/A2-main` |
+| `/Users/shaikdadapeer/Eval-Ai-A2-lane1` | `feature/A2-lane1` |
+| `/Users/shaikdadapeer/Eval-Ai-A2-lane2` | `feature/A2-lane2` |
 
 ---
 
@@ -127,7 +127,7 @@ EXIT_CODE=0
 ## Lane 1 (`feature/A2-lane1`)
 
 ```bash
-cd /Users/shaikdadapeer/Evil-Ai-A2-lane1/beginner/B4-fastapi-service && pytest -v
+cd /Users/shaikdadapeer/Eval-Ai-A2-lane1/beginner/B4-fastapi-service && pytest -v
 ```
 
 | Result | Value |
@@ -141,7 +141,7 @@ Existing regression suite green; new endpoint not yet covered by tests on this b
 ## Lane 2 (`feature/A2-lane2`)
 
 ```bash
-cd /Users/shaikdadapeer/Evil-Ai-A2-lane2/beginner/B4-fastapi-service && pytest -v
+cd /Users/shaikdadapeer/Eval-Ai-A2-lane2/beginner/B4-fastapi-service && pytest -v
 ```
 
 | Result | Value |
@@ -159,7 +159,7 @@ Failures expected — API route absent on Lane 2 branch. Confirms lanes were tru
 ## Commands
 
 ```bash
-cd /Users/shaikdadapeer/Evil-Ai
+cd /Users/shaikdadapeer/Eval-Ai
 git checkout feature/A2-main
 git merge feature/A2-lane1 --no-edit
 git merge feature/A2-lane2 --no-edit
@@ -184,7 +184,7 @@ See `merge-log.md` for step-by-step merge record.
 ## Test command
 
 ```bash
-cd /Users/shaikdadapeer/Evil-Ai/beginner/B4-fastapi-service
+cd /Users/shaikdadapeer/Eval-Ai/beginner/B4-fastapi-service
 pytest -v
 ```
 
@@ -250,8 +250,8 @@ python -c "from app.main import app; print('BUILD_OK', app.title)"
 ## Cleanup (optional)
 
 ```bash
-git worktree remove ../Evil-Ai-A2-lane1
-git worktree remove ../Evil-Ai-A2-lane2
+git worktree remove ../Eval-Ai-A2-lane1
+git worktree remove ../Eval-Ai-A2-lane2
 ```
 
 Branches `feature/A2-lane1`, `feature/A2-lane2`, `feature/A2-main` may be deleted after merging to `main`.
@@ -263,8 +263,8 @@ Branches `feature/A2-lane1`, `feature/A2-lane2`, `feature/A2-main` may be delete
 | Item | Value |
 |------|-------|
 | Worktree create commands | See [Worktree Creation](#worktree-creation) |
-| Lane 1 branch / path | `feature/A2-lane1` / `../Evil-Ai-A2-lane1` |
-| Lane 2 branch / path | `feature/A2-lane2` / `../Evil-Ai-A2-lane2` |
+| Lane 1 branch / path | `feature/A2-lane1` / `../Eval-Ai-A2-lane1` |
+| Lane 2 branch / path | `feature/A2-lane2` / `../Eval-Ai-A2-lane2` |
 | Lane 1 commit | `1ab2d34` |
 | Lane 2 commit | `9577232` |
 | Merge order | lane1 → lane2 → main |

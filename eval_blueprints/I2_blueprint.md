@@ -24,7 +24,7 @@ B2
 
 Open **docs/AGENT_PROMPTS.md** → section **## I2 —**
 
-Or run slash command: `/evil-ai-flow-trace`
+Or run slash command: `/eval-ai-flow-trace`
 
 ## Verify (optional)
 

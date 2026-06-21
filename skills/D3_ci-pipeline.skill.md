@@ -1,11 +1,11 @@
 ---
-name: evil-ai-ci-pipeline
-description: Evil-Ai PML task D3 — CI Pipeline
+name: eval-ai-ci-pipeline
+description: Eval-Ai PML task D3 — CI Pipeline
 ---
 
 # D3 — CI Pipeline
 
-You are running Evil-Ai eval task **D3** on the target repository.
+You are running Eval-Ai eval task **D3** on the target repository.
 
 ## Objective
 

@@ -1,11 +1,11 @@
 ---
-name: evil-ai-er-diagram
-description: Evil-Ai PML task I1 — ER Diagram
+name: eval-ai-er-diagram
+description: Eval-Ai PML task I1 — ER Diagram
 ---
 
 # I1 — ER Diagram
 
-You are running Evil-Ai eval task **I1** on the target repository.
+You are running Eval-Ai eval task **I1** on the target repository.
 
 ## Objective
 

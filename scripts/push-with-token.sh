@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Push Evil-Ai to GitHub using a Personal Access Token (no gh/brew needed).
+# Push Eval-Ai to GitHub using a Personal Access Token (no gh/brew needed).
 # Usage:
 #   GITHUB_TOKEN=ghp_xxxx bash scripts/push-with-token.sh
 set -euo pipefail

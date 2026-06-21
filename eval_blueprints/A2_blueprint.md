@@ -23,7 +23,7 @@ A1
 
 Open **docs/AGENT_PROMPTS.md** → section **## A2 —**
 
-Or run slash command: `/evil-ai-parallel-worktrees`
+Or run slash command: `/eval-ai-parallel-worktrees`
 
 ## Verify (optional)
 

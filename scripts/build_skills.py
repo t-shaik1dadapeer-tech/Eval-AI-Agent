@@ -15,17 +15,17 @@ def main() -> None:
     SKILLS.mkdir(exist_ok=True)
     for task in data["tasks"]:
         tid = task["id"]
-        slug = task.get("skill_slug", f"evil-ai-{tid.lower()}")
+        slug = task.get("skill_slug", f"eval-ai-{tid.lower()}")
         required = ", ".join(f"`{task['folder']}/{r}`" for r in task.get("required_files", []))
         deps = ", ".join(task.get("depends_on") or []) or "none"
         content = f"""---
 name: {slug}
-description: Evil-Ai PML task {tid} — {task['name']}
+description: Eval-Ai PML task {tid} — {task['name']}
 ---
 
 # {tid} — {task['name']}
 
-You are running Evil-Ai eval task **{tid}** on the target repository.
+You are running Eval-Ai eval task **{tid}** on the target repository.
 
 ## Objective
 
@@ -54,7 +54,7 @@ Complete first: {deps}
 
 After finishing, run `make eval` to verify files exist.
 """
-        path = SKILLS / f"{tid}_{slug.replace('evil-ai-', '')}.skill.md"
+        path = SKILLS / f"{tid}_{slug.replace('eval-ai-', '')}.skill.md"
         path.write_text(content, encoding="utf-8")
     print(f"Wrote {len(data['tasks'])} skills to {SKILLS.relative_to(ROOT)}/")
 

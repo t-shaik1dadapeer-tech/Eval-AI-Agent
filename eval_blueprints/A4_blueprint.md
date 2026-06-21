@@ -23,7 +23,7 @@ B1, B3
 
 Open **docs/AGENT_PROMPTS.md** → section **## A4 —**
 
-Or run slash command: `/evil-ai-modernization`
+Or run slash command: `/eval-ai-modernization`
 
 ## Verify (optional)
 

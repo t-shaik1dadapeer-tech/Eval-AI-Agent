@@ -1,6 +1,6 @@
 # I3 — Small Safe Change Report
 
-**Repository:** `Evil-Ai`  
+**Repository:** `Eval-Ai`  
 **Branch:** `feature/I3-safe-change`  
 **Task output:** `intermediate/I3-safe-change/`  
 **Date:** 2026-06-17

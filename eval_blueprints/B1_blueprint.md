@@ -23,7 +23,7 @@ None — start here
 
 Open **docs/AGENT_PROMPTS.md** → section **## B1 —**
 
-Or run slash command: `/evil-ai-repo-inventory`
+Or run slash command: `/eval-ai-repo-inventory`
 
 ## Verify (optional)
 

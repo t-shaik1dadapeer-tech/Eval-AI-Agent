@@ -25,7 +25,7 @@ None — start here
 
 Open **docs/AGENT_PROMPTS.md** → section **## A1 —**
 
-Or run slash command: `/evil-ai-parallel-plan`
+Or run slash command: `/eval-ai-parallel-plan`
 
 ## Verify (optional)
 

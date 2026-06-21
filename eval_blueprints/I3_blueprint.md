@@ -24,7 +24,7 @@ B3
 
 Open **docs/AGENT_PROMPTS.md** → section **## I3 —**
 
-Or run slash command: `/evil-ai-safe-change`
+Or run slash command: `/eval-ai-safe-change`
 
 ## Verify (optional)
 

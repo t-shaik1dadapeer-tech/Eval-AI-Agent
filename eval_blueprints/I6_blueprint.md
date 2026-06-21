@@ -25,7 +25,7 @@ I2
 
 Open **docs/AGENT_PROMPTS.md** → section **## I6 —**
 
-Or run slash command: `/evil-ai-bug-diagnosis`
+Or run slash command: `/eval-ai-bug-diagnosis`
 
 ## Verify (optional)
 

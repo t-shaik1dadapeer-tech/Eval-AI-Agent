@@ -2,7 +2,7 @@
 
 **Reference:** [PML Version](https://docs.google.com/document/d/1VurgqAe_qZlMieK8pA4S2yJjWBd7cnoO8cuvh4zmNZs/edit) · [OCL Version](https://docs.google.com/document/d/1Y23tu2ePPexkBhh_G0RCK1fNio_NQ3EZuTbgWa_UyPA/edit)
 
-**Repo:** `Evil-Ai` eval portfolio  
+**Repo:** `Eval-Ai` eval portfolio  
 **Last verified:** 2026-06-20  
 **Commands:** `make eval` · `make eval-full` · `make test` · `make eval-reset-config`
 
@@ -75,7 +75,7 @@ make eval-api          # dashboard :8788
 
 ## External API note
 
-Register **UserManagement** (`:8090`) for your own project artifacts — not for Evil-Ai B2/B4 transaction routes. Use `make eval-orch-config API_ID=user-api API_BASE_URL=http://127.0.0.1:8090`.
+Register **UserManagement** (`:8090`) for your own project artifacts — not for Eval-Ai B2/B4 transaction routes. Use `make eval-orch-config API_ID=user-api API_BASE_URL=http://127.0.0.1:8090`.
 
 ---
 

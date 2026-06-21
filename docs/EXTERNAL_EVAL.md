@@ -1,17 +1,17 @@
 # External API Eval — Any Project + .md Prompts
 
-Use the Evil-Ai eval server to compare **your running APIs** against **`.md` prompt files** — and see results on the **live dashboard**.
+Use the Eval-Ai eval server to compare **your running APIs** against **`.md` prompt files** — and see results on the **live dashboard**.
 
-Evil-Ai stays the **eval host**; your APIs are **targets under test**. There is **no built-in default API** — register each service when it is ready.
+Eval-Ai stays the **eval host**; your APIs are **targets under test**. There is **no built-in default API** — register each service when it is ready.
 
 ---
 
 ## Quick start
 
-**Terminal 1 — eval dashboard (Evil-Ai)**
+**Terminal 1 — eval dashboard (Eval-Ai)**
 
 ```bash
-cd /path/to/Evil-Ai
+cd /path/to/Eval-Ai
 python3 scripts/eval/portfolio.py serve --port 8788
 ```
 
@@ -136,7 +136,7 @@ Use **POST /api/external/analyze** with `task_id` to score your live API vs a `.
 Copy into a new chat (change ids, ports, and task):
 
 ```
-You are evaluating task B3 using Evil-Ai eval + my external API.
+You are evaluating task B3 using Eval-Ai eval + my external API.
 
 1. Eval API: http://127.0.0.1:8788 (already running)
 2. My API: http://127.0.0.1:9000 — register when running:

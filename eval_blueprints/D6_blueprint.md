@@ -26,7 +26,7 @@ I5
 
 Open **docs/AGENT_PROMPTS.md** → section **## D6 —**
 
-Or run slash command: `/evil-ai-observability`
+Or run slash command: `/eval-ai-observability`
 
 ## Verify (optional)
 

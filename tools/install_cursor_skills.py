@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install Evil-Ai skills from skills/ into ~/.cursor/skills/."""
+"""Install Eval-Ai skills from skills/ into ~/.cursor/skills/."""
 from __future__ import annotations
 
 import shutil
@@ -17,7 +17,7 @@ def main() -> int:
     DEST.mkdir(parents=True, exist_ok=True)
     count = 0
     for src in sorted(SKILLS_SRC.glob("*.skill.md")):
-        # evil-ai-b1: B1_evil-ai-repo-inventory.skill.md -> evil-ai-repo-inventory/SKILL.md
+        # eval-ai-b1: B1_eval-ai-repo-inventory.skill.md -> eval-ai-repo-inventory/SKILL.md
         parts = src.stem.split("_", 1)
         slug = parts[1] if len(parts) > 1 else src.stem
         target_dir = DEST / slug
@@ -25,7 +25,7 @@ def main() -> int:
         shutil.copy2(src, target_dir / "SKILL.md")
         count += 1
     print(f"Installed {count} skills to {DEST}")
-    print("Restart Cursor, then type / and search evil-ai")
+    print("Restart Cursor, then type / and search eval-ai")
     return 0
 
 

@@ -21,7 +21,7 @@ None — start here
 
 Open **docs/AGENT_PROMPTS.md** → section **## B3 —**
 
-Or run slash command: `/evil-ai-test-discovery`
+Or run slash command: `/eval-ai-test-discovery`
 
 ## Verify (optional)
 

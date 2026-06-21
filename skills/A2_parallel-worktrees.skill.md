@@ -1,11 +1,11 @@
 ---
-name: evil-ai-parallel-worktrees
-description: Evil-Ai PML task A2 — Parallel Worktrees
+name: eval-ai-parallel-worktrees
+description: Eval-Ai PML task A2 — Parallel Worktrees
 ---
 
 # A2 — Parallel Worktrees
 
-You are running Evil-Ai eval task **A2** on the target repository.
+You are running Eval-Ai eval task **A2** on the target repository.
 
 ## Objective
 

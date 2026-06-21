@@ -23,7 +23,7 @@ None — start here
 
 Open **docs/AGENT_PROMPTS.md** → section **## B4 —**
 
-Or run slash command: `/evil-ai-fastapi-service`
+Or run slash command: `/eval-ai-fastapi-service`
 
 ## Verify (optional)
 

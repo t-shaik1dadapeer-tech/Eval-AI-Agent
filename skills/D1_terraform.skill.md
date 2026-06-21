@@ -1,11 +1,11 @@
 ---
-name: evil-ai-terraform
-description: Evil-Ai PML task D1 — Terraform
+name: eval-ai-terraform
+description: Eval-Ai PML task D1 — Terraform
 ---
 
 # D1 — Terraform
 
-You are running Evil-Ai eval task **D1** on the target repository.
+You are running Eval-Ai eval task **D1** on the target repository.
 
 ## Objective
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Push Evil-Ai complete repo to Dadapeer-evil-ai GitHub.
+# Push Eval-Ai complete repo to Dadapeer-eval-ai GitHub.
 # Run from repo root after GitHub auth is configured.
 set -euo pipefail
 

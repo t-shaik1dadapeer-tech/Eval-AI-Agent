@@ -23,7 +23,7 @@ None — start here
 
 Open **docs/AGENT_PROMPTS.md** → section **## B6 —**
 
-Or run slash command: `/evil-ai-rust-cli`
+Or run slash command: `/eval-ai-rust-cli`
 
 ## Verify (optional)
 

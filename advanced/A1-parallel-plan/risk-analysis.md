@@ -136,7 +136,7 @@ git push origin main
 ### Worktree cleanup rollback
 
 ```bash
-git worktree remove ../Evil-Ai-A1-data --force
+git worktree remove ../Eval-Ai-A1-data --force
 git branch -D feature/A1-data   # only if lane abandoned
 ```
 

@@ -1,11 +1,11 @@
 ---
-name: evil-ai-modernization
-description: Evil-Ai PML task A4 — Modernization
+name: eval-ai-modernization
+description: Eval-Ai PML task A4 — Modernization
 ---
 
 # A4 — Modernization
 
-You are running Evil-Ai eval task **A4** on the target repository.
+You are running Eval-Ai eval task **A4** on the target repository.
 
 ## Objective
 

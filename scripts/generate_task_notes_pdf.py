@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Evil-Ai 24-task quick reference PDF."""
+"""Generate Eval-Ai 24-task quick reference PDF."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from pathlib import Path
 from fpdf import FPDF
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "docs" / "EVIL_AI_TASK_NOTES.pdf"
+OUTPUT = ROOT / "docs" / "EVAL_AI_TASK_NOTES.pdf"
 
 
 class NotesPDF(FPDF):
@@ -17,7 +17,7 @@ class NotesPDF(FPDF):
             return
         self.set_font("Helvetica", "I", 8)
         self.set_text_color(100, 100, 100)
-        self.cell(0, 8, "Evil-Ai / Eval AI Agent - 24 Task Reference", align="R")
+        self.cell(0, 8, "Eval-Ai / Eval AI Agent - 24 Task Reference", align="R")
         self.ln(10)
 
     def footer(self) -> None:
@@ -31,7 +31,7 @@ class NotesPDF(FPDF):
         self.ln(40)
         self.set_font("Helvetica", "B", 28)
         self.set_text_color(30, 60, 120)
-        self.cell(0, 14, "Evil-Ai", align="C", new_x="LMARGIN", new_y="NEXT")
+        self.cell(0, 14, "Eval-Ai", align="C", new_x="LMARGIN", new_y="NEXT")
         self.ln(4)
         self.set_font("Helvetica", "", 16)
         self.set_text_color(60, 60, 60)

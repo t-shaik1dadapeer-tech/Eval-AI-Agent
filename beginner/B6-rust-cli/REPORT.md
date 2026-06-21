@@ -1,6 +1,6 @@
 # B6 — Rust Log Analyzer CLI Report
 
-**Repository:** `Evil-Ai`  
+**Repository:** `Eval-Ai`  
 **Task location:** `beginner/B6-rust-cli/`  
 **Report date:** 2026-06-17  
 **Rust toolchain:** cargo 1.96.0

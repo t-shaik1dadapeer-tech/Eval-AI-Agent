@@ -25,7 +25,7 @@
 **Command:**
 
 ```bash
-cd /Users/shaikdadapeer/Evil-Ai
+cd /Users/shaikdadapeer/Eval-Ai
 git checkout feature/A2-main
 git merge feature/A2-lane1 --no-edit
 ```

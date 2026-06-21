@@ -1,7 +1,7 @@
 # A2 — Lane 2 Summary
 
 **Branch:** `feature/A2-lane2`  
-**Worktree:** `/Users/shaikdadapeer/Evil-Ai-A2-lane2`  
+**Worktree:** `/Users/shaikdadapeer/Eval-Ai-A2-lane2`  
 **Owner:** Tests + documentation
 
 ---
@@ -37,7 +37,7 @@ Lane 2 owns quality artifacts only. No production route or service edits — zer
 **Command:**
 
 ```bash
-cd /Users/shaikdadapeer/Evil-Ai-A2-lane2/beginner/B4-fastapi-service
+cd /Users/shaikdadapeer/Eval-Ai-A2-lane2/beginner/B4-fastapi-service
 pytest -v
 ```
 

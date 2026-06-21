@@ -1,11 +1,11 @@
 ---
-name: evil-ai-agent-review
-description: Evil-Ai PML task A5 — Agent Review
+name: eval-ai-agent-review
+description: Eval-Ai PML task A5 — Agent Review
 ---
 
 # A5 — Agent Review
 
-You are running Evil-Ai eval task **A5** on the target repository.
+You are running Eval-Ai eval task **A5** on the target repository.
 
 ## Objective
 

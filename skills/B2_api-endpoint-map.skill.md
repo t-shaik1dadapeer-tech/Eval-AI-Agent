@@ -1,11 +1,11 @@
 ---
-name: evil-ai-api-endpoint-map
-description: Evil-Ai PML task B2 — API Endpoint Map
+name: eval-ai-api-endpoint-map
+description: Eval-Ai PML task B2 — API Endpoint Map
 ---
 
 # B2 — API Endpoint Map
 
-You are running Evil-Ai eval task **B2** on the target repository.
+You are running Eval-Ai eval task **B2** on the target repository.
 
 ## Objective
 

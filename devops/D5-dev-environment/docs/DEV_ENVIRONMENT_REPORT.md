@@ -1,6 +1,6 @@
 # Executive Summary
 
-Task **D5** makes the Evil-Ai monorepo reproducible from a fresh clone using **Makefile + mise** (Option A). A developer runs `make bootstrap` to install pinned language runtimes, project dependencies, and execute the full CI-equivalent test suite.
+Task **D5** makes the Eval-Ai monorepo reproducible from a fresh clone using **Makefile + mise** (Option A). A developer runs `make bootstrap` to install pinned language runtimes, project dependencies, and execute the full CI-equivalent test suite.
 
 Verification on 2026-06-17: **`make bootstrap` exit 0**, **`make test` exit 0** (47 tests across Python, Rust, and Node), **`make lint` exit 0**.
 

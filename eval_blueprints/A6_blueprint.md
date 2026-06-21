@@ -24,7 +24,7 @@ None — start here
 
 Open **docs/AGENT_PROMPTS.md** → section **## A6 —**
 
-Or run slash command: `/evil-ai-performance`
+Or run slash command: `/eval-ai-performance`
 
 ## Verify (optional)
 

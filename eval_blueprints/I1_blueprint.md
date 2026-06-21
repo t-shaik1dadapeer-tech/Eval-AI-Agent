@@ -24,7 +24,7 @@ B1
 
 Open **docs/AGENT_PROMPTS.md** → section **## I1 —**
 
-Or run slash command: `/evil-ai-er-diagram`
+Or run slash command: `/eval-ai-er-diagram`
 
 ## Verify (optional)
 

@@ -24,7 +24,7 @@ None — start here
 
 Open **docs/AGENT_PROMPTS.md** → section **## A5 —**
 
-Or run slash command: `/evil-ai-agent-review`
+Or run slash command: `/eval-ai-agent-review`
 
 ## Verify (optional)
 

@@ -1,17 +1,17 @@
-# Evil-Ai — Setup (24-task pipeline)
+# Eval-Ai — Setup (24-task pipeline)
 
 Aligned with [Repo-Analyser](https://github.com/harshitverma69/Repo-Analyser) PML/OCL eval: **24 agents**, **blueprints**, **pipeline UI**, **Cursor skills**.
 
 ## Quick start
 
 ```bash
-git clone <repo-url> Evil-Ai
-cd Evil-Ai
+git clone <repo-url> Eval-Ai
+cd Eval-Ai
 make setup
 make eval-api    # http://127.0.0.1:8788
 ```
 
-**Restart Cursor** after setup. Type `/` and search `evil-ai` for slash commands.
+**Restart Cursor** after setup. Type `/` and search `eval-ai` for slash commands.
 
 ## What you get
 
@@ -27,7 +27,7 @@ make eval-api    # http://127.0.0.1:8788
 ## Daily workflow
 
 1. **Portfolio dashboard** — `make eval-api` then open http://127.0.0.1:8788 → 24-task grid with scores.
-2. **Cursor** — run `/evil-ai-repo-inventory` (or prompt from `AGENT_PROMPTS.md`) on your target repo.
+2. **Cursor** — run `/eval-ai-repo-inventory` (or prompt from `AGENT_PROMPTS.md`) on your target repo.
 3. **Verify** — `make run-all` or `make eval` checks all required files and writes `docs/eval-status.json`.
 
 ## Commands
@@ -37,7 +37,7 @@ make setup              # build skills + blueprints + validate DAG
 make build-skills       # regenerate skills/ from registry
 make install-cursor-skills
 make validate-dag       # check depends_on graph
-make eval-api           # Evil-Ai portfolio dashboard :8788
+make eval-api           # Eval-Ai portfolio dashboard :8788
 make run-all            # verify all 24 pipeline tasks
 make eval               # verify 24 deliverables → eval-status.json
 make eval-full          # + run tests (Docker for some tasks)
@@ -54,7 +54,7 @@ Dependencies (examples): B2 needs B1, I2 needs B2, D2 needs I5. See `eval_bluepr
 
 The pipeline UI asks for a **target path** (e.g. your UserManagement project). In Cursor, attach it with `@/path/to/repo` when running a skill.
 
-Evil-Ai itself is both the **eval framework** and the **golden reference** (all 24 folders filled in).
+Eval-Ai itself is both the **eval framework** and the **golden reference** (all 24 folders filled in).
 
 ## Troubleshooting
 

@@ -23,7 +23,7 @@ None — start here
 
 Open **docs/AGENT_PROMPTS.md** → section **## I5 —**
 
-Or run slash command: `/evil-ai-dockerize`
+Or run slash command: `/eval-ai-dockerize`
 
 ## Verify (optional)
 

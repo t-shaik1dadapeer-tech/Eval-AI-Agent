@@ -1,6 +1,6 @@
 # A4 — Modernization Report
 
-**Repository:** `Evil-Ai`  
+**Repository:** `Eval-Ai`  
 **Assessment date:** 2026-06-17  
 **First improvement implemented:** GitHub Actions CI pipeline
 

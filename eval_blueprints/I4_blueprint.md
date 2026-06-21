@@ -24,7 +24,7 @@ B4, B5
 
 Open **docs/AGENT_PROMPTS.md** → section **## I4 —**
 
-Or run slash command: `/evil-ai-fastapi-node-pair`
+Or run slash command: `/eval-ai-fastapi-node-pair`
 
 ## Verify (optional)
 

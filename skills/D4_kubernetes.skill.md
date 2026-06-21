@@ -1,11 +1,11 @@
 ---
-name: evil-ai-kubernetes
-description: Evil-Ai PML task D4 — Kubernetes
+name: eval-ai-kubernetes
+description: Eval-Ai PML task D4 — Kubernetes
 ---
 
 # D4 — Kubernetes
 
-You are running Evil-Ai eval task **D4** on the target repository.
+You are running Eval-Ai eval task **D4** on the target repository.
 
 ## Objective
 

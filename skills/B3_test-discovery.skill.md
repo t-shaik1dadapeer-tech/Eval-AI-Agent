@@ -1,11 +1,11 @@
 ---
-name: evil-ai-test-discovery
-description: Evil-Ai PML task B3 — Test Discovery
+name: eval-ai-test-discovery
+description: Eval-Ai PML task B3 — Test Discovery
 ---
 
 # B3 — Test Discovery
 
-You are running Evil-Ai eval task **B3** on the target repository.
+You are running Eval-Ai eval task **B3** on the target repository.
 
 ## Objective
 

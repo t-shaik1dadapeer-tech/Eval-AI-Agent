@@ -1,11 +1,11 @@
 ---
-name: evil-ai-fastapi-service
-description: Evil-Ai PML task B4 — FastAPI Transaction Service
+name: eval-ai-fastapi-service
+description: Eval-Ai PML task B4 — FastAPI Transaction Service
 ---
 
 # B4 — FastAPI Transaction Service
 
-You are running Evil-Ai eval task **B4** on the target repository.
+You are running Eval-Ai eval task **B4** on the target repository.
 
 ## Objective
 

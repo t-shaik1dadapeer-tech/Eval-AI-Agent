@@ -1,6 +1,6 @@
 # I4 — Polyglot Service Pair Report
 
-**Repository:** `Evil-Ai`  
+**Repository:** `Eval-Ai`  
 **Location:** `intermediate/I4-fastapi-node-pair/`  
 **Date:** 2026-06-17
 

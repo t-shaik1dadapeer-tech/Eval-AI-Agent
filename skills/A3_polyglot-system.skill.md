@@ -1,11 +1,11 @@
 ---
-name: evil-ai-polyglot-system
-description: Evil-Ai PML task A3 — Polyglot System
+name: eval-ai-polyglot-system
+description: Eval-Ai PML task A3 — Polyglot System
 ---
 
 # A3 — Polyglot System
 
-You are running Evil-Ai eval task **A3** on the target repository.
+You are running Eval-Ai eval task **A3** on the target repository.
 
 ## Objective
 

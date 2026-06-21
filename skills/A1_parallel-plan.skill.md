@@ -1,11 +1,11 @@
 ---
-name: evil-ai-parallel-plan
-description: Evil-Ai PML task A1 — Parallel Planning
+name: eval-ai-parallel-plan
+description: Eval-Ai PML task A1 — Parallel Planning
 ---
 
 # A1 — Parallel Planning
 
-You are running Evil-Ai eval task **A1** on the target repository.
+You are running Eval-Ai eval task **A1** on the target repository.
 
 ## Objective
 

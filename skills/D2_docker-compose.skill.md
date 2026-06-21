@@ -1,11 +1,11 @@
 ---
-name: evil-ai-docker-compose
-description: Evil-Ai PML task D2 — Docker Compose
+name: eval-ai-docker-compose
+description: Eval-Ai PML task D2 — Docker Compose
 ---
 
 # D2 — Docker Compose
 
-You are running Evil-Ai eval task **D2** on the target repository.
+You are running Eval-Ai eval task **D2** on the target repository.
 
 ## Objective
 

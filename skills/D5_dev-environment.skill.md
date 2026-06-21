@@ -1,11 +1,11 @@
 ---
-name: evil-ai-dev-environment
-description: Evil-Ai PML task D5 — Dev Environment
+name: eval-ai-dev-environment
+description: Eval-Ai PML task D5 — Dev Environment
 ---
 
 # D5 — Dev Environment
 
-You are running Evil-Ai eval task **D5** on the target repository.
+You are running Eval-Ai eval task **D5** on the target repository.
 
 ## Objective
 

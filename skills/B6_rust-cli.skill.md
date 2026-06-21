@@ -1,11 +1,11 @@
 ---
-name: evil-ai-rust-cli
-description: Evil-Ai PML task B6 — Rust Log Analyzer CLI
+name: eval-ai-rust-cli
+description: Eval-Ai PML task B6 — Rust Log Analyzer CLI
 ---
 
 # B6 — Rust Log Analyzer CLI
 
-You are running Evil-Ai eval task **B6** on the target repository.
+You are running Eval-Ai eval task **B6** on the target repository.
 
 ## Objective
 

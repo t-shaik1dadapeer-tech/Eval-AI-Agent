@@ -1,6 +1,6 @@
 # B1 — Repository Artifact Inventory
 
-**Repository:** `Evil-Ai` (Eval AI Agent scaffold)  
+**Repository:** `Eval-Ai` (Eval AI Agent scaffold)  
 **Scan date:** 2026-06-17  
 **Scanner scope:** Full recursive scan from repository root, excluding `.git/`, `node_modules/`, `target/`, `.venv/`, and `__pycache__/`  
 **Task output:** `beginner/B1-repo-artifact-inventory/`
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-A complete recursive scan of the `Evil-Ai` repository found **242 classified artifacts** (108 application code symbols + 134 test/config/documentation files) across Python, JavaScript, and Rust tracks. The repo is a **multi-track exercise monorepo** with implementations in `beginner/`, `intermediate/`, `advanced/`, and `devops/` task folders.
+A complete recursive scan of the `Eval-Ai` repository found **242 classified artifacts** (108 application code symbols + 134 test/config/documentation files) across Python, JavaScript, and Rust tracks. The repo is a **multi-track exercise monorepo** with implementations in `beginner/`, `intermediate/`, `advanced/`, and `devops/` task folders.
 
 Primary stacks: **FastAPI** (transaction and currency APIs), **Express** (Node.js REST API and workers), and **Rust** (CLI log analyzer and risk-scoring engine). No Java, Go, Kotlin, or C# application code was detected. **Zero interfaces** (no `interface` keyword in TypeScript/Java or Rust traits declared as interfaces).
 
@@ -36,7 +36,7 @@ Primary stacks: **FastAPI** (transaction and currency APIs), **Express** (Node.j
 ## Architecture Overview
 
 ```
-Evil-Ai/                              ← Git repository root
+Eval-Ai/                              ← Git repository root
 ├── README.md                         ← Project overview, make bootstrap
 ├── mise.toml                         ← Pinned runtimes (Python, Node, Rust)
 ├── beginner/                         ← B1–B6 implementations

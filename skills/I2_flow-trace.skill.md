@@ -1,11 +1,11 @@
 ---
-name: evil-ai-flow-trace
-description: Evil-Ai PML task I2 — End-to-End Trace
+name: eval-ai-flow-trace
+description: Eval-Ai PML task I2 — End-to-End Trace
 ---
 
 # I2 — End-to-End Trace
 
-You are running Evil-Ai eval task **I2** on the target repository.
+You are running Eval-Ai eval task **I2** on the target repository.
 
 ## Objective
 

@@ -20,7 +20,7 @@
       "compare_hint": "Agent output should match artifact categories and paths in inventory.csv; cross-check counts in REPORT.md.",
       "depends_on": [],
       "blueprint": "eval_blueprints/B1_blueprint.md",
-      "skill_slug": "evil-ai-repo-inventory",
+      "skill_slug": "eval-ai-repo-inventory",
       "primary_output": "beginner/B1-repo-artifact-inventory/REPORT.md"
     },
     {
@@ -43,7 +43,7 @@
         "B1"
       ],
       "blueprint": "eval_blueprints/B2_blueprint.md",
-      "skill_slug": "evil-ai-api-endpoint-map",
+      "skill_slug": "eval-ai-api-endpoint-map",
       "primary_output": "beginner/B2-api-endpoint-map/API_MAP.md"
     },
     {
@@ -63,7 +63,7 @@
       "compare_hint": "TEST_REPORT.md should reflect make test results (pytest, Jest, Cargo).",
       "depends_on": [],
       "blueprint": "eval_blueprints/B3_blueprint.md",
-      "skill_slug": "evil-ai-test-discovery",
+      "skill_slug": "eval-ai-test-discovery",
       "primary_output": "beginner/B3-test-discovery/TEST_REPORT.md"
     },
     {
@@ -85,7 +85,7 @@
       "compare_hint": "Run pytest; compare API behavior to README endpoint list.",
       "depends_on": [],
       "blueprint": "eval_blueprints/B4_blueprint.md",
-      "skill_slug": "evil-ai-fastapi-service",
+      "skill_slug": "eval-ai-fastapi-service",
       "primary_output": "beginner/B4-fastapi-service/app/main.py"
     },
     {
@@ -109,7 +109,7 @@
         "B4"
       ],
       "blueprint": "eval_blueprints/B5_blueprint.md",
-      "skill_slug": "evil-ai-nodejs-api",
+      "skill_slug": "eval-ai-nodejs-api",
       "primary_output": "beginner/B5-nodejs-api-cli/src/app.js"
     },
     {
@@ -131,7 +131,7 @@
       "compare_hint": "Run cargo test; CLI counts INFO/WARN/ERROR per README.",
       "depends_on": [],
       "blueprint": "eval_blueprints/B6_blueprint.md",
-      "skill_slug": "evil-ai-rust-cli",
+      "skill_slug": "eval-ai-rust-cli",
       "primary_output": "beginner/B6-rust-cli/src/main.rs"
     },
     {
@@ -155,7 +155,7 @@
         "B1"
       ],
       "blueprint": "eval_blueprints/I1_blueprint.md",
-      "skill_slug": "evil-ai-er-diagram",
+      "skill_slug": "eval-ai-er-diagram",
       "primary_output": "intermediate/I1-er-diagram/ER_REPORT.md"
     },
     {
@@ -179,7 +179,7 @@
         "B2"
       ],
       "blueprint": "eval_blueprints/I2_blueprint.md",
-      "skill_slug": "evil-ai-flow-trace",
+      "skill_slug": "eval-ai-flow-trace",
       "primary_output": "intermediate/I2-end-to-end-trace/FLOW_TRACE.md"
     },
     {
@@ -203,7 +203,7 @@
         "B3"
       ],
       "blueprint": "eval_blueprints/I3_blueprint.md",
-      "skill_slug": "evil-ai-safe-change",
+      "skill_slug": "eval-ai-safe-change",
       "primary_output": "intermediate/I3-safe-change/CHANGE_REPORT.md"
     },
     {
@@ -229,7 +229,7 @@
         "B5"
       ],
       "blueprint": "eval_blueprints/I4_blueprint.md",
-      "skill_slug": "evil-ai-fastapi-node-pair",
+      "skill_slug": "eval-ai-fastapi-node-pair",
       "primary_output": "intermediate/I4-fastapi-node-pair/fastapi-service/app/main.py"
     },
     {
@@ -254,7 +254,7 @@
       "compare_hint": "See DOCKER_REPORT.md for build/run instructions.",
       "depends_on": [],
       "blueprint": "eval_blueprints/I5_blueprint.md",
-      "skill_slug": "evil-ai-dockerize",
+      "skill_slug": "eval-ai-dockerize",
       "primary_output": "intermediate/I5-dockerize/docs/DOCKER_REPORT.md"
     },
     {
@@ -279,7 +279,7 @@
         "I2"
       ],
       "blueprint": "eval_blueprints/I6_blueprint.md",
-      "skill_slug": "evil-ai-bug-diagnosis",
+      "skill_slug": "eval-ai-bug-diagnosis",
       "primary_output": "intermediate/I6-bug-diagnosis/BUG_REPORT.md"
     },
     {
@@ -303,7 +303,7 @@
       "compare_hint": "Multi-lane prompts in agent-prompts.md define per-agent scope; compare lane deliverables to that file.",
       "depends_on": [],
       "blueprint": "eval_blueprints/A1_blueprint.md",
-      "skill_slug": "evil-ai-parallel-plan",
+      "skill_slug": "eval-ai-parallel-plan",
       "primary_output": "advanced/A1-parallel-plan/PARALLEL_EXECUTION_PLAN.md"
     },
     {
@@ -326,7 +326,7 @@
         "A1"
       ],
       "blueprint": "eval_blueprints/A2_blueprint.md",
-      "skill_slug": "evil-ai-parallel-worktrees",
+      "skill_slug": "eval-ai-parallel-worktrees",
       "primary_output": "advanced/A2-parallel-worktrees/WORKTREE_EXECUTION_REPORT.md"
     },
     {
@@ -355,7 +355,7 @@
         "I4"
       ],
       "blueprint": "eval_blueprints/A3_blueprint.md",
-      "skill_slug": "evil-ai-polyglot-system",
+      "skill_slug": "eval-ai-polyglot-system",
       "primary_output": "advanced/A3-polyglot-system/fastapi-service/app/main.py"
     },
     {
@@ -379,7 +379,7 @@
         "B3"
       ],
       "blueprint": "eval_blueprints/A4_blueprint.md",
-      "skill_slug": "evil-ai-modernization",
+      "skill_slug": "eval-ai-modernization",
       "primary_output": "advanced/A4-modernization/MODERNIZATION_REPORT.md"
     },
     {
@@ -401,7 +401,7 @@
       "compare_hint": "Findings should be categorized like FINDINGS_MATRIX.md.",
       "depends_on": [],
       "blueprint": "eval_blueprints/A5_blueprint.md",
-      "skill_slug": "evil-ai-agent-review",
+      "skill_slug": "eval-ai-agent-review",
       "primary_output": "advanced/A5-agent-review/REVIEW_REPORT.md"
     },
     {
@@ -424,7 +424,7 @@
       "compare_hint": "Reproduce benchmarks via run-benchmark.sh; compare to PERFORMANCE_REPORT.md.",
       "depends_on": [],
       "blueprint": "eval_blueprints/A6_blueprint.md",
-      "skill_slug": "evil-ai-performance",
+      "skill_slug": "eval-ai-performance",
       "primary_output": "advanced/A6-performance/PERFORMANCE_REPORT.md"
     },
     {
@@ -449,7 +449,7 @@
       "compare_hint": "terraform validate must pass; see TERRAFORM_REPORT.md.",
       "depends_on": [],
       "blueprint": "eval_blueprints/D1_blueprint.md",
-      "skill_slug": "evil-ai-terraform",
+      "skill_slug": "eval-ai-terraform",
       "primary_output": "devops/D1-terraform/main.tf"
     },
     {
@@ -476,7 +476,7 @@
         "I5"
       ],
       "blueprint": "eval_blueprints/D2_blueprint.md",
-      "skill_slug": "evil-ai-docker-compose",
+      "skill_slug": "eval-ai-docker-compose",
       "primary_output": "devops/D2-docker-compose/docker-compose.yml"
     },
     {
@@ -501,7 +501,7 @@
         "I5"
       ],
       "blueprint": "eval_blueprints/D3_blueprint.md",
-      "skill_slug": "evil-ai-ci-pipeline",
+      "skill_slug": "eval-ai-ci-pipeline",
       "primary_output": "devops/D3-ci-pipeline/docs/PIPELINE_REPORT.md"
     },
     {
@@ -525,7 +525,7 @@
         "I5"
       ],
       "blueprint": "eval_blueprints/D4_blueprint.md",
-      "skill_slug": "evil-ai-kubernetes",
+      "skill_slug": "eval-ai-kubernetes",
       "primary_output": "devops/D4-kubernetes/k8s/deployment.yaml"
     },
     {
@@ -548,7 +548,7 @@
         "B3"
       ],
       "blueprint": "eval_blueprints/D5_blueprint.md",
-      "skill_slug": "evil-ai-dev-environment",
+      "skill_slug": "eval-ai-dev-environment",
       "primary_output": "devops/D5-dev-environment/README.md"
     },
     {
@@ -578,7 +578,7 @@
         "I5"
       ],
       "blueprint": "eval_blueprints/D6_blueprint.md",
-      "skill_slug": "evil-ai-observability",
+      "skill_slug": "eval-ai-observability",
       "primary_output": "devops/D6-observability/docker-compose.yml"
     }
   ],

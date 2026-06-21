@@ -1,6 +1,6 @@
 # I2 — End-to-End Flow Trace
 
-**Repository:** `Evil-Ai`  
+**Repository:** `Eval-Ai`  
 **Scan date:** 2026-06-17  
 **Task output:** `intermediate/I2-end-to-end-trace/`  
 **Evidence policy:** Repository source code only

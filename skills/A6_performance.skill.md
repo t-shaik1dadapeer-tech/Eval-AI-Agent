@@ -1,11 +1,11 @@
 ---
-name: evil-ai-performance
-description: Evil-Ai PML task A6 — Performance
+name: eval-ai-performance
+description: Eval-Ai PML task A6 — Performance
 ---
 
 # A6 — Performance
 
-You are running Evil-Ai eval task **A6** on the target repository.
+You are running Eval-Ai eval task **A6** on the target repository.
 
 ## Objective
 

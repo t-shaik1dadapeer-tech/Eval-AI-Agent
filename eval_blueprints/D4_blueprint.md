@@ -23,7 +23,7 @@ I5
 
 Open **docs/AGENT_PROMPTS.md** → section **## D4 —**
 
-Or run slash command: `/evil-ai-kubernetes`
+Or run slash command: `/eval-ai-kubernetes`
 
 ## Verify (optional)
 

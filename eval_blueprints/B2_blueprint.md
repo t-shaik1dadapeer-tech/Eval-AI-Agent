@@ -23,7 +23,7 @@ B1
 
 Open **docs/AGENT_PROMPTS.md** → section **## B2 —**
 
-Or run slash command: `/evil-ai-api-endpoint-map`
+Or run slash command: `/eval-ai-api-endpoint-map`
 
 ## Verify (optional)
 

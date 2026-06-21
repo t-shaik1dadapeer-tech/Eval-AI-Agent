@@ -23,7 +23,7 @@ B4
 
 Open **docs/AGENT_PROMPTS.md** → section **## B5 —**
 
-Or run slash command: `/evil-ai-nodejs-api`
+Or run slash command: `/eval-ai-nodejs-api`
 
 ## Verify (optional)
 

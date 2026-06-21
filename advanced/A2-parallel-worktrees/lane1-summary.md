@@ -1,7 +1,7 @@
 # A2 — Lane 1 Summary
 
 **Branch:** `feature/A2-lane1`  
-**Worktree:** `/Users/shaikdadapeer/Evil-Ai-A2-lane1`  
+**Worktree:** `/Users/shaikdadapeer/Eval-Ai-A2-lane1`  
 **Owner:** API / service layer
 
 ---
@@ -37,7 +37,7 @@ Lane 1 owns production code only (service + routes). No test or documentation fi
 **Command:**
 
 ```bash
-cd /Users/shaikdadapeer/Evil-Ai-A2-lane1/beginner/B4-fastapi-service
+cd /Users/shaikdadapeer/Eval-Ai-A2-lane1/beginner/B4-fastapi-service
 pytest -v
 ```
 

@@ -1,10 +1,10 @@
 # B3 — Test Discovery and Execution Report
 
-**Repository:** `Evil-Ai` (Eval AI Agent)  
+**Repository:** `Eval-Ai` (Eval AI Agent)  
 **Scan date:** 2026-06-20 (refreshed via `make test`)  
 **Task:** B3 — Test Discovery  
 **Reference files:** `beginner/B3-test-discovery/README.md`, `beginner/B3-test-discovery/TEST_REPORT.md`  
-**Working directory:** `/Users/shaikdadapeer/Evil-Ai`
+**Working directory:** `/Users/shaikdadapeer/Eval-Ai`
 
 Per `README.md`, this deliverable documents framework discovery, commands run, and pass/fail summary in `TEST_REPORT.md`.
 

@@ -1,6 +1,6 @@
 # I1 — ER Diagram From Repository
 
-**Repository:** `Evil-Ai` (Eval AI Agent)  
+**Repository:** `Eval-Ai` (Eval AI Agent)  
 **Scan date:** 2026-06-20 (refreshed — includes D2 DDL)  
 **Task output:** `intermediate/I1-er-diagram/`  
 **Evidence policy:** Repository source files only — no invented tables or relationships
@@ -9,7 +9,7 @@
 
 # Executive Summary
 
-A full recursive scan of the `Evil-Ai` repository found **one DDL-defined table** (`transactions` in D2 Docker Compose) and **zero ORM-mapped entity relationships**. B4 and B5 use in-memory transaction structures — excluded from the ER model per evidence policy.
+A full recursive scan of the `Eval-Ai` repository found **one DDL-defined table** (`transactions` in D2 Docker Compose) and **zero ORM-mapped entity relationships**. B4 and B5 use in-memory transaction structures — excluded from the ER model per evidence policy.
 
 | Metric | Count |
 |--------|------:|
@@ -212,7 +212,7 @@ B6 reads log files from disk and counts line prefixes. It does not define entiti
 Prior B1 artifact inventory independently reported zero repositories/DAOs and zero `@Entity` mappings:
 
 ```14:16:beginner/B1-repo-artifact-inventory/REPORT.md
-A complete recursive scan of the `Evil-Ai` repository found **no application source code** and **zero artifacts** in any of the requested software categories (classes, interfaces, controllers, services, models/entities, repositories/DAOs, jobs, consumers/listeners, configuration classes, utilities, middleware/filters, or validators).
+A complete recursive scan of the `Eval-Ai` repository found **no application source code** and **zero artifacts** in any of the requested software categories (classes, interfaces, controllers, services, models/entities, repositories/DAOs, jobs, consumers/listeners, configuration classes, utilities, middleware/filters, or validators).
 ```
 
 *Note: B1 was run before B4–B6; current scan includes B4–B6 and still finds no database layer.*

@@ -1,11 +1,11 @@
 ---
-name: evil-ai-bug-diagnosis
-description: Evil-Ai PML task I6 — Bug Diagnosis
+name: eval-ai-bug-diagnosis
+description: Eval-Ai PML task I6 — Bug Diagnosis
 ---
 
 # I6 — Bug Diagnosis
 
-You are running Evil-Ai eval task **I6** on the target repository.
+You are running Eval-Ai eval task **I6** on the target repository.
 
 ## Objective
 

@@ -1,4 +1,4 @@
-# Evil-Ai — reproducible development environment
+# Eval-Ai — reproducible development environment
 
 SHELL := /bin/bash
 ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
@@ -59,7 +59,7 @@ eval-full: ## Deliverables + run verify_command for all tasks (needs Docker)
 	@python3 "$(ROOT)/scripts/eval/portfolio.py" verify --run-tests --run-docker
 
 eval-dashboard: ## Print live portfolio dashboard URL (run make eval-api)
-	@echo "Evil-Ai portfolio — http://127.0.0.1:$(PORT)/"
+	@echo "Eval-Ai portfolio — http://127.0.0.1:$(PORT)/"
 	@echo "Start server: make eval-api"
 
 eval-api: ## Start live eval API + portfolio dashboard http://127.0.0.1:8788

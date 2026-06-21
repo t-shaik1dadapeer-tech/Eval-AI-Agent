@@ -1,6 +1,6 @@
 # B4 — FastAPI Transaction Service Report
 
-**Repository:** `Evil-Ai`  
+**Repository:** `Eval-Ai`  
 **Task location:** `beginner/B4-fastapi-service/`  
 **Report date:** 2026-06-17  
 **Python version:** 3.9.6

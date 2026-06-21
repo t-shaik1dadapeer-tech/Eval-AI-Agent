@@ -164,11 +164,11 @@ git push --force-with-lease origin feature/A1-<lane>
 
 | Worktree directory | Branch | Agent |
 |--------------------|--------|-------|
-| `../Evil-Ai-A1-parent` | `feature/A1-parent` | Orchestrator |
-| `../Evil-Ai-A1-data` | `feature/A1-data` | Lane 1 |
-| `../Evil-Ai-A1-service` | `feature/A1-service` | Lane 2 |
-| `../Evil-Ai-A1-api` | `feature/A1-api` | Lane 3 |
-| `../Evil-Ai-A1-quality` | `feature/A1-quality` | Lane 4 |
+| `../Eval-Ai-A1-parent` | `feature/A1-parent` | Orchestrator |
+| `../Eval-Ai-A1-data` | `feature/A1-data` | Lane 1 |
+| `../Eval-Ai-A1-service` | `feature/A1-service` | Lane 2 |
+| `../Eval-Ai-A1-api` | `feature/A1-api` | Lane 3 |
+| `../Eval-Ai-A1-quality` | `feature/A1-quality` | Lane 4 |
 
 ---
 

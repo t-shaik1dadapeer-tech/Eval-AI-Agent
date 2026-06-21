@@ -23,7 +23,7 @@ B3, I5
 
 Open **docs/AGENT_PROMPTS.md** → section **## D3 —**
 
-Or run slash command: `/evil-ai-ci-pipeline`
+Or run slash command: `/eval-ai-ci-pipeline`
 
 ## Verify (optional)
 

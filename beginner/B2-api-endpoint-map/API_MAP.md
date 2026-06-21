@@ -1,6 +1,6 @@
 # B2 — API Endpoint Map
 
-**Repository:** `Evil-Ai` (Eval AI Agent)  
+**Repository:** `Eval-Ai` (Eval AI Agent)  
 **Scan date:** 2026-06-18  
 **Scanner scope:** Application source under `beginner/`, `intermediate/`, `advanced/`, `devops/` — FastAPI `@app`/`@router` and Express `app.get`/`router.post` patterns  
 **Task output:** `beginner/B2-api-endpoint-map/`

@@ -27,8 +27,8 @@ Everything else (Python, Node, Rust, Terraform, ruff) is installed by mise.
 # Fresh Clone Setup
 
 ```bash
-git clone <repo-url> Evil-Ai
-cd Evil-Ai
+git clone <repo-url> Eval-Ai
+cd Eval-Ai
 make bootstrap
 ```
 

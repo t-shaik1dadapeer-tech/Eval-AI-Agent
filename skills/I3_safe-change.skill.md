@@ -1,11 +1,11 @@
 ---
-name: evil-ai-safe-change
-description: Evil-Ai PML task I3 — Safe Change
+name: eval-ai-safe-change
+description: Eval-Ai PML task I3 — Safe Change
 ---
 
 # I3 — Safe Change
 
-You are running Evil-Ai eval task **I3** on the target repository.
+You are running Eval-Ai eval task **I3** on the target repository.
 
 ## Objective
 

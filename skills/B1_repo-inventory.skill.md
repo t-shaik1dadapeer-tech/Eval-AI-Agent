@@ -1,11 +1,11 @@
 ---
-name: evil-ai-repo-inventory
-description: Evil-Ai PML task B1 — Repository Artifact Inventory
+name: eval-ai-repo-inventory
+description: Eval-Ai PML task B1 — Repository Artifact Inventory
 ---
 
 # B1 — Repository Artifact Inventory
 
-You are running Evil-Ai eval task **B1** on the target repository.
+You are running Eval-Ai eval task **B1** on the target repository.
 
 ## Objective
 

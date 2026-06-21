@@ -1323,7 +1323,7 @@ def build_pipeline_plan(target_repo: str | None = None) -> dict[str, Any]:
 
 def api_docs() -> dict[str, Any]:
     return {
-        "title": "Evil-Ai Portfolio API",
+        "title": "Eval-Ai Portfolio API",
         "ui": "/",
         "workflow": [
             "1. make setup",
@@ -1782,7 +1782,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
     build_portfolio()  # warm cache / create status file
     server = HTTPServer((args.host, args.port), EvalAPIHandler)
     base = f"http://{args.host}:{args.port}"
-    print(f"\nEvil-Ai portfolio")
+    print(f"\nEval-Ai portfolio")
     print(f"  Live dashboard:  {base}/")
     print(f"  Portfolio API:   {base}/api/portfolio")
     print(f"  Agent guide:     {base}/api/agent/guide/B1")
@@ -1812,7 +1812,7 @@ def main() -> int:
     sub.add_parser("pipeline", help="Print pipeline plan JSON")
     p_run_all = sub.add_parser("run-all", help="Verify all 24 pipeline tasks")
     p_run_all.add_argument("--run-tests", action="store_true")
-    p_serve = sub.add_parser("serve", help="Evil-Ai portfolio — live eval API + dashboard")
+    p_serve = sub.add_parser("serve", help="Eval-Ai portfolio — live eval API + dashboard")
     p_serve.add_argument("--host", default="127.0.0.1")
     p_serve.add_argument("--port", type=int, default=8788)
 
